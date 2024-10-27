@@ -1,11 +1,11 @@
-# Pull the latest version of all rules and reference lists from Google SecOps and commit them to the GitHub repo.
+# Update rules and reference lists in Google SecOps based on local rule files.
 
-name: Pull Latest Content
+name: Update Remote Content
 
 on:
-  schedule:
-  # Run daily at 23:05 UTC time
-  - cron: "5 23 * * *"
+  push:
+    branches:
+      - "main"
 
   # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -16,7 +16,7 @@ permissions:
   id-token: write
 
 jobs:
-  pull-latest-content:
+  update-remote-content:
     runs-on: ubuntu-latest
 
     env:
@@ -56,11 +56,13 @@ jobs:
       - name: Run tests using pytest
         run: pytest -v
 
-      - name: Pull latest version of all rules from Google SecOps
-        run: python -m rule_cli --pull-latest-rules
+      - name: Update reference lists in Google SecOps based on files in main branch
+        run: python -m rule_cli --update-remote-reference-lists
 
-      - name: Pull latest version of all reference lists from Google SecOps
-        run: python -m rule_cli --pull-latest-reference-lists
+      - name: Update rules in Google SecOps based on files in main branch
+        run: python -m rule_cli --update-remote-rules
+
+      # After any changes are made to rules and reference lists in Google SecOps, the latest rules and reference lists are retrieved to update the main branch with the latest data (revision_id, revision_create_time, etc).
 
       - name: Add files to git staging area
         run: git add rules rule_config.yaml reference_lists reference_list_config.yaml
