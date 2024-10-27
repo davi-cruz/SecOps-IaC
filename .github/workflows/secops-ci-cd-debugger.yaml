@@ -1,4 +1,10 @@
-on: [pull_request]
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests targeting the main branch
 
 jobs:
   oidc_debug_test:
