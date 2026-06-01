@@ -10,14 +10,15 @@ on:
   # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-permissions:
-  contents: write
-  # 'id-token: write' is required to allow GitHub's OIDC provider to create a JSON Web Token for every run
-  id-token: write
+
 
 jobs:
   pull-latest-content:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
 
     env:
       LOGGING_LEVEL: ${{ vars.LOGGING_LEVEL }}
