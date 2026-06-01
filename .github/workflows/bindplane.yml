@@ -33,8 +33,8 @@ jobs:
           bindplane_api_key: ${{ secrets.BINDPLANE_API_KEY }}
           target_branch: main
           destination_path: bindplane_content/destination.yaml
-          connector_path: bindplane_content/connector.yaml
-          fleet_path: bindplane_content/fleet.yaml
+          source_path: bindplane_content/source.yaml
+          processor_path: bindplane_content/processor.yaml
           configuration_path: bindplane_content/configuration.yaml
           enable_otel_config_write_back: true
           configuration_output_dir: bindplane_content/otel/
