@@ -1,4 +1,4 @@
-name: bindplane
+name: Bindplane Update Remote Content
 
 on:
   push:
