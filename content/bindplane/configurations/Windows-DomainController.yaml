@@ -1,0 +1,224 @@
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: Windows-DomainController
+    labels:
+        agent-type: observiq-otel-collector
+        platform: windows
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01K39954HEFH5RB1X9TGSXJB54
+          name: ETW-DNSServer
+          processors:
+            - id: 01K3999QCBA7XDVGCKB3GQMKD1
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINDOWS_DNS
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+            metrics:
+                - id: "0"
+            traces:
+                - id: "0"
+        - id: 01K9JVEEAFZ8C175R8Q22RBE9W
+          name: WindowsEvents-Security
+          processors:
+            - id: 01KJV1A8YPMKY0V2MHJ2FE5NJ5
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINEVTLOG
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01K9S877R42W48WKRYBA756D9D
+          name: File-WINDOWS_AD
+          processors:
+            - id: 01K9S881M1TN1PKA5YTAAK88K1
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINDOWS_AD
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01K9S897HCP9603ZA9E559QBWM
+          name: WindowsEvents-Sysmon
+          processors:
+            - id: 01K9S89P2YM4YRHZJAKV6Y9DDQ
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINDOWS_SYSMON
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01K9S8AJ4YR4NC5ZEXQVMR1XNS
+          name: WindowsEvents-POWERSHELL
+          processors:
+            - id: 01K9S8C18CMDC71NY20GFD5CF9
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: POWERSHELL
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01K9S8AVTJE339RAJS41TC7Z65
+          name: WindowsEvents-TaskScheduler
+          processors:
+            - id: 01K9S8BC012EQESDZ892AF2DF9
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINEVTLOG
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01KJV0RAENKYSDTZ2N8CNC5SZ4
+          name: Bindplane-Agent
+          processors:
+            - id: p-Filter-BindplaneAgent-RemoveInfo
+              name: Filter-BindplaneAgent-RemoveInfo
+            - id: 01KJV11QY23P33KB5W62YEVXZF
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: BINDPLANE_AGENT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+    destinations:
+        - id: 01K9JT8C0FFVBNTWV77GZNQ5XM
+          name: SecOpsLatamGaia-HTTPS
+          processors:
+            - id: p-Add_IngestionSource
+              name: Add_IngestionSource
+    selector:
+        matchLabels:
+            configuration: Windows-DomainController

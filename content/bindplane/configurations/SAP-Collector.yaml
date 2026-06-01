@@ -1,0 +1,131 @@
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: SAP-Collector
+    labels:
+        agent-type: observiq-otel-collector
+        platform: linux
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01KPZTE73S9W5CBNF8VXWA47Z6
+          type: bindplane_gateway
+          parameters:
+            - name: telemetry_types
+              value:
+                - Logs
+            - name: listen_address
+              value: 0.0.0.0
+            - name: grpc_port
+              value: 4317
+            - name: http_port
+              value: 4318
+            - name: grpc_max_recv_msg_size_mib
+              value: 20
+            - name: enable_tls
+              value: false
+            - name: cert_file
+              value: ""
+            - name: key_file
+              value: ""
+            - name: mutual_tls
+              value: false
+            - name: ca_file
+              value: ""
+            - name: enable_grpc_timeout
+              value: true
+            - name: grpc_max_connection_idle
+              value: 60
+            - name: grpc_max_connection_age
+              value: 60
+            - name: grpc_max_connection_age_grace
+              value: 300
+            - name: enable_http_timeout
+              value: true
+            - name: http_read_timeout
+              value: 0
+            - name: http_read_header_timeout
+              value: 60
+            - name: http_write_timeout
+              value: 30
+            - name: http_idle_timeout
+              value: 60
+            - name: enable_topology
+              value: true
+            - name: topology_interval
+              value: 1m
+            - name: include_metadata
+              value: false
+            - name: enable_cors
+              value: false
+            - name: cors_allowed_origins
+              value: []
+            - name: cors_allowed_headers
+              value: []
+            - name: cors_max_age
+              value: 0
+          processors:
+            - id: 01KPZXYYWTTPVTYAXZQF9DG3X0
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: SAP_SECURITY_AUDIT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+        - id: 01KQ03ENH2103AGT38BJDGBY9A
+          name: Bindplane-Agent
+          processors:
+            - id: p-Filter-BindplaneAgent-RemoveInfo
+              name: Filter-BindplaneAgent-RemoveInfo
+            - id: 01KQ03FED3VKNQP876XGVAFPWB
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: BINDPLANE_AGENT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+    destinations:
+        - id: d-SecOpsLatamGaia-HTTPS
+          name: SecOpsLatamGaia-HTTPS
+    selector:
+        matchLabels:
+            configuration: SAP-Collector

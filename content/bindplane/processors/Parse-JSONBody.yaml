@@ -1,0 +1,38 @@
+apiVersion: bindplane.observiq.com/v1
+kind: Processor
+metadata:
+    name: Parse-JSONBody
+spec:
+    type: parse_json
+    parameters:
+        - name: telemetry_types
+          value:
+            - Logs
+        - name: log_condition
+          value:
+            ottl: ""
+            ui:
+                operator: ""
+                statements:
+                    - key: ""
+                      match: attributes
+                      operator: Equals
+                      value: ""
+        - name: log_source_field_type
+          value: Body
+        - name: log_body_source_field
+          value: ""
+        - name: log_target_field_type
+          value: Body
+        - name: metric_condition
+          value: ""
+        - name: metric_source_field_type
+          value: Attribute
+        - name: metric_target_field_type
+          value: Attribute
+        - name: trace_condition
+          value: ""
+        - name: trace_source_field_type
+          value: Attribute
+        - name: trace_target_field_type
+          value: Attribute

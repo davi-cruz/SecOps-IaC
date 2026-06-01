@@ -1,0 +1,165 @@
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: Linux-Gateway
+    labels:
+        agent-type: observiq-otel-collector
+        platform: linux
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01K9JW56C580C1H0PX40K984VJ
+          type: syslog
+          parameters:
+            - name: listen_ip
+              value: 0.0.0.0
+            - name: listen_port
+              value: 10514
+            - name: protocol
+              value: rfc5424
+            - name: connection_type
+              value: tcp
+            - name: data_flow
+              value: high
+            - name: enable_octet_counting
+              value: false
+            - name: enable_non_transparent_framing_trailer
+              value: false
+            - name: non_transparent_framing_trailer
+              value: LF
+            - name: enable_mutual_tls
+              value: false
+            - name: cert_file
+              value: ""
+            - name: key_file
+              value: ""
+            - name: ca_file
+              value: ""
+            - name: tls_min_version
+              value: "1.2"
+            - name: log_type
+              value: ""
+            - name: timezone
+              value: UTC
+            - name: parse_to
+              value: attributes
+            - name: multiline_parsing
+              value: none
+            - name: multiline_line_start_pattern
+              value: ""
+            - name: multiline_line_end_pattern
+              value: ""
+            - name: add_attributes
+              value: true
+            - name: max_log_size
+              value: 4MiB
+            - name: async_readers
+              value: 1
+            - name: async_processors
+              value: 3
+            - name: max_queue_length
+              value: 100
+            - name: preserve_leading_whitespaces
+              value: false
+            - name: preserve_trailing_whitespaces
+              value: false
+          processors:
+            - id: 01K9R1HZFSBS3XSGJMGZX7T264
+              type: google_filter_regex
+              parameters:
+                - name: action
+                  value: include
+                - name: regex
+                  value: ^<\d{1,3}>
+                - name: field_type
+                  value: Body
+                - name: body_field
+                  value: ""
+                - name: attribute_field
+                  value: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - processors/01K9JW6J9JFD9VTH2T6EETN38N
+        - id: 01KKM3PCZ54WMN0JGA0BS1C9GH
+          name: Bindplane-Gateway
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+        - id: 01KM3YVGW6R7J8BE6JY0JWS5NP
+          name: Bindplane-Agent
+          processors:
+            - id: 01KM3YX3TX408BKS7FBVNP1GWD
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: BINDPLANE_AGENT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+                    - processors/01KT28W25TTY8YVR015SPYSTXH
+    processors:
+        - id: 01K9JW6J9JFD9VTH2T6EETN38N
+          parameters:
+            - name: telemetry_types
+              value:
+                - Logs
+          processors:
+            - id: p-Claroty
+              name: Claroty
+            - id: 01K9JWBG3VFRSRDQFK76648G36
+              displayName: Add batch processor to Google SecOps telemetry
+              type: batch
+              parameters:
+                - name: send_batch_size
+                  value: 3000
+                - name: send_batch_max_size
+                  value: 3200
+                - name: timeout
+                  value: 5s
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+        - id: 01KT28W25TTY8YVR015SPYSTXH
+          parameters:
+            - name: telemetry_types
+              value:
+                - Logs
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KT28VR900RD5D46Q2XPA2VDN
+    destinations:
+        - id: d-SecOpsLatamGaia-HTTPS
+          name: SecOpsLatamGaia-HTTPS
+        - id: 01KT28VR900RD5D46Q2XPA2VDN
+          name: asdas
+    selector:
+        matchLabels:
+            configuration: Linux-Gateway

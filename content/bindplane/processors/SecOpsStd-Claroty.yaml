@@ -1,0 +1,36 @@
+apiVersion: bindplane.observiq.com/v1
+kind: Processor
+metadata:
+    name: SecOpsStd-Claroty
+spec:
+    type: google_secops_standardization
+    parameters:
+        - name: telemetry_types
+          value:
+            - Logs
+        - name: secops_field
+          value:
+            - condition:
+                ottl: attributes["net.peer.ip"] == "18.229.12.159"
+                ui:
+                    operator: ""
+                    statements:
+                        - key: net.peer.ip
+                          match: attributes
+                          operator: Equals
+                          value: 18.229.12.159
+              ingestionLabels: {}
+              logType: CLAROTY_XDOME
+              namespace: ""
+            - condition:
+                ottl: attributes["net.peer.ip"] == "54.198.99.210"
+                ui:
+                    operator: ""
+                    statements:
+                        - key: net.peer.ip
+                          match: attributes
+                          operator: Equals
+                          value: 54.198.99.210
+              ingestionLabels: {}
+              logType: CLAROTY_XDOME_SECURE_ACCESS
+              namespace: ""

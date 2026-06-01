@@ -1,0 +1,6 @@
+apiVersion: bindplane.observiq.com/v1
+kind: Processor
+metadata:
+    name: Unroll-Body
+spec:
+    type: unroll

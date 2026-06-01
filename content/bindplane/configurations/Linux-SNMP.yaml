@@ -1,0 +1,252 @@
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: Linux-SNMP
+    labels:
+        agent-type: observiq-otel-collector
+        platform: linux
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01KJWRFBYSFAFSNZ68A1J0MNCG
+          displayName: SNMP Traps
+          type: file_v2
+          parameters:
+            - name: file_path
+              value:
+                - /var/log/snmptrapd
+            - name: exclude_file_path
+              value: []
+            - name: log_type
+              value: file
+            - name: multiline_parsing
+              value: none
+            - name: multiline_line_start_pattern
+              value: ""
+            - name: multiline_line_end_pattern
+              value: ""
+            - name: include_file_name_attribute
+              value: true
+            - name: include_file_path_attribute
+              value: false
+            - name: include_file_name_resolved_attribute
+              value: false
+            - name: include_file_path_resolved_attribute
+              value: false
+            - name: delete_after_read
+              value: false
+            - name: encoding
+              value: utf-8
+            - name: compression
+              value: none
+            - name: poll_interval
+              value: 200
+            - name: force_flush_period
+              value: 500ms
+            - name: max_log_size
+              value: 1MiB
+            - name: max_concurrent_files
+              value: 1024
+            - name: start_at
+              value: beginning
+            - name: fingerprint_size
+              value: 1kb
+            - name: enable_offset_storage
+              value: true
+            - name: offset_storage_dir
+              value: ${OIQ_OTEL_COLLECTOR_HOME}/storage
+            - name: retry_on_failure_enabled
+              value: false
+            - name: retry_on_failure_initial_interval
+              value: 1
+            - name: retry_on_failure_max_interval
+              value: 30
+            - name: retry_on_failure_max_elapsed_time
+              value: 300
+            - name: enable_sorting
+              value: false
+            - name: sorting_method
+              value: regex
+            - name: sort_rules
+              value: []
+            - name: exclude_older_than
+              value: ""
+            - name: top_n
+              value: 5
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KJWRG1CZASWKMC5MP4BHB7F5
+            metrics:
+                - id: "0"
+            traces:
+                - id: "0"
+        - id: 01KMZRE516D13W3FPNKHGRVSYF
+          name: TCP-AUDITD_50514
+          processors:
+            - id: 01KMZRF2SD5C1J1M2WKB3C94VY
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: AUDITD
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KJWRG1CZASWKMC5MP4BHB7F5
+        - id: 01KMZT3CBHZZ1WBQD0G531QQPE
+          type: file_v2
+          parameters:
+            - name: file_path
+              value:
+                - /var/log/audit/audit.log
+            - name: exclude_file_path
+              value: []
+            - name: log_type
+              value: AUDITD
+            - name: multiline_parsing
+              value: none
+            - name: multiline_line_start_pattern
+              value: ""
+            - name: multiline_line_end_pattern
+              value: ""
+            - name: include_file_name_attribute
+              value: true
+            - name: include_file_path_attribute
+              value: false
+            - name: include_file_name_resolved_attribute
+              value: false
+            - name: include_file_path_resolved_attribute
+              value: false
+            - name: delete_after_read
+              value: false
+            - name: encoding
+              value: utf-8
+            - name: compression
+              value: none
+            - name: poll_interval
+              value: 200
+            - name: force_flush_period
+              value: 500ms
+            - name: max_log_size
+              value: 1MiB
+            - name: max_concurrent_files
+              value: 1024
+            - name: start_at
+              value: end
+            - name: fingerprint_size
+              value: 1kb
+            - name: enable_offset_storage
+              value: true
+            - name: offset_storage_dir
+              value: ${OIQ_OTEL_COLLECTOR_HOME}/storage
+            - name: retry_on_failure_enabled
+              value: false
+            - name: retry_on_failure_initial_interval
+              value: 1
+            - name: retry_on_failure_max_interval
+              value: 30
+            - name: retry_on_failure_max_elapsed_time
+              value: 300
+            - name: enable_sorting
+              value: false
+            - name: sorting_method
+              value: regex
+            - name: sort_rules
+              value: []
+            - name: exclude_older_than
+              value: ""
+            - name: top_n
+              value: 5
+          processors:
+            - id: 01KMZTGQTV8HCFHETN1NVQ81HS
+              displayName: Delete  (logs)
+              type: delete_fields_v2
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: condition
+                  value: "true"
+                - name: body_keys
+                  value:
+                    - ""
+                - name: attributes
+                  value: []
+                - name: resource_attributes
+                  value: []
+            - id: 01KMZTGQTXXQDSEV64QGJ9P6SY
+              type: copy_field
+              parameters:
+                - name: telemetry
+                  value:
+                    - Logs
+                - name: condition
+                  value: ""
+                - name: from_base
+                  value: Attributes
+                - name: from_attributes
+                  value: log.record.original
+                - name: from_body
+                  value: ""
+                - name: from_resource
+                  value: ""
+                - name: to_base
+                  value: Body
+                - name: to_attributes
+                  value: ""
+                - name: to_body
+                  value: message
+            - id: 01KMZTGQTZEZCAAMT2GBVVAAMY
+              type: copy_field
+              parameters:
+                - name: telemetry
+                  value:
+                    - Logs
+                - name: condition
+                  value: ""
+                - name: from_base
+                  value: Resource
+                - name: from_attributes
+                  value: ""
+                - name: from_body
+                  value: ""
+                - name: from_resource
+                  value: host.name
+                - name: to_base
+                  value: Body
+                - name: to_attributes
+                  value: ""
+                - name: to_body
+                  value: hostname
+          disabled: true
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KJWRG1CZASWKMC5MP4BHB7F5
+    destinations:
+        - id: 01KJWRG1CZASWKMC5MP4BHB7F5
+          name: DevNull
+    selector:
+        matchLabels:
+            configuration: Linux-SNMP

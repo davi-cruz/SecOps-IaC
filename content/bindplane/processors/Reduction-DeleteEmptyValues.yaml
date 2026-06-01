@@ -1,0 +1,28 @@
+apiVersion: bindplane.observiq.com/v1
+kind: Processor
+metadata:
+    name: DeleteEmptyValues
+    displayName: Delete Empty Values
+spec:
+    type: delete_empty_values
+    parameters:
+        - name: telemetry_types
+          value:
+            - Logs
+        - name: deleted_values
+          value:
+            - Null Values
+            - Empty Lists
+            - Empty Maps
+        - name: exclude_resource_keys
+          value: []
+        - name: exclude_attribute_keys
+          value: []
+        - name: exclude_body_keys
+          value: []
+        - name: empty_string_values
+          value:
+            - ""
+            - ""
+            - ""
+            - ""

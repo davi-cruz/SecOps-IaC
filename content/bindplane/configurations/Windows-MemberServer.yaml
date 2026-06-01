@@ -1,0 +1,117 @@
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: Windows-MemberServer
+    labels:
+        agent-type: observiq-otel-collector
+        platform: windows
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01JW7855DADVG57RK5S21FMCJR
+          name: Bindplane-Agent
+          processors:
+            - id: p-Filter-BindplaneAgent-RemoveInfo
+              name: Filter-BindplaneAgent-RemoveInfo
+            - id: 01K9JV07BT0M2EAVZGK2H0SK5D
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: BINDPLANE_AGENT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JV1YG1JXH5CV7R9XTFF7Q4
+        - id: 01K9JTR658N22RQMXZWCQBM7J4
+          name: WindowsEvents-POWERSHELL
+          processors:
+            - id: 01K9JTSES8P0WHJY1AH2WPHZJH
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: POWERSHELL
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JV1YG1JXH5CV7R9XTFF7Q4
+        - id: 01K9JTTN1NA0NQWBD1SCG5A5BB
+          name: WindowsEvents-Security
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JV1YG1JXH5CV7R9XTFF7Q4
+        - id: 01K9JVXJ6ZJ1W5YX8R8DTN4WKV
+          name: WindowsEvents-Sysmon
+          processors:
+            - id: 01K9JVYB9NB48YVPTJXNNWEG7F
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINDOWS_SYSMON
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JV1YG1JXH5CV7R9XTFF7Q4
+    destinations:
+        - id: 01K9JV1YG1JXH5CV7R9XTFF7Q4
+          name: SecOpsLatamGaia-HTTPS
+          processors:
+            - id: p-Add_IngestionSource
+              name: Add_IngestionSource
+            - id: p-Batch-SecOps
+              name: Batch-SecOps
+    selector:
+        matchLabels:
+            configuration: Windows-MemberServer

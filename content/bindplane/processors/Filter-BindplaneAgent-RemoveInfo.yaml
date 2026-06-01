@@ -1,0 +1,23 @@
+apiVersion: bindplane.observiq.com/v1
+kind: Processor
+metadata:
+    name: Filter-BindplaneAgent-RemoveInfo
+    displayName: Filter only warnings and errors
+spec:
+    type: filter-by-condition
+    parameters:
+        - name: telemetry_types
+          value:
+            - Logs
+        - name: action
+          value: include
+        - name: condition
+          value:
+            ottl: (severity_number != 9)
+            ui:
+                operator: ""
+                statements:
+                    - key: severity_number
+                      match: log
+                      operator: '!='
+                      value: "9"
