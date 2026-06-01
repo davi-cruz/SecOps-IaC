@@ -1,0 +1,43 @@
+name: bindplane
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'bindplane_content/**'
+  workflow_dispatch: 
+
+# Required for writing back otel configs to the repo.
+permissions:
+  contents: write
+
+# Prevents concurrent and potentially out of order
+# resource updates.
+concurrency:
+  group: ${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  bindplane:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: observIQ/bindplane-op-action@main
+        with:
+          bindplane_remote_url: ${{ vars.BINDPLANE_REMOTE_URL }}
+          bindplane_api_key: ${{ secrets.BINDPLANE_API_KEY }}
+          target_branch: main
+          destination_path: bindplane_content/destination.yaml
+          connector_path: bindplane_content/connector.yaml
+          fleet_path: bindplane_content/fleet.yaml
+          configuration_path: bindplane_content/configuration.yaml
+          enable_otel_config_write_back: true
+          configuration_output_dir: bindplane_content/otel/
+          configuration_output_branch: otel
+          token: ${{ secrets.GITHUB_TOKEN }}
+          enable_auto_rollout: true

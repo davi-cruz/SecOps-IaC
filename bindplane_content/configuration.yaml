@@ -1,0 +1,1017 @@
+---
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: KafkaToSecOps
+    labels:
+        agent-type: observiq-otel-collector
+        platform: linux
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01KP4EY3KEG28C940ERJ2Q1YDM
+          type: telemetrygenerator
+          parameters:
+            - name: generator_type
+              value: Logs
+            - name: payloads
+              value: 1
+            - name: severity_level
+              value: info
+            - name: body
+              value: |-
+                [
+                {"container":{"runtime":"containerd","image":{"name":"289208114389.dkr.ecr.us-east-1.amazonaws.com/picpay-dev/authorization:v1.50.6"},"id":"afe45c261b24ce2950e0bf64252f78d244db1ad2c1c9fbd201aac0db1386c040"},"@picpay_environment":"prod","@picpay_cluster":"eks-secexp-use1-prd","@timestamp":"2026-03-14T09:02:04.205Z","@picpay_origin":"KUBERNETES","stream":"stdout","@log_message":{"dt.entity.process_group":"PROCESS_GROUP-378D27BC2718EBB8","header.x-forwarded-port":"80","k8s.namespace.name":"ms-authorization","header.device_model":"Moto g34 5G","X-Request-ID":"38f9f9bd-267f-4ed9-b1e3-d35a833b72ef","k8s.pod.uid":"f1a7c0d4-28a5-4894-b56c-14f4860c01f5","header.http_gateway_origin":"/checkout-compatibility/v1/transactions","dt.kubernetes.workload.name":"authorization-authorization-bc999f85f","header.x-scheme":"http","trace_flags":"01","dt.entity.host_group":"HOST_GROUP-75A0A68D27615F6B","timestamp_app":"2026-03-14 09:02:04.205","logger_name":"com.picpay.api.authorization.domain.throttle.ThrottleValidatePassword","header.app_version":"11.125.1","header.device_manufacturer":"Motorola","header.x-original-forwarded-for":"181.77.236.23, 181.77.236.23, 172.70.140.38, 10.189.216.231:24082","dt.trace_sampled":"true","span_id":"eb0058ed1b010e2d","level":"INFO","header.device_id":"22cb6840-f011-4fe1-9ae7-7875e532615c","dt.kubernetes.workload.kind":"ReplicaSet","header.os_version":"35","header.user-agent":"lua-resty-http/0.16.1 (Lua) ngx_lua/10020","header.host":"authorization.ms.prod","thread_name":"http-nio-9006-exec-3","header.x-forwarded-scheme":"http","header.x-forwarded-for":"181.77.236.23","header.android_id":"3fbe9bf7ccfeaa37","header.request_uri":"/tokens/validation","header.path_info":"null","header.request_url":"http://authorization.ms.prod/tokens/validation","dt.kubernetes.cluster.id":"131e45ce-8676-40f3-90f5-03258a8be1be","dt.trace_id":"ff782c94942d7664f2e4cc2df6af6603","header.x-forwarded-proto":"http","k8s.pod.name":"authorization-authorization-bc999f85f-7qpgb","header.x-forwarded-host":"authorization.ms.prod","dt.host_group.id":"eks-secexp-use1-prd","header.installation_id":"208578f4-af35-45ce-903b-d5b1d069b696","trace_id":"650d48a4e2316a1665c95777c0017567","header.x-request-id":"38f9f9bd-267f-4ed9-b1e3-d35a833b72ef","header.device_os":"android","dt.entity.process_group_instance":"PROCESS_GROUP_INSTANCE-4A61D6CF4BC249D3","message":"[ThrottleValidatePassword] event reset is IP validatePasswordAndToken 181.77.236.23","dt.span_id":"b0be97a27a08beea","dt.entity.host":"HOST-F0544E12DA8F9098","header.method":"GET","service":"authorization","header.context_path":"","header.x-real-ip":"181.77.236.23"},"@picpay":"ms-authorization","@picpay_technology":"BEATS"},
+                {"container":{"runtime":"containerd","image":{"name":"289208114389.dkr.ecr.us-east-1.amazonaws.com/picpay-dev/authorization:v1.50.6"},"id":"afe45c261b24ce2950e0bf64252f78d244db1ad2c1c9fbd201aac0db1386c040"},"@picpay_environment":"prod","@picpay_cluster":"eks-secexp-use1-prd","@timestamp":"2026-03-14T09:02:04.205Z","@picpay_origin":"KUBERNETES","stream":"stdout","level":"INFO","@log_message":{"dt.entity.process_group":"PROCESS_GROUP-378D27BC2718EBB8","header.x-forwarded-port":"80","k8s.namespace.name":"ms-authorization","header.device_model":"Moto g34 5G","X-Request-ID":"38f9f9bd-267f-4ed9-b1e3-d35a833b72ef","k8s.pod.uid":"f1a7c0d4-28a5-4894-b56c-14f4860c01f5","header.http_gateway_origin":"/checkout-compatibility/v1/transactions","dt.kubernetes.workload.name":"authorization-authorization-bc999f85f","header.x-scheme":"http","trace_flags":"01","dt.entity.host_group":"HOST_GROUP-75A0A68D27615F6B","timestamp_app":"2026-03-14 09:02:04.205","logger_name":"com.picpay.api.authorization.domain.throttle.ThrottleValidatePassword","header.app_version":"11.125.1","header.device_manufacturer":"Motorola","header.x-original-forwarded-for":"181.77.236.23, 181.77.236.23, 172.70.140.38, 10.189.216.231:24082","dt.trace_sampled":"true","span_id":"eb0058ed1b010e2d","level":"INFO","header.device_id":"22cb6840-f011-4fe1-9ae7-7875e532615c","dt.kubernetes.workload.kind":"ReplicaSet","header.os_version":"35","header.user-agent":"lua-resty-http/0.16.1 (Lua) ngx_lua/10020","header.host":"authorization.ms.prod","thread_name":"http-nio-9006-exec-3","header.x-forwarded-scheme":"http","header.x-forwarded-for":"181.77.236.23","header.android_id":"3fbe9bf7ccfeaa37","header.request_uri":"/tokens/validation","header.path_info":"null","header.request_url":"http://authorization.ms.prod/tokens/validation","dt.kubernetes.cluster.id":"131e45ce-8676-40f3-90f5-03258a8be1be","dt.trace_id":"ff782c94942d7664f2e4cc2df6af6603","header.x-forwarded-proto":"http","k8s.pod.name":"authorization-authorization-bc999f85f-7qpgb","header.x-forwarded-host":"authorization.ms.prod","dt.host_group.id":"eks-secexp-use1-prd","header.installation_id":"208578f4-af35-45ce-903b-d5b1d069b696","trace_id":"650d48a4e2316a1665c95777c0017567","header.x-request-id":"38f9f9bd-267f-4ed9-b1e3-d35a833b72ef","header.device_os":"android","dt.entity.process_group_instance":"PROCESS_GROUP_INSTANCE-4A61D6CF4BC249D3","message":"[ThrottleValidatePassword] event reset is IP validatePasswordAndToken 181.77.236.23","dt.span_id":"b0be97a27a08beea","dt.entity.host":"HOST-F0544E12DA8F9098","header.method":"GET","service":"authorization","header.context_path":"","header.x-real-ip":"181.77.236.23"},"@picpay":"ms-card-log","@picpay_technology":"BEATS"},
+                {"container":{"runtime":"containerd","image":{"name":"289208114389.dkr.ecr.us-east-1.amazonaws.com/picpay-dev/authorization:v1.50.6"},"id":"afe45c261b24ce2950e0bf64252f78d244db1ad2c1c9fbd201aac0db1386c040"},"@picpay_environment":"prod","@picpay_cluster":"eks-secexp-use1-prd","@timestamp":"2026-03-14T09:02:04.205Z","@picpay_origin":"KUBERNETES","stream":"stdout","level":"INFO","@log_message":{"dt.entity.process_group":"PROCESS_GROUP-378D27BC2718EBB8","header.x-forwarded-port":"80","k8s.namespace.name":"ms-authorization","header.device_model":"Moto g34 5G","X-Request-ID":"38f9f9bd-267f-4ed9-b1e3-d35a833b72ef","k8s.pod.uid":"f1a7c0d4-28a5-4894-b56c-14f4860c01f5","header.http_gateway_origin":"/checkout-compatibility/v1/transactions","dt.kubernetes.workload.name":"authorization-authorization-bc999f85f","header.x-scheme":"http","trace_flags":"01","dt.entity.host_group":"HOST_GROUP-75A0A68D27615F6B","timestamp_app":"2026-03-14 09:02:04.205","logger_name":"com.picpay.api.authorization.domain.throttle.ThrottleValidatePassword","header.app_version":"11.125.1","header.device_manufacturer":"Motorola","header.x-original-forwarded-for":"181.77.236.23, 181.77.236.23, 172.70.140.38, 10.189.216.231:24082","dt.trace_sampled":"true","span_id":"eb0058ed1b010e2d","level":"INFO","header.device_id":"22cb6840-f011-4fe1-9ae7-7875e532615c","dt.kubernetes.workload.kind":"ReplicaSet","header.os_version":"35","header.user-agent":"lua-resty-http/0.16.1 (Lua) ngx_lua/10020","header.host":"authorization.ms.prod","thread_name":"http-nio-9006-exec-3","header.x-forwarded-scheme":"http","header.x-forwarded-for":"181.77.236.23","header.android_id":"3fbe9bf7ccfeaa37","header.request_uri":"/tokens/validation","header.path_info":"null","header.request_url":"http://authorization.ms.prod/tokens/validation","dt.kubernetes.cluster.id":"131e45ce-8676-40f3-90f5-03258a8be1be","dt.trace_id":"ff782c94942d7664f2e4cc2df6af6603","header.x-forwarded-proto":"http","k8s.pod.name":"authorization-authorization-bc999f85f-7qpgb","header.x-forwarded-host":"authorization.ms.prod","dt.host_group.id":"eks-secexp-use1-prd","header.installation_id":"208578f4-af35-45ce-903b-d5b1d069b696","trace_id":"650d48a4e2316a1665c95777c0017567","header.x-request-id":"38f9f9bd-267f-4ed9-b1e3-d35a833b72ef","header.device_os":"android","dt.entity.process_group_instance":"PROCESS_GROUP_INSTANCE-4A61D6CF4BC249D3","message":"[ThrottleValidatePassword] event reset is IP validatePasswordAndToken 181.77.236.23","dt.span_id":"b0be97a27a08beea","dt.entity.host":"HOST-F0544E12DA8F9098","header.method":"GET","service":"authorization","header.context_path":"","header.x-real-ip":"181.77.236.23"},"@picpay":"ms-unknown","@picpay_technology":"BEATS"}
+                ]
+            - name: logs_resource_attributes
+              value: {}
+            - name: attributes
+              value: {}
+            - name: otlp_type
+              value: logs
+            - name: metrics_resource_attributes
+              value: {}
+          processors:
+            - id: p-ParseJSON-Body
+              name: ParseJSON-Body
+            - id: p-Unroll-Body
+              name: Unroll-Body
+            - id: 01KP4GAVED949E0FJQ3XNN3BQY
+              type: coalesce
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: log_condition
+                  value: ""
+                - name: from_log_base
+                  value: Body
+                - name: from_log_field
+                  value:
+                    - '["@log_message"]["level"]'
+                    - '["@log_message"]["monolog_level"]'
+                    - '["@log_message"]["message"]["level"]'
+                    - '["@log_message"]["log_level"]'
+                    - '["@log_message"]["log.level"]'
+                    - '["@log_message"]["log"]["level"]'
+                    - level
+                - name: to_log_base
+                  value: Body
+                - name: to_log_action
+                  value: upsert
+                - name: to_log_attributes
+                  value: ""
+                - name: to_log_body
+                  value: level
+                - name: datapoint_condition
+                  value: ""
+                - name: from_metric_attributes
+                  value: []
+                - name: to_metric_attributes
+                  value: ""
+                - name: metric_attributes_action
+                  value: upsert
+                - name: span_condition
+                  value: ""
+                - name: from_traces_attributes
+                  value: []
+                - name: to_traces_attributes
+                  value: ""
+                - name: traces_attributes_action
+                  value: upsert
+            - id: 01KP4GAVEF40AFX10PCD7YHMPG
+              type: add_fields_v2
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: condition
+                  value:
+                    ottl: body["level"] == nil
+                    ui:
+                        operator: ""
+                        statements:
+                            - key: level
+                              match: body
+                              operator: DoesNotExist
+                              value: ""
+                - name: fields
+                  value:
+                    - fieldAction: upsert
+                      fieldType: body
+                      key: level
+                      value: UNKNOWN
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KP4EYDD21473N57PZWTQD9F2
+            metrics:
+                - id: "0"
+            traces:
+                - id: "0"
+    destinations:
+        - id: 01KP4EYDD21473N57PZWTQD9F2
+          name: DevNull
+    selector:
+        matchLabels:
+            configuration: KafkaToSecOps
+---
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: Linux-Gateway
+    labels:
+        agent-type: observiq-otel-collector
+        platform: linux
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01K9JW56C580C1H0PX40K984VJ
+          type: syslog
+          parameters:
+            - name: listen_ip
+              value: 0.0.0.0
+            - name: listen_port
+              value: 10514
+            - name: protocol
+              value: rfc5424
+            - name: connection_type
+              value: tcp
+            - name: data_flow
+              value: high
+            - name: enable_octet_counting
+              value: false
+            - name: enable_non_transparent_framing_trailer
+              value: false
+            - name: non_transparent_framing_trailer
+              value: LF
+            - name: enable_mutual_tls
+              value: false
+            - name: cert_file
+              value: ""
+            - name: key_file
+              value: ""
+            - name: ca_file
+              value: ""
+            - name: tls_min_version
+              value: "1.2"
+            - name: log_type
+              value: ""
+            - name: timezone
+              value: UTC
+            - name: parse_to
+              value: attributes
+            - name: multiline_parsing
+              value: none
+            - name: multiline_line_start_pattern
+              value: ""
+            - name: multiline_line_end_pattern
+              value: ""
+            - name: add_attributes
+              value: true
+            - name: max_log_size
+              value: 4MiB
+            - name: async_readers
+              value: 1
+            - name: async_processors
+              value: 3
+            - name: max_queue_length
+              value: 100
+            - name: preserve_leading_whitespaces
+              value: false
+            - name: preserve_trailing_whitespaces
+              value: false
+          processors:
+            - id: 01K9R1HZFSBS3XSGJMGZX7T264
+              type: google_filter_regex
+              parameters:
+                - name: action
+                  value: include
+                - name: regex
+                  value: ^<\d{1,3}>
+                - name: field_type
+                  value: Body
+                - name: body_field
+                  value: ""
+                - name: attribute_field
+                  value: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - processors/01K9JW6J9JFD9VTH2T6EETN38N
+        - id: 01KKM3PCZ54WMN0JGA0BS1C9GH
+          name: Bindplane-Gateway
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+        - id: 01KM3YVGW6R7J8BE6JY0JWS5NP
+          name: Bindplane-Agent
+          processors:
+            - id: 01KM3YX3TX408BKS7FBVNP1GWD
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: BINDPLANE_AGENT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+                    - processors/01KT28W25TTY8YVR015SPYSTXH
+    processors:
+        - id: 01K9JW6J9JFD9VTH2T6EETN38N
+          parameters:
+            - name: telemetry_types
+              value:
+                - Logs
+          processors:
+            - id: p-Claroty
+              name: Claroty
+            - id: 01K9JWBG3VFRSRDQFK76648G36
+              displayName: Add batch processor to Google SecOps telemetry
+              type: batch
+              parameters:
+                - name: send_batch_size
+                  value: 3000
+                - name: send_batch_max_size
+                  value: 3200
+                - name: timeout
+                  value: 5s
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+        - id: 01KT28W25TTY8YVR015SPYSTXH
+          parameters:
+            - name: telemetry_types
+              value:
+                - Logs
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KT28VR900RD5D46Q2XPA2VDN
+    destinations:
+        - id: d-SecOpsLatamGaia-HTTPS
+          name: SecOpsLatamGaia-HTTPS
+        - id: 01KT28VR900RD5D46Q2XPA2VDN
+          name: asdas
+    selector:
+        matchLabels:
+            configuration: Linux-Gateway
+---
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: Linux-SNMP
+    labels:
+        agent-type: observiq-otel-collector
+        platform: linux
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01KJWRFBYSFAFSNZ68A1J0MNCG
+          displayName: SNMP Traps
+          type: file_v2
+          parameters:
+            - name: file_path
+              value:
+                - /var/log/snmptrapd
+            - name: exclude_file_path
+              value: []
+            - name: log_type
+              value: file
+            - name: multiline_parsing
+              value: none
+            - name: multiline_line_start_pattern
+              value: ""
+            - name: multiline_line_end_pattern
+              value: ""
+            - name: include_file_name_attribute
+              value: true
+            - name: include_file_path_attribute
+              value: false
+            - name: include_file_name_resolved_attribute
+              value: false
+            - name: include_file_path_resolved_attribute
+              value: false
+            - name: delete_after_read
+              value: false
+            - name: encoding
+              value: utf-8
+            - name: compression
+              value: none
+            - name: poll_interval
+              value: 200
+            - name: force_flush_period
+              value: 500ms
+            - name: max_log_size
+              value: 1MiB
+            - name: max_concurrent_files
+              value: 1024
+            - name: start_at
+              value: beginning
+            - name: fingerprint_size
+              value: 1kb
+            - name: enable_offset_storage
+              value: true
+            - name: offset_storage_dir
+              value: ${OIQ_OTEL_COLLECTOR_HOME}/storage
+            - name: retry_on_failure_enabled
+              value: false
+            - name: retry_on_failure_initial_interval
+              value: 1
+            - name: retry_on_failure_max_interval
+              value: 30
+            - name: retry_on_failure_max_elapsed_time
+              value: 300
+            - name: enable_sorting
+              value: false
+            - name: sorting_method
+              value: regex
+            - name: sort_rules
+              value: []
+            - name: exclude_older_than
+              value: ""
+            - name: top_n
+              value: 5
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KJWRG1CZASWKMC5MP4BHB7F5
+            metrics:
+                - id: "0"
+            traces:
+                - id: "0"
+        - id: 01KMZRE516D13W3FPNKHGRVSYF
+          name: TCP-AUDITD_50514
+          processors:
+            - id: 01KMZRF2SD5C1J1M2WKB3C94VY
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: AUDITD
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KJWRG1CZASWKMC5MP4BHB7F5
+        - id: 01KMZT3CBHZZ1WBQD0G531QQPE
+          type: file_v2
+          parameters:
+            - name: file_path
+              value:
+                - /var/log/audit/audit.log
+            - name: exclude_file_path
+              value: []
+            - name: log_type
+              value: AUDITD
+            - name: multiline_parsing
+              value: none
+            - name: multiline_line_start_pattern
+              value: ""
+            - name: multiline_line_end_pattern
+              value: ""
+            - name: include_file_name_attribute
+              value: true
+            - name: include_file_path_attribute
+              value: false
+            - name: include_file_name_resolved_attribute
+              value: false
+            - name: include_file_path_resolved_attribute
+              value: false
+            - name: delete_after_read
+              value: false
+            - name: encoding
+              value: utf-8
+            - name: compression
+              value: none
+            - name: poll_interval
+              value: 200
+            - name: force_flush_period
+              value: 500ms
+            - name: max_log_size
+              value: 1MiB
+            - name: max_concurrent_files
+              value: 1024
+            - name: start_at
+              value: end
+            - name: fingerprint_size
+              value: 1kb
+            - name: enable_offset_storage
+              value: true
+            - name: offset_storage_dir
+              value: ${OIQ_OTEL_COLLECTOR_HOME}/storage
+            - name: retry_on_failure_enabled
+              value: false
+            - name: retry_on_failure_initial_interval
+              value: 1
+            - name: retry_on_failure_max_interval
+              value: 30
+            - name: retry_on_failure_max_elapsed_time
+              value: 300
+            - name: enable_sorting
+              value: false
+            - name: sorting_method
+              value: regex
+            - name: sort_rules
+              value: []
+            - name: exclude_older_than
+              value: ""
+            - name: top_n
+              value: 5
+          processors:
+            - id: 01KMZTGQTV8HCFHETN1NVQ81HS
+              displayName: Delete  (logs)
+              type: delete_fields_v2
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: condition
+                  value: "true"
+                - name: body_keys
+                  value:
+                    - ""
+                - name: attributes
+                  value: []
+                - name: resource_attributes
+                  value: []
+            - id: 01KMZTGQTXXQDSEV64QGJ9P6SY
+              type: copy_field
+              parameters:
+                - name: telemetry
+                  value:
+                    - Logs
+                - name: condition
+                  value: ""
+                - name: from_base
+                  value: Attributes
+                - name: from_attributes
+                  value: log.record.original
+                - name: from_body
+                  value: ""
+                - name: from_resource
+                  value: ""
+                - name: to_base
+                  value: Body
+                - name: to_attributes
+                  value: ""
+                - name: to_body
+                  value: message
+            - id: 01KMZTGQTZEZCAAMT2GBVVAAMY
+              type: copy_field
+              parameters:
+                - name: telemetry
+                  value:
+                    - Logs
+                - name: condition
+                  value: ""
+                - name: from_base
+                  value: Resource
+                - name: from_attributes
+                  value: ""
+                - name: from_body
+                  value: ""
+                - name: from_resource
+                  value: host.name
+                - name: to_base
+                  value: Body
+                - name: to_attributes
+                  value: ""
+                - name: to_body
+                  value: hostname
+          disabled: true
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01KJWRG1CZASWKMC5MP4BHB7F5
+    destinations:
+        - id: 01KJWRG1CZASWKMC5MP4BHB7F5
+          name: DevNull
+    selector:
+        matchLabels:
+            configuration: Linux-SNMP
+---
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: SAP-Collector
+    labels:
+        agent-type: observiq-otel-collector
+        platform: linux
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01KPZTE73S9W5CBNF8VXWA47Z6
+          type: bindplane_gateway
+          parameters:
+            - name: telemetry_types
+              value:
+                - Logs
+            - name: listen_address
+              value: 0.0.0.0
+            - name: grpc_port
+              value: 4317
+            - name: http_port
+              value: 4318
+            - name: grpc_max_recv_msg_size_mib
+              value: 20
+            - name: enable_tls
+              value: false
+            - name: cert_file
+              value: ""
+            - name: key_file
+              value: ""
+            - name: mutual_tls
+              value: false
+            - name: ca_file
+              value: ""
+            - name: enable_grpc_timeout
+              value: true
+            - name: grpc_max_connection_idle
+              value: 60
+            - name: grpc_max_connection_age
+              value: 60
+            - name: grpc_max_connection_age_grace
+              value: 300
+            - name: enable_http_timeout
+              value: true
+            - name: http_read_timeout
+              value: 0
+            - name: http_read_header_timeout
+              value: 60
+            - name: http_write_timeout
+              value: 30
+            - name: http_idle_timeout
+              value: 60
+            - name: enable_topology
+              value: true
+            - name: topology_interval
+              value: 1m
+            - name: include_metadata
+              value: false
+            - name: enable_cors
+              value: false
+            - name: cors_allowed_origins
+              value: []
+            - name: cors_allowed_headers
+              value: []
+            - name: cors_max_age
+              value: 0
+          processors:
+            - id: 01KPZXYYWTTPVTYAXZQF9DG3X0
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: SAP_SECURITY_AUDIT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+        - id: 01KQ03ENH2103AGT38BJDGBY9A
+          name: Bindplane-Agent
+          processors:
+            - id: p-Filter-BindplaneAgent-RemoveInfo
+              name: Filter-BindplaneAgent-RemoveInfo
+            - id: 01KQ03FED3VKNQP876XGVAFPWB
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: BINDPLANE_AGENT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/d-SecOpsLatamGaia-HTTPS
+    destinations:
+        - id: d-SecOpsLatamGaia-HTTPS
+          name: SecOpsLatamGaia-HTTPS
+    selector:
+        matchLabels:
+            configuration: SAP-Collector
+---
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: Windows-DomainController
+    labels:
+        agent-type: observiq-otel-collector
+        platform: windows
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01K39954HEFH5RB1X9TGSXJB54
+          name: ETW-DNSServer
+          processors:
+            - id: 01K3999QCBA7XDVGCKB3GQMKD1
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINDOWS_DNS
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+            metrics:
+                - id: "0"
+            traces:
+                - id: "0"
+        - id: 01K9JVEEAFZ8C175R8Q22RBE9W
+          name: WindowsEvents-Security
+          processors:
+            - id: 01KJV1A8YPMKY0V2MHJ2FE5NJ5
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINEVTLOG
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01K9S877R42W48WKRYBA756D9D
+          name: File-WINDOWS_AD
+          processors:
+            - id: 01K9S881M1TN1PKA5YTAAK88K1
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINDOWS_AD
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01K9S897HCP9603ZA9E559QBWM
+          name: WindowsEvents-Sysmon
+          processors:
+            - id: 01K9S89P2YM4YRHZJAKV6Y9DDQ
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINDOWS_SYSMON
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01K9S8AJ4YR4NC5ZEXQVMR1XNS
+          name: WindowsEvents-POWERSHELL
+          processors:
+            - id: 01K9S8C18CMDC71NY20GFD5CF9
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: POWERSHELL
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01K9S8AVTJE339RAJS41TC7Z65
+          name: WindowsEvents-TaskScheduler
+          processors:
+            - id: 01K9S8BC012EQESDZ892AF2DF9
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINEVTLOG
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+        - id: 01KJV0RAENKYSDTZ2N8CNC5SZ4
+          name: Bindplane-Agent
+          processors:
+            - id: p-Filter-BindplaneAgent-RemoveInfo
+              name: Filter-BindplaneAgent-RemoveInfo
+            - id: 01KJV11QY23P33KB5W62YEVXZF
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: BINDPLANE_AGENT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JT8C0FFVBNTWV77GZNQ5XM
+    destinations:
+        - id: 01K9JT8C0FFVBNTWV77GZNQ5XM
+          name: SecOpsLatamGaia-HTTPS
+          processors:
+            - id: p-Add_IngestionSource
+              name: Add_IngestionSource
+    selector:
+        matchLabels:
+            configuration: Windows-DomainController
+---
+apiVersion: bindplane.observiq.com/v2
+kind: Configuration
+metadata:
+    name: Windows-MemberServer
+    labels:
+        agent-type: observiq-otel-collector
+        platform: windows
+spec:
+    contentType: ""
+    measurementInterval: ""
+    topologyInterval: ""
+    disableLegacyEnvVarNormalization: false
+    sources:
+        - id: 01JW7855DADVG57RK5S21FMCJR
+          name: Bindplane-Agent
+          processors:
+            - id: p-Filter-BindplaneAgent-RemoveInfo
+              name: Filter-BindplaneAgent-RemoveInfo
+            - id: 01K9JV07BT0M2EAVZGK2H0SK5D
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: BINDPLANE_AGENT
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JV1YG1JXH5CV7R9XTFF7Q4
+        - id: 01K9JTR658N22RQMXZWCQBM7J4
+          name: WindowsEvents-POWERSHELL
+          processors:
+            - id: 01K9JTSES8P0WHJY1AH2WPHZJH
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: POWERSHELL
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JV1YG1JXH5CV7R9XTFF7Q4
+        - id: 01K9JTTN1NA0NQWBD1SCG5A5BB
+          name: WindowsEvents-Security
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JV1YG1JXH5CV7R9XTFF7Q4
+        - id: 01K9JVXJ6ZJ1W5YX8R8DTN4WKV
+          name: WindowsEvents-Sysmon
+          processors:
+            - id: 01K9JVYB9NB48YVPTJXNNWEG7F
+              type: google_secops_standardization
+              parameters:
+                - name: telemetry_types
+                  value:
+                    - Logs
+                - name: secops_field
+                  value:
+                    - condition:
+                        ottl: ""
+                        ui:
+                            operator: ""
+                            statements:
+                                - key: ""
+                                  match: attributes
+                                  operator: Equals
+                                  value: ""
+                      ingestionLabels: {}
+                      logType: WINDOWS_SYSMON
+                      namespace: ""
+          routes:
+            logs:
+                - id: "0"
+                  components:
+                    - destinations/01K9JV1YG1JXH5CV7R9XTFF7Q4
+    destinations:
+        - id: 01K9JV1YG1JXH5CV7R9XTFF7Q4
+          name: SecOpsLatamGaia-HTTPS
+          processors:
+            - id: p-Add_IngestionSource
+              name: Add_IngestionSource
+            - id: p-Batch-SecOps
+              name: Batch-SecOps
+    selector:
+        matchLabels:
+            configuration: Windows-MemberServer
