@@ -227,7 +227,7 @@ class RuleOperations:
     # if len(detections) > 0:
     #   current_time = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")
     #   detections_results_file_path = (
-    #       ROOT_DIR
+    #       REPO_ROOT
     #       / f"rule_test_results_{rule_file_path.stem}_{current_time}.json"
     #   )
     #   with open(detections_results_file_path, "w", encoding="utf-8") as f:

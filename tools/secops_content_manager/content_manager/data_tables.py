@@ -387,7 +387,7 @@ class DataTables:
           exclude={"name"}
       )
 
-    data_table_config_file_path = ROOT_DIR / "data_table_config.yaml"
+    data_table_config_file_path = DATA_TABLE_CONFIG_FILE
 
     LOGGER.info("Writing data table config to %s", data_table_config_file_path)
     with open(
