@@ -20,23 +20,26 @@ import logging
 import pathlib
 from typing import Any, Literal, Mapping, Sequence
 
-from tools.secops_content.content_manager.common.custom_exceptions import DataTableConfigError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import DataTableConfigError
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.data_table_rows.bulk_create_data_table_rows import bulk_create_data_table_rows
-from tools.secops_content.google_secops_api.data_table_rows.bulk_replace_data_table_rows import bulk_replace_data_table_rows
-from tools.secops_content.google_secops_api.data_table_rows.list_data_table_rows import list_data_table_rows
-from tools.secops_content.google_secops_api.data_tables.list_data_tables import list_data_tables
-from tools.secops_content.google_secops_api.data_tables.update_data_table import update_data_table
-from tools.secops_content.google_secops_api.data_tables.upload_data_table import upload_data_table
+from tools.secops_content_manager.google_secops_api.data_table_rows.bulk_create_data_table_rows import bulk_create_data_table_rows
+from tools.secops_content_manager.google_secops_api.data_table_rows.bulk_replace_data_table_rows import bulk_replace_data_table_rows
+from tools.secops_content_manager.google_secops_api.data_table_rows.list_data_table_rows import list_data_table_rows
+from tools.secops_content_manager.google_secops_api.data_tables.list_data_tables import list_data_tables
+from tools.secops_content_manager.google_secops_api.data_tables.update_data_table import update_data_table
+from tools.secops_content_manager.google_secops_api.data_tables.upload_data_table import upload_data_table
 import pydantic
 import ruamel.yaml
 import yaml
 
 LOGGER = logging.getLogger()
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-DATA_TABLES_DIR = ROOT_DIR / "data_tables"
-DATA_TABLE_CONFIG_FILE = ROOT_DIR / "data_table_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+DATA_TABLES_DIR = SEC_OPS_DIR / "data_tables"
+DATA_TABLE_CONFIG_FILE = CONFIG_DIR / "data_table_config.yaml"
 DATA_TABLE_COLUMN_TYPES = Literal["CIDR", "STRING", "REGEX"]  # pylint: disable="invalid-name"
 
 # Use ruamel.yaml to raise an exception if a YAML file contains duplicate keys

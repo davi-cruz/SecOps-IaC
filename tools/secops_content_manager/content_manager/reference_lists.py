@@ -22,11 +22,11 @@ import logging
 import pathlib
 from typing import Any, List, Literal, Mapping, Sequence, Tuple
 
-from tools.secops_content.content_manager.common.custom_exceptions import ReferenceListConfigError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import ReferenceListConfigError
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.reference_lists.create_reference_list import create_reference_list
-from tools.secops_content.google_secops_api.reference_lists.list_reference_lists import list_reference_lists
-from tools.secops_content.google_secops_api.reference_lists.update_reference_list import update_reference_list
+from tools.secops_content_manager.google_secops_api.reference_lists.create_reference_list import create_reference_list
+from tools.secops_content_manager.google_secops_api.reference_lists.list_reference_lists import list_reference_lists
+from tools.secops_content_manager.google_secops_api.reference_lists.update_reference_list import update_reference_list
 import pydantic
 import ruamel.yaml
 import yaml
@@ -34,9 +34,12 @@ import yaml
 
 LOGGER = logging.getLogger()
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-REF_LISTS_DIR = ROOT_DIR / "reference_lists"
-REF_LIST_CONFIG_FILE = ROOT_DIR / "reference_list_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+REF_LISTS_DIR = SEC_OPS_DIR / "reference_lists"
+REF_LIST_CONFIG_FILE = CONFIG_DIR / "reference_list_config.yaml"
 REF_LIST_SYNTAX_TYPES = Literal[  # pylint: disable="invalid-name"
     "REFERENCE_LIST_SYNTAX_TYPE_UNSPECIFIED",
     "REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING",

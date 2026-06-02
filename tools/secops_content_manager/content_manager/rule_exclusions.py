@@ -23,14 +23,14 @@ import pathlib
 import re
 from typing import Any, Literal, Mapping, Sequence
 
-from tools.secops_content.content_manager.common.custom_exceptions import RuleExclusionConfigError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import RuleExclusionConfigError
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.findings_refinements.create_findings_refinement import create_findings_refinement
-from tools.secops_content.google_secops_api.findings_refinements.get_findings_refinement_deployment import get_findings_refinement_deployment
-from tools.secops_content.google_secops_api.findings_refinements.list_findings_refinement_deployments import list_findings_refinement_deployments
-from tools.secops_content.google_secops_api.findings_refinements.list_findings_refinements import list_findings_refinements
-from tools.secops_content.google_secops_api.findings_refinements.update_findings_refinement import update_findings_refinement
-from tools.secops_content.google_secops_api.findings_refinements.update_findings_refinement_deployment import update_refinement_findings_deployment
+from tools.secops_content_manager.google_secops_api.findings_refinements.create_findings_refinement import create_findings_refinement
+from tools.secops_content_manager.google_secops_api.findings_refinements.get_findings_refinement_deployment import get_findings_refinement_deployment
+from tools.secops_content_manager.google_secops_api.findings_refinements.list_findings_refinement_deployments import list_findings_refinement_deployments
+from tools.secops_content_manager.google_secops_api.findings_refinements.list_findings_refinements import list_findings_refinements
+from tools.secops_content_manager.google_secops_api.findings_refinements.update_findings_refinement import update_findings_refinement
+from tools.secops_content_manager.google_secops_api.findings_refinements.update_findings_refinement_deployment import update_refinement_findings_deployment
 import pydantic
 import ruamel.yaml
 import yaml
@@ -38,8 +38,11 @@ import yaml
 
 LOGGER = logging.getLogger()
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-RULE_EXCLUSIONS_CONFIG_FILE = ROOT_DIR / "rule_exclusions_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+RULE_EXCLUSIONS_CONFIG_FILE = CONFIG_DIR / "rule_exclusions_config.yaml"
 RULE_EXCLUSION_TYPES = Literal["DETECTION_EXCLUSION"]  # pylint: disable="invalid-name"
 EXCLUSION_APPLICATIONS = Literal["curated_rule_sets", "curated_rules"]  # pylint: disable="invalid-name"
 

@@ -18,7 +18,7 @@ import unittest
 from unittest import mock
 
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.data_tables.get_data_table import get_data_table
+from tools.secops_content_manager.google_secops_api.data_tables.get_data_table import get_data_table
 
 
 class GetDataTableTest(unittest.TestCase):

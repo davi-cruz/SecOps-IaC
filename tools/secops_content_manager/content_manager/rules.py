@@ -24,17 +24,17 @@ import pathlib
 import re
 from typing import Any, List, Mapping, Sequence, Tuple
 
-from tools.secops_content.content_manager.common.custom_exceptions import DuplicateRuleIdError
-from tools.secops_content.content_manager.common.custom_exceptions import DuplicateRuleNameError
-from tools.secops_content.content_manager.common.custom_exceptions import RuleConfigError
-from tools.secops_content.content_manager.common.custom_exceptions import RuleError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import DuplicateRuleIdError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import DuplicateRuleNameError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import RuleConfigError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import RuleError
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.rules.create_rule import create_rule
-from tools.secops_content.google_secops_api.rules.get_rule_deployment import get_rule_deployment
-from tools.secops_content.google_secops_api.rules.list_rule_deployments import list_rule_deployments
-from tools.secops_content.google_secops_api.rules.list_rules import list_rules
-from tools.secops_content.google_secops_api.rules.update_rule import update_rule
-from tools.secops_content.google_secops_api.rules.update_rule_deployment import (
+from tools.secops_content_manager.google_secops_api.rules.create_rule import create_rule
+from tools.secops_content_manager.google_secops_api.rules.get_rule_deployment import get_rule_deployment
+from tools.secops_content_manager.google_secops_api.rules.list_rule_deployments import list_rule_deployments
+from tools.secops_content_manager.google_secops_api.rules.list_rules import list_rules
+from tools.secops_content_manager.google_secops_api.rules.update_rule import update_rule
+from tools.secops_content_manager.google_secops_api.rules.update_rule_deployment import (
     update_rule_deployment,
 )
 import pydantic
@@ -43,9 +43,12 @@ import yaml
 
 LOGGER = logging.getLogger()
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-RULES_DIR = ROOT_DIR / "rules"
-RULE_CONFIG_FILE = ROOT_DIR / "rule_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+RULES_DIR = SEC_OPS_DIR / "rules"
+RULE_CONFIG_FILE = CONFIG_DIR / "rule_config.yaml"
 
 # Use ruamel.yaml to raise an exception if a YAML file contains duplicate keys
 # (i.e. duplicate rule names)

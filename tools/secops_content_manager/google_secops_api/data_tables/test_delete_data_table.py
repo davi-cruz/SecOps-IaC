@@ -18,7 +18,7 @@ import unittest
 from unittest import mock
 
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.data_tables.delete_data_table import delete_data_table
+from tools.secops_content_manager.google_secops_api.data_tables.delete_data_table import delete_data_table
 
 
 class DeleteDataTableTest(unittest.TestCase):

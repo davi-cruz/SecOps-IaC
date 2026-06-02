@@ -18,7 +18,7 @@ import unittest
 from unittest import mock
 
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.findings_refinements.update_findings_refinement_deployment import (
+from tools.secops_content_manager.google_secops_api.findings_refinements.update_findings_refinement_deployment import (
     update_refinement_findings_deployment,
 )
 

@@ -18,7 +18,7 @@ import unittest
 from unittest import mock
 
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.saved_searches.delete_saved_search import delete_saved_search
+from tools.secops_content_manager.google_secops_api.saved_searches.delete_saved_search import delete_saved_search
 
 
 class DeleteSavedSearchTest(unittest.TestCase):

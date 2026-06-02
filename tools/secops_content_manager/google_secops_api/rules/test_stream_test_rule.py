@@ -19,7 +19,7 @@ import unittest
 from unittest import mock
 
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.rules import stream_test_rule
+from tools.secops_content_manager.google_secops_api.rules import stream_test_rule
 
 
 class StreamTestRuleTest(unittest.TestCase):

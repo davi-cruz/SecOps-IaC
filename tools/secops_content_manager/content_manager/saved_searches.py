@@ -19,19 +19,22 @@ import logging
 import pathlib
 from typing import Any, Literal
 
-from tools.secops_content.content_manager.common.custom_exceptions import SavedSearchConfigError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import SavedSearchConfigError
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.saved_searches.create_saved_search import create_saved_search
-from tools.secops_content.google_secops_api.saved_searches.list_saved_searches import list_saved_searches
-from tools.secops_content.google_secops_api.saved_searches.update_saved_search import update_saved_search
+from tools.secops_content_manager.google_secops_api.saved_searches.create_saved_search import create_saved_search
+from tools.secops_content_manager.google_secops_api.saved_searches.list_saved_searches import list_saved_searches
+from tools.secops_content_manager.google_secops_api.saved_searches.update_saved_search import update_saved_search
 import pydantic
 import ruamel.yaml
 
 
 LOGGER = logging.getLogger()
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-SAVED_SEARCH_CONFIG_FILE = ROOT_DIR / "saved_search_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+SAVED_SEARCH_CONFIG_FILE = CONFIG_DIR / "saved_search_config.yaml"
 SHARING_MODES = Literal["MODE_SHARED_WITH_CUSTOMER"]  # pylint: disable="invalid-name"
 
 # Use ruamel.yaml to raise an exception if a YAML file contains duplicate keys

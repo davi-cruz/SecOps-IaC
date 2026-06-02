@@ -24,32 +24,35 @@ import pathlib
 from typing import Literal
 
 import click
-from tools.secops_content.content_manager.common import datetime_converter
-from tools.secops_content.content_manager.common.custom_exceptions import RuleVerificationError
-from tools.secops_content.content_manager.data_tables import DataTables
-from tools.secops_content.content_manager.reference_lists import ReferenceLists
-from tools.secops_content.content_manager.rule_exclusions import RuleExclusions
-from tools.secops_content.content_manager.rules import Rules
-from tools.secops_content.content_manager.saved_searches import SavedSearches
+from tools.secops_content_manager.content_manager.common import datetime_converter
+from tools.secops_content_manager.content_manager.common.custom_exceptions import RuleVerificationError
+from tools.secops_content_manager.content_manager.data_tables import DataTables
+from tools.secops_content_manager.content_manager.reference_lists import ReferenceLists
+from tools.secops_content_manager.content_manager.rule_exclusions import RuleExclusions
+from tools.secops_content_manager.content_manager.rules import Rules
+from tools.secops_content_manager.content_manager.saved_searches import SavedSearches
 import dotenv
 import google.auth.transport.requests
-from tools.secops_content.google_secops_api import auth
-from tools.secops_content.google_secops_api.data_tables.delete_data_table import delete_data_table
-from tools.secops_content.google_secops_api.rules.stream_test_rule import test_rule
-from tools.secops_content.google_secops_api.rules.verify_rule import verify_rule
+from tools.secops_content_manager.google_secops_api import auth
+from tools.secops_content_manager.google_secops_api.data_tables.delete_data_table import delete_data_table
+from tools.secops_content_manager.google_secops_api.rules.stream_test_rule import test_rule
+from tools.secops_content_manager.google_secops_api.rules.verify_rule import verify_rule
 
 
 LOGGER = logging.getLogger()
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-RULES_DIR = ROOT_DIR / "rules"
-RULE_CONFIG_FILE = ROOT_DIR / "rule_config.yaml"
-REF_LISTS_DIR = ROOT_DIR / "reference_lists"
-REF_LIST_CONFIG_FILE = ROOT_DIR / "reference_list_config.yaml"
-DATA_TABLES_DIR = ROOT_DIR / "data_tables"
-DATA_TABLE_CONFIG_FILE = ROOT_DIR / "data_table_config.yaml"
-RULE_EXCLUSIONS_CONFIG_FILE = ROOT_DIR / "rule_exclusions_config.yaml"
-SAVED_SEARCH_CONFIG_FILE = ROOT_DIR / "saved_search_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+RULES_DIR = SEC_OPS_DIR / "rules"
+RULE_CONFIG_FILE = CONFIG_DIR / "rule_config.yaml"
+REF_LISTS_DIR = SEC_OPS_DIR / "reference_lists"
+REF_LIST_CONFIG_FILE = CONFIG_DIR / "reference_list_config.yaml"
+DATA_TABLES_DIR = SEC_OPS_DIR / "data_tables"
+DATA_TABLE_CONFIG_FILE = CONFIG_DIR / "data_table_config.yaml"
+RULE_EXCLUSIONS_CONFIG_FILE = CONFIG_DIR / "rule_exclusions_config.yaml"
+SAVED_SEARCH_CONFIG_FILE = CONFIG_DIR / "saved_search_config.yaml"
 
 dotenv.load_dotenv()
 

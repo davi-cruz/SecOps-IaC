@@ -23,7 +23,7 @@ import logging
 import os
 from typing import Any, Iterator, Mapping, Sequence, Tuple
 
-from tools.secops_content.content_manager.common import datetime_converter
+from tools.secops_content_manager.content_manager.common import datetime_converter
 from google.auth.transport import requests
 
 # Set up logger that will include timestamps.

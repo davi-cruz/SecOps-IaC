@@ -18,7 +18,7 @@ import unittest
 from unittest import mock
 
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.reference_lists.list_reference_lists import (
+from tools.secops_content_manager.google_secops_api.reference_lists.list_reference_lists import (
     list_reference_lists,
 )
 

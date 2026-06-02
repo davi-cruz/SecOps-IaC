@@ -19,18 +19,19 @@ import json
 import pathlib
 from typing import Any
 
-from tools.secops_content.content_manager.common.custom_exceptions import SavedSearchConfigError
-from tools.secops_content.content_manager.saved_searches import SavedSearch
-from tools.secops_content.content_manager.saved_searches import SavedSearchConfigEntry
-from tools.secops_content.content_manager.saved_searches import SavedSearches
+from tools.secops_content_manager.content_manager.common.custom_exceptions import SavedSearchConfigError
+from tools.secops_content_manager.content_manager.saved_searches import SavedSearch
+from tools.secops_content_manager.content_manager.saved_searches import SavedSearchConfigEntry
+from tools.secops_content_manager.content_manager.saved_searches import SavedSearches
 import pydantic
 import pytest
 import ruamel.yaml.constructor
 
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-SAVED_SEARCHES_DIR = ROOT_DIR / "saved_searches"
-SAVED_SEARCH_CONFIG_FILE = ROOT_DIR / "saved_search_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+SAVED_SEARCH_CONFIG_FILE = CONFIG_DIR / "saved_search_config.yaml"
 TEST_DATA_DIR = pathlib.Path(__file__).parent / "test_data"
 TEST_SAVED_SEARCH_CONFIG_FILE = TEST_DATA_DIR / "test_saved_search_config.yaml"
 

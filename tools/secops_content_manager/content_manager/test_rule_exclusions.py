@@ -18,17 +18,20 @@ import json
 import pathlib
 from typing import Any, Mapping, Sequence
 
-from tools.secops_content.content_manager.common.custom_exceptions import RuleExclusionConfigError
-from tools.secops_content.content_manager.rule_exclusions import RuleExclusion
-from tools.secops_content.content_manager.rule_exclusions import RuleExclusionConfigEntry
-from tools.secops_content.content_manager.rule_exclusions import RuleExclusions
+from tools.secops_content_manager.content_manager.common.custom_exceptions import RuleExclusionConfigError
+from tools.secops_content_manager.content_manager.rule_exclusions import RuleExclusion
+from tools.secops_content_manager.content_manager.rule_exclusions import RuleExclusionConfigEntry
+from tools.secops_content_manager.content_manager.rule_exclusions import RuleExclusions
 import pydantic
 import pytest
 import ruamel.yaml
 import ruamel.yaml.constructor
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-RULE_EXCLUSIONS_CONFIG_FILE = ROOT_DIR / "rule_exclusions_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+RULE_EXCLUSIONS_CONFIG_FILE = CONFIG_DIR / "rule_exclusions_config.yaml"
 TEST_DATA_DIR = pathlib.Path(__file__).parent / "test_data"
 TEST_RULE_EXCLUSIONS_CONFIG_FILE = (
     TEST_DATA_DIR / "test_rule_exclusions_config.yaml"

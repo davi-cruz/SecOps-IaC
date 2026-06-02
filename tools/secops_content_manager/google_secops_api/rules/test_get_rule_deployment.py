@@ -18,7 +18,7 @@ import unittest
 from unittest import mock
 
 from google.auth.transport import requests
-from tools.secops_content.google_secops_api.rules.get_rule_deployment import get_rule_deployment
+from tools.secops_content_manager.google_secops_api.rules.get_rule_deployment import get_rule_deployment
 
 
 class GetRuleDeploymentTest(unittest.TestCase):

@@ -21,20 +21,23 @@ import json
 import pathlib
 from typing import Any, Mapping, Sequence
 
-from tools.secops_content.content_manager.common.custom_exceptions import DuplicateRuleIdError
-from tools.secops_content.content_manager.common.custom_exceptions import DuplicateRuleNameError
-from tools.secops_content.content_manager.common.custom_exceptions import RuleConfigError
-from tools.secops_content.content_manager.common.custom_exceptions import RuleError
-from tools.secops_content.content_manager.rules import Rule
-from tools.secops_content.content_manager.rules import RuleConfigEntry
-from tools.secops_content.content_manager.rules import Rules
+from tools.secops_content_manager.content_manager.common.custom_exceptions import DuplicateRuleIdError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import DuplicateRuleNameError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import RuleConfigError
+from tools.secops_content_manager.content_manager.common.custom_exceptions import RuleError
+from tools.secops_content_manager.content_manager.rules import Rule
+from tools.secops_content_manager.content_manager.rules import RuleConfigEntry
+from tools.secops_content_manager.content_manager.rules import Rules
 import pydantic
 import pytest
 import ruamel.yaml.constructor
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-RULES_DIR = ROOT_DIR / "rules"
-RULE_CONFIG_FILE = ROOT_DIR / "rule_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+RULES_DIR = SEC_OPS_DIR / "rules"
+RULE_CONFIG_FILE = CONFIG_DIR / "rule_config.yaml"
 TEST_DATA_DIR = pathlib.Path(__file__).parent / "test_data"
 TEST_RULES_DIR = TEST_DATA_DIR / "rules"
 TEST_RULE_CONFIG_FILE = TEST_DATA_DIR / "test_rule_config.yaml"

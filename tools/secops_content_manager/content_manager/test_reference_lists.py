@@ -19,18 +19,21 @@ import json
 import pathlib
 from typing import Any, Mapping, Sequence
 
-from tools.secops_content.content_manager.common.custom_exceptions import ReferenceListConfigError
-from tools.secops_content.content_manager.reference_lists import ReferenceList
-from tools.secops_content.content_manager.reference_lists import ReferenceListConfigEntry
-from tools.secops_content.content_manager.reference_lists import ReferenceLists
+from tools.secops_content_manager.content_manager.common.custom_exceptions import ReferenceListConfigError
+from tools.secops_content_manager.content_manager.reference_lists import ReferenceList
+from tools.secops_content_manager.content_manager.reference_lists import ReferenceListConfigEntry
+from tools.secops_content_manager.content_manager.reference_lists import ReferenceLists
 import pydantic
 import pytest
 import ruamel.yaml.constructor
 
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-REF_LISTS_DIR = ROOT_DIR / "reference_lists"
-REF_LIST_CONFIG_FILE = ROOT_DIR / "reference_list_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+REF_LISTS_DIR = SEC_OPS_DIR / "reference_lists"
+REF_LIST_CONFIG_FILE = CONFIG_DIR / "reference_list_config.yaml"
 TEST_DATA_DIR = pathlib.Path(__file__).parent / "test_data"
 TEST_REF_LISTS_DIR = TEST_DATA_DIR / "reference_lists"
 TEST_REF_LISTS_CONFIG_FILE = TEST_DATA_DIR / "test_reference_list_config.yaml"

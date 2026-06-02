@@ -19,19 +19,22 @@ import json
 import pathlib
 from typing import Any, Mapping, Sequence
 
-from tools.secops_content.content_manager.common.custom_exceptions import DataTableConfigError
-from tools.secops_content.content_manager.data_tables import DataTable
-from tools.secops_content.content_manager.data_tables import DataTableColumn
-from tools.secops_content.content_manager.data_tables import DataTableConfigEntry
-from tools.secops_content.content_manager.data_tables import DataTables
+from tools.secops_content_manager.content_manager.common.custom_exceptions import DataTableConfigError
+from tools.secops_content_manager.content_manager.data_tables import DataTable
+from tools.secops_content_manager.content_manager.data_tables import DataTableColumn
+from tools.secops_content_manager.content_manager.data_tables import DataTableConfigEntry
+from tools.secops_content_manager.content_manager.data_tables import DataTables
 import pydantic
 import pytest
 import ruamel.yaml.constructor
 
 
-ROOT_DIR = pathlib.Path(__file__).parent.parent
-DATA_TABLES_DIR = ROOT_DIR / "data_tables"
-DATA_TABLE_CONFIG_FILE = ROOT_DIR / "data_table_config.yaml"
+REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
+SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
+CONFIG_DIR = SEC_OPS_DIR / "config"
+
+DATA_TABLES_DIR = SEC_OPS_DIR / "data_tables"
+DATA_TABLE_CONFIG_FILE = CONFIG_DIR / "data_table_config.yaml"
 TEST_DATA_DIR = pathlib.Path(__file__).parent / "test_data"
 TEST_DATA_TABLES_DIR = TEST_DATA_DIR / "data_tables"
 TEST_DATA_TABLE_CONFIG_FILE = TEST_DATA_DIR / "test_data_table_config.yaml"
