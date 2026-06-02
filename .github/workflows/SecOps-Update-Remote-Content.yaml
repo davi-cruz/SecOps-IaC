@@ -45,7 +45,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
           cache: "pip"  # Caching pip dependencies
 
       - name: Install Python project dependencies
@@ -55,21 +55,21 @@ jobs:
       #   run: python -m black secops_content/google_secops_api secops_content/content_manager --line-length 120 --check
 
       - name: Run tests using pytest
-        run: pytest -v
+        run: python -m pytest -v
 
       - name: Update reference lists in Google SecOps based on files in main branch
-        run: python -m secops_content/content_manager reference-lists update
+        run: python -m tools.secops_content_manager.content_manager reference-lists update
 
       - name: Update data tables in Google SecOps based on files in main branch
-        run: python -m secops_content/content_manager data-tables update
+        run: python -m tools.secops_content_manager.content_manager data-tables update
 
       - name: Update rules in Google SecOps based on files in main branch
-        run: python -m secops_content/content_manager rules update
+        run: python -m tools.secops_content_manager.content_manager rules update
 
       # After any changes are made to rules and reference lists in Google SecOps, the latest rules and reference lists are retrieved to update the main branch with the latest data (revision_id, revision_create_time, etc).
 
       - name: Add files to git staging area
-        run: git add rules rule_config.yaml data_tables data_table_config.yaml reference_lists reference_list_config.yaml
+        run: git add content/secops/
 
       - name: Run git status command
         run: git status  # For debugging
