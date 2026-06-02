@@ -1,0 +1,62 @@
+rule PROMPTFLUX_Thinking_Robot_Correlation {
+  meta:
+    author = "Senior Security Architect"
+    description = "Detects PROMPTFLUX malware behavior: w3wp spawning wscript, connecting to Gemini API."
+    severity = "CRITICAL"
+    tactic = "TA0001,TA0002,TA0011"
+    techniques = "T1059.005, T1071.001, T1568"
+    
+
+  events:
+
+    // Event 1: File creation of a known malicious VBScript in a user directory
+    $create.metadata.event_type = "FILE_CREATION"
+    $create.target.file.full_path = /C:\\Users\\.*\.vbs$/ 
+    $create.principal.hostname = $hostname
+    $create.target.process.file.security_result.severity = "HIGH"
+    $create.target.process.file.security_result.threat_verdict = "MALICIOUS"
+
+    // Event 2: Web Server Spawning Scripting Engine (Initial Access/Persistence)
+    $execution.metadata.event_type = "PROCESS_LAUNCH"
+    $execution.principal.process.command_line = /wscript\.exe/ or $execution.target.process.file.full_path = /wscript\.exe/
+    $execution.principal.process.file.full_path = /w3wp\.exe/ or $execution.principal.process.parent_process.file.full_path = /w3wp\.exe/
+    $execution.principal.hostname = $hostname
+
+    // Event 3: AI Command & Control (The "Thinking Robot" Heartbeat)
+    $ai_api.metadata.event_type = "NETWORK_CONNECTION"
+    $ai_api.target.hostname = "generativelanguage.googleapis.com" 
+    $ai_api.principal.process.file.full_path = /wscript\.exe/
+    $ai_api.principal.hostname = $hostname
+
+  match:
+    $hostname over 1h
+  
+  outcome:
+    $risk_score = 75
+    $vendor_name = "Google Cloud Platform"
+    $product_name = array_distinct($execution.metadata.product_name)
+    
+    // AI C2 Details
+    $c2_endpoint = array_distinct($ai_api.target.hostname)
+    $c2_destination_ips = array_distinct($ai_api.target.ip)
+    
+    // Forensic Artifacts
+    $script_command_line = array_distinct($execution.target.process.command_line)
+    
+    // Detection Stats
+    $heartbeat_count = count_distinct($ai_api.metadata.id)
+    $first_heartbeat = min($ai_api.metadata.event_timestamp.seconds)
+    $last_heartbeat = max($ai_api.metadata.event_timestamp.seconds)
+
+    // Verification of Action
+    $is_blocked = max(if($ai_api.security_result.action = "BLOCK", 1, 0))
+    $status = if($is_blocked > 0, "Blocked", "Active C2")
+    $result = if($is_blocked > 0, "failed", "succeeded")
+
+    // MITRE Context
+    $mitre_techniques = "T1059.005, T1071.001, T1568"
+    $mitre_tactics = "Execution, Command and Control"
+
+  condition:
+   $create and $execution and $ai_api
+}

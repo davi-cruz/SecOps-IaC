@@ -1,0 +1,19 @@
+rule claroty_mode_change_stop {
+
+  meta:
+    author = "Davi Cruz"
+    description = "Detect when device mode change is set to Stop"
+    severity = "High"
+
+  events:
+    $e.metadata.product_name = "CLAROTY_XDOME" or $e.metadata.product_name = "xDome"
+    $e.metadata.vendor_name = "CLAROTY_XDOME" or $e.metadata.vendor_name = "Claroty"
+    $e.metadata.description = /Mode Change to Stop was detected/
+
+  outcome:
+    $risk_score = 90
+    $description = $e.metadata.description 
+
+  condition:
+    $e
+}

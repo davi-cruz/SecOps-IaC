@@ -1,0 +1,20 @@
+rule DEA_plump_spider_ldap_recon {
+  meta:
+    author = "Gemini CLI"
+    description = "Detects an anomalous number of LDAP queries from a single host, suggesting environment mapping/enumeration by Plump Spider."
+    severity = "MEDIUM"
+    mitre_attack_tactic = "Discovery"
+    mitre_attack_technique = "Permission Groups Discovery"
+    mitre_attack_id = "T1069"
+
+  events:
+    $ldap.metadata.event_type = "NETWORK_CONNECTION"
+    $ldap.target.port = 389 or $ldap.target.port = 636
+    $ldap.principal.hostname = $hostname
+
+  match:
+    $hostname over 10m
+
+  condition:
+    #ldap > 50
+}

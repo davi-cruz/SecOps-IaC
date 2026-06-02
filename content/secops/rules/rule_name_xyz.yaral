@@ -1,0 +1,18 @@
+rule rule_name_xyz {
+  meta:
+    author = "analyst123"
+    description = "8:00 AM local time"
+    severity = "Medium"
+
+  events:
+    $e.metadata.event_type = "USER_CREATION"
+
+  outcome:
+    // For a multi-event rule an aggregation function is required
+    // e.g., risk_score = max(0)
+    // See https://cloud.google.com/chronicle/docs/detection/yara-l-2-0-overview#outcome_conditionals_example_rule
+    $risk_score = 0
+
+  condition:
+    $e
+}

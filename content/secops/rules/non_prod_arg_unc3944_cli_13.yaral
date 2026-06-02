@@ -1,0 +1,61 @@
+rule non_prod_arg_unc3944_cli_13 {
+    internal_meta:
+    type = "customer_alert"
+    author = "Uppercase"
+    uc_author = "jpetropoulos"
+    internal_source = "mdnt_spear, rulegen"
+    data_source = "EDR logs"
+    labels = "generator=rulegen,strategy=common_strings,project=augment_with_intel"
+    platform = "Windows"
+    strategy = "Generated rule. Identify suspicious encoded powershell commands related to priority APTs sourced from Mgraph data. Iteratively review rules and update F1 query, rule gen strategy, and the rule template to tune the rules."
+    reference = "go/awi_unc3944"
+    slot_usage = "0.0027"
+    rule_id = "3c302855-74ab-4837-be32-d40275d5e754"
+
+  customer_meta:
+    description = "Detects the execution of cmd.exe via PsExec. This behavior is often associated with lateral movement and remote command execution by attackers."
+    rule_name = "UNC3944 Psexec Cmd Execution"
+    severity = "Low"
+    tactic = "TA0002"
+    technique = "T1059"
+    reference = "https://advantage.mandiant.com/actors/threat-actor--8824cd44-bc42-581b-8261-22425265609e"
+
+  events:
+    $principal_hostname = $e.principal.hostname
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    // Matching indicators similar to: ^psexec \\host -i -s cmd.exe$
+    re.regex($e.principal.process.command_line, `^psexec(\.exe)?\s+\\{1,2}[A-Z0-9\-]+`) nocase
+    re.regex($e.principal.process.command_line, `\s+cmd(\.+exe)?`) nocase
+
+    // Rule Chaining outcomes
+    $adv_uid = strings.coalesce($e.principal.asset.product_object_id, $e.principal.asset.asset_id)
+    $adv_netid = strings.coalesce($e.principal.asset.ip, $e.principal.asset.mac, $e.principal.ip, $e.principal.mac)
+    $adv_name = strings.coalesce($e.principal.asset.hostname, $e.principal.hostname)
+    $vic_uid = strings.coalesce($e.principal.user.product_object_id, $e.principal.user.employee_id)
+    $vic_netid = strings.coalesce($e.principal.user.email_addresses, $e.principal.user.windows_sid)
+    $vic_name = strings.coalesce($e.principal.user.userid, $e.principal.user.user_display_name)
+
+  match:
+    $principal_hostname over 5m
+
+  outcome:
+    $risk_score = 35
+    $vendor_name = array($e.metadata.vendor_name)
+    $product_name = array($e.metadata.product_name)
+    $victim_uid = array($vic_uid)
+    $victim_name = array($vic_name)
+    $victim_netid = array($vic_netid)
+    $adversary_uid = array($adv_uid)
+    $adversary_name = array($adv_name)
+    $adversary_netid = array($adv_netid)
+    $is_successful = max(if($e.security_result.action != "BLOCK" and $e.security_result.action != "UNKNOWN_ACTION", 1))
+    $result = if($is_successful > 0, "succeeded", "failed")
+    $result_time = array($e.metadata.event_timestamp.seconds)
+    $event_count = count_distinct($e.metadata.id)
+    $hostnames = array($e.principal.hostname)
+    $process_file_paths = array($e.principal.process.file.full_path)
+    $command_lines = array($e.principal.process.command_line)
+
+  condition:
+    $e
+}

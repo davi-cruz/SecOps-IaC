@@ -1,0 +1,15 @@
+rule apr29_unc6692_persistence_scheduled_task {
+  meta:
+    author = "Gemini CLI"
+    description = "Detects creation of scheduled tasks pointing to Temp directories, used by UNC6692 for persistence."
+    severity = "HIGH"
+
+  events:
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    $e.target.process.file.full_path = /schtasks\.exe/
+    $e.target.process.command_line = /.*\/create.*/
+    $e.target.process.command_line = /.*\\Temp\\.*/
+
+  condition:
+    $e
+}

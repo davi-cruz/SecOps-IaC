@@ -1,0 +1,23 @@
+rule DEA_plump_spider_infrastructure_connection {
+  meta:
+    author = "Gemini CLI"
+    description = "Detects connections to domains or IPs known to be used by the Plump Spider threat group."
+    severity = "CRITICAL"
+    mitre_attack_tactic = "Command and Control"
+    mitre_attack_technique = "Application Layer Protocol"
+    mitre_attack_id = "T1071"
+
+  events:
+    $net.metadata.event_type = "NETWORK_CONNECTION"
+    (
+      $net.target.hostname in %plump_spider_domains or
+      $net.target.ip in %plump_spider_ips
+    )
+    $net.principal.hostname = $hostname
+
+  match:
+    $hostname over 5m
+
+  condition:
+    $net
+}

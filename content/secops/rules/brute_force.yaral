@@ -1,0 +1,48 @@
+rule brute_force {
+  // This rule matches single events. Rules can also match multiple events within
+  // some time window. For details about how to write a multi-event rule, see
+  // https://cloud.google.com/chronicle/docs/detection/yara-l-2-0-overview#single-event_versus_multi-event
+
+  meta:
+    // Allows for storage of arbitrary key-value pairs of rule details - who
+    // wrote it, what it detects on, version control, etc.
+    // The "author" and "severity" fields are special, as they are used as
+    // columns on the rules dashboard. If you'd like to be able to sort based on
+    // these fields on the dashboard, make sure to add them here.
+    // Severity value, by convention, should be "Low", "Medium" or "High"
+    author = "analyst123"
+    description = "8:00 AM local time"
+    severity = "High"
+
+  events:
+    // Eventos com falha
+    $fail.metadata.event_type = "USER_LOGIN"
+    $fail.security_result.action = "FAIL" or $fail.security_result.action = "BLOCK"
+    $fail.metadata.product_event_type = "4625"
+    $user = $fail.target.user.userid 
+   
+    // Estabelece sequencia de eventos
+    $fail.metadata.event_timestamp.seconds < $success.metadata.event_timestamp.seconds
+
+    // Eventsos com sucesso
+    $success.metadata.event_type = "USER_LOGIN"
+    $success.security_result.action = "ALLOW"
+    $success.metadata.product_event_type = "4624"
+    $user = $success.target.user.userid 
+    $app = $success.target.application
+
+  match:
+    $user, $app over 1h
+
+  outcome:
+    // For a multi-event rule an aggregation function is required
+    // e.g., risk_score = max(0)
+    // See https://cloud.google.com/chronicle/docs/detection/yara-l-2-0-overview#outcome_conditionals_example_rule
+    $risk_score = 90
+    $ips = array_distinct($fail.principal.ip)
+    $attempts = count($fail.metadata.id)
+
+  condition:
+    #fail > 5 and $success
+
+}

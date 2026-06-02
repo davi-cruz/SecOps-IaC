@@ -1,0 +1,31 @@
+rule rule_generic_brute_force {
+  meta:
+    author = "Kryptus"
+    description = "Detecta eventos de brute force forma agnóstica a partir de eventos de falha seguidos de eventos de sucesso"
+    severity = "Medium"
+    politica = "pol-iam-001-brute-force"
+
+  events:
+    $failed.metadata.event_type = "USER_LOGIN"
+    $failed.security_result.action = "BLOCK" or $failed.security_result.action = "FAIL"
+    $failed.principal.user.userid = $user
+    $failed.metadata.product_name = $product
+
+    $success.metadata.event_type = "USER_LOGIN"
+    $success.security_result.action = "ALLOW"
+    $success.principal.user.userid = $user
+    $success.metadata.product_name = $product
+
+    $failed.metadata.event_timestamp.seconds < $success.metadata.event_timestamp.seconds
+
+    match:
+        $user, $product over 1h
+
+  outcome:
+    $risk_score = 50
+    $affected_product = array_distinct($success.metadata.product_name )
+    $source_ips = array_distinct($failed.principal.ip)
+
+  condition:
+        #failed >= 5 and $success
+}

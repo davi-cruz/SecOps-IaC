@@ -1,0 +1,57 @@
+rule high_severity_ids_activity_by_branch {
+  meta:
+    author = "Google Cloud Security"
+    description = "Detects hosts that trigger a high number of distinct IDS alerts within an hour, with thresholds varying by business branch and alert severity. This rule is based on a complex Splunk query and assumes branch information is available in the UDM event."
+    yara_version = "YL2.0"
+
+  events:
+    // Filter for relevant IDS/IPS events and severity levels from the Splunk query.
+    $e.metadata.event_type = "NETWORK_CONNECTION"
+    (
+      $e.security_result.category = "NETWORK_MALICIOUS" or
+      $e.security_result.category = "NETWORK_SUSPICIOUS" or
+      $e.security_result.category = "EXPLOIT" or
+      $e.security_result.category = "NETWORK_COMMAND_AND_CONTROL" or
+      $e.security_result.category = "NETWORK_RECON"
+    )
+    (
+      $e.security_result.severity = "HIGH" or
+      $e.security_result.severity = "MEDIUM" or
+      $e.security_result.severity = "CRITICAL"
+    )
+
+    // Define placeholders for fields used in aggregation and conditions.
+    $e.principal.ip = $src_ip
+    $e.security_result.severity = $vendor_severity
+    $e.security_result.rule_name = $signature
+
+    // This part translates the Splunk macro `get_international_branch(index)`.
+    // It assumes the branch code (UYOCA or PYITA) is at the start of the product_deployment_id field.
+    // This may need to be adjusted based on actual data mapping.
+    $international_branch = re.capture($e.metadata.product_deployment_id, `^(UYOCA|PYITA)`)
+
+  match:
+    // Group events by source IP, branch, and severity over a 1-hour window.
+    // This mirrors the `bin span=1h` and `stats by ...` in Splunk.
+    $src_ip, $international_branch, $vendor_severity over 1h
+
+  outcome:
+    // Calculate the distinct count of signatures, similar to `dc(signature)`.
+    $dc_signature = count_distinct($signature)
+    // To use string-based match variables in the condition section, they must be
+    // aggregated into a list. Since they are match keys, the list will only
+    // contain a single, distinct value.
+    $outcome_branch_list = array_distinct($international_branch)
+    $outcome_severity_list = array_distinct($vendor_severity)
+
+  condition:
+    // This section translates the Splunk `where` clause, applying thresholds
+    // after aggregation. It uses `arrays.contains()` to check for values
+    // in the outcome lists.
+    $e and (
+      (arrays.contains($outcome_branch_list, "UYOCA") and $dc_signature >= 2 and (arrays.contains($outcome_severity_list, "CRITICAL") or arrays.contains($outcome_severity_list, "HIGH"))) or
+      (arrays.contains($outcome_branch_list, "UYOCA") and $dc_signature >= 3 and arrays.contains($outcome_severity_list, "MEDIUM")) or
+      (arrays.contains($outcome_branch_list, "PYITA") and $dc_signature >= 3 and (arrays.contains($outcome_severity_list, "CRITICAL") or arrays.contains($outcome_severity_list, "HIGH"))) or
+      (arrays.contains($outcome_branch_list, "PYITA") and $dc_signature >= 5 and arrays.contains($outcome_severity_list, "MEDIUM"))
+    )
+}

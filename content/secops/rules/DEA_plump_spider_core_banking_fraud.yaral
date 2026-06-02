@@ -1,0 +1,20 @@
+rule DEA_plump_spider_core_banking_fraud {
+  meta:
+    author = "Gemini CLI"
+    description = "Detects potential credit limit fraud in core banking platforms by monitoring for limit increases in anomalous patterns."
+    severity = "CRITICAL"
+    mitre_attack_tactic = "Impact"
+    mitre_attack_technique = "Financial Theft"
+
+  events:
+    $fraud.metadata.event_type = "STATUS_UPDATE"
+    re.regex($fraud.metadata.product_name, `.*Banking.*|.*BaaS.*`)
+    re.regex($fraud.metadata.description, `.*(credit limit increase|majoração de limite).*`)
+    $fraud.principal.user.userid = $user
+
+  match:
+    $user over 1h
+
+  condition:
+    $fraud
+}

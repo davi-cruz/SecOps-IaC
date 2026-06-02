@@ -1,0 +1,64 @@
+rule demoverse_user_download_executable_from_macro {
+  
+  meta:
+    author = "Google Cloud Security"
+    description = "Executable downloaded by Microsoft Excel by user with GCP entity relationship"
+    type = "alert"
+    data_source = "zscaler nss, crowdstrike"
+    tags = "user entity, resource entity"
+    severity = "High"
+    priority = "High"
+    platform = "Windows"
+    assumption = "This rule assumes that GCP DLP has been deployed and resources have been assigned to a user context"
+    mitre_attack_tactic = "Execution"
+    mitre_attack_technique = "User Execution: Malicious File"
+    mitre_attack_url = "https://attack.mitre.org/techniques/T1204/002/"
+    mitre_attack_version = "v13.1"
+
+  events:
+    // proxy event with suspected executable download
+    $proxy_event.metadata.event_type = "NETWORK_HTTP"
+    $proxy_event.target.url =  /.*\.exe$/ or
+    $proxy_event.network.received_bytes > 102400
+    $proxy_event.principal.user.userid = $user
+    $proxy_event.principal.user.userid != /test/
+    
+
+    // correlate with EDR event indicating Excel activity
+    $edr_event.principal.user.userid  = $user
+    $edr_event.principal.process.file.names = /excel/ nocase
+    $edr_event.metadata.event_type = "PROCESS_LAUNCH"    
+
+
+  match:
+    $user over 5m
+  
+  
+  outcome:
+    $mitre_attack_tactic = "Execution"
+    $mitre_attack_technique = "User Execution: Malicious File"
+    $mitre_attack_technique_id = "T1204.002"
+    // added to populate alert graph with additional context
+    $principal_hostname = array_distinct($proxy_event.principal.hostname)
+    // Commented out target.hostname because it is already represented in graph as match variable. If match changes, can uncomment to add to results
+    $principal_process_pid = array_distinct($edr_event.principal.process.pid)
+    $principal_process_command_line = array_distinct($edr_event.principal.process.command_line)
+    $principal_process_file_sha256 = array_distinct($edr_event.principal.process.file.sha256)
+    $principal_process_file_full_path = array_distinct($edr_event.principal.process.file.full_path)
+    $principal_process_product_specfic_process_id = array_distinct($edr_event.principal.process.product_specific_process_id)
+    $principal_process_parent_process_product_specfic_process_id = array_distinct($edr_event.principal.process.parent_process.product_specific_process_id)
+    $target_process_pid = array_distinct($edr_event.target.process.pid)
+    $target_process_command_line = array_distinct($edr_event.target.process.command_line)
+    $target_process_file_sha256 = array_distinct($edr_event.target.process.file.sha256)
+    $target_process_file_full_path = array_distinct($edr_event.target.process.file.full_path)
+    $target_process_product_specfic_process_id = array_distinct($edr_event.target.process.product_specific_process_id)
+    $target_process_parent_process_product_specfic_process_id = array_distinct($edr_event.target.process.parent_process.product_specific_process_id)
+    // Commented out principal.user.userid because it is already represented in graph as match variable. If match changes, can uncomment to add to results
+    //$principal_user_userid = array_distinct($edr_event.principal.user.userid)
+    $target_user_userid = array_distinct($edr_event.target.user.userid)
+    $target_url = array_distinct($proxy_event.target.url)
+
+  condition:
+    
+    $proxy_event and $edr_event //and $user_entity
+}

@@ -1,0 +1,22 @@
+rule DEA_unauthorized_rat_execution_behavioral {
+  meta:
+    author = "Gemini CLI"
+    description = "Detects common RATs executed from user download directories, common in Plump Spider activity."
+    severity = "HIGH"
+    priority = "MEDIUM"
+    mitre_attack_tactic = "Command and Control"
+    mitre_attack_technique = "Remote Access Software"
+    mitre_attack_id = "T1219"
+
+  events:
+    $process.metadata.event_type = "PROCESS_LAUNCH"
+    re.regex($process.target.process.file.full_path, `\\Users\\.*\\Downloads\\.*`)
+    re.regex($process.target.process.file.full_path, `.*(anydesk|teamviewer|rustdesk|hoptodesk|supremo|1)\.exe`)
+    $process.principal.hostname = $hostname
+
+  match:
+    $hostname over 10m
+
+  condition:
+    $process
+}

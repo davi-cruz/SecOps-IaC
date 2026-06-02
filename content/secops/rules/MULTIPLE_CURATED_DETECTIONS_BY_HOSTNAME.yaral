@@ -1,0 +1,26 @@
+rule MULTIPLE_CURATED_DETECTIONS_BY_HOSTNAME {
+
+  meta:
+    author = "@cmmartin"
+    description = "Consumer Detection for multiple Curated Detections on the same Hostname."
+    severity = "MEDIUM"
+    priority = "MEDIUM"
+    alerting = "true"
+
+  events:
+    $d.detection.type = "GCTI_FINDING"
+    $d.detection.detection.rule_id = $ruleId
+    $hostname = $d.detection.collection_elements.references.event.principal.hostname
+    $hostname = "CYM-PROD-GCP-WIN01"
+
+    match:
+        $hostname over 1h
+
+  outcome:
+    $risk_score = math.ceil(sum($d.detection.detection.risk_score) / count($d.detection.detection.rule_id))
+    $rule_name = array_distinct($d.detection.detection.rule_name)
+    $ruleSetDisplayName = array_distinct($d.detection.detection.rule_set_display_name)
+
+  condition:
+    #d>=5 and #ruleId >= 3
+}

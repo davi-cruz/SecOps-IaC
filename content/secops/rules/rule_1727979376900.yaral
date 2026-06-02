@@ -1,0 +1,19 @@
+rule rule_1727979376900 {
+
+
+  meta:
+
+    author = "analyst12345"
+    description = "8:00 AM local time"
+    severity = "Medium"
+
+  events:
+    $e.metadata.event_type = "USER_CREATION"
+
+  outcome:
+
+    $risk_score = 0
+
+  condition:
+    $e
+}

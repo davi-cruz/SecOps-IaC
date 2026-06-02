@@ -1,0 +1,21 @@
+rule DEA_plump_spider_malicious_download {
+  meta:
+    author = "Gemini CLI"
+    description = "Detects connections to the specific URL used by Plump Spider for payload delivery."
+    severity = "CRITICAL"
+    priority = "HIGH"
+    mitre_attack_tactic = "Initial Access"
+    mitre_attack_technique = "Drive-by Compromise"
+    mitre_attack_id = "T1189"
+
+  events:
+    $net.metadata.event_type = "NETWORK_CONNECTION"
+    $net.target.url = "https://servicos.salto.sp.gov.br/suporte/1.exe"
+    $net.principal.hostname = $hostname
+
+  match:
+    $hostname over 5m
+
+  condition:
+    $net
+}

@@ -1,0 +1,20 @@
+rule claroty_outdated_firmware {
+
+  meta:
+    author = "Davi Cruz"
+    description = "Passthru rule to alert on outdated firmware detections from Claroty"
+    severity = "Medium"
+
+  events:
+    $e.metadata.vendor_name = "CLAROTY_XDOME" or $e.metadata.vendor_name = "Claroty"
+    $e.metadata.product_name = "CLAROTY_XDOME" or $e.metadata.product_name = "xDome"
+    $e.metadata.product_event_type = "alert_affected_device: Outdated Firmware"
+
+  outcome:
+    $risk_score = 35
+    $description = array_distinct($e.security_result.description )
+    $claroty_rule_name = array_distinct($e.security_result.rule_name )
+
+  condition:
+    $e
+}

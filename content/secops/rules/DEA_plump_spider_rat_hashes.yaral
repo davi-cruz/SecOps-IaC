@@ -1,0 +1,27 @@
+rule DEA_plump_spider_rat_hashes {
+  meta:
+    author = "Gemini CLI"
+    description = "Detects the execution of remote access tools with MD5 hashes associated with Plump Spider."
+    severity = "CRITICAL"
+    priority = "HIGH"
+    mitre_attack_tactic = "Command and Control"
+    mitre_attack_technique = "Remote Access Software"
+    mitre_attack_id = "T1219"
+
+  events:
+    $process.metadata.event_type = "PROCESS_LAUNCH"
+    (
+      $process.target.process.file.md5 = "aee6801792d67607f228be8cec8291f9" or // AnyDesk
+      $process.target.process.file.md5 = "670e818009572e79512736eb3d9a57b2" or // HopToDesk
+      $process.target.process.file.md5 = "f5ae370585125ff3d358988c004b877c" or // RustDesk
+      $process.target.process.file.md5 = "2769ab8e4026389f8dec99ac5a72eed7" or // Supremo
+      $process.target.process.file.md5 = "15cb58ce6aecfd50a18573482f09d512"    // TeamViewer
+    )
+    $process.principal.hostname = $hostname
+
+  match:
+    $hostname over 5m
+
+  condition:
+    $process
+}

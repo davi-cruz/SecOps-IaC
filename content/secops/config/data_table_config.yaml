@@ -114,8 +114,9 @@ malicious_domains:
   description: null
   resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/dataTables/malicious_domains
   row_time_to_live: null
-  rule_associations_count: null
-  rules: null
+  rule_associations_count: 1
+  rules:
+  - projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_44153a6f-b12f-4a74-8422-eda609e69449
   update_time: '2026-02-26T02:43:57.893337Z'
   uuid: e1c67455f65c471295d4e189032c22d4
 soc_process:

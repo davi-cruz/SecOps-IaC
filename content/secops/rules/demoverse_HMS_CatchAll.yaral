@@ -1,0 +1,20 @@
+rule demoverse_HMS_CatchAll {
+
+  meta:
+    author = "Admin"
+    description = "Catchall logs to investigate and fine tune"
+    severity = "Low"
+
+  events:
+    $e.metadata.vendor_name  = "HMS SecOps"
+    
+    // Tune out anything we have better content for    
+    $e.metadata.product_event_type != "xyz"
+
+
+  outcome:
+    $risk_score = 0
+
+  condition:
+    $e
+}

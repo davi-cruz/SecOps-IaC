@@ -1,0 +1,12 @@
+rule gemini_rule_host_scan {
+  meta:
+    author = "Gemini in Google SecOps"
+    description = "Prompt: Crie uma regra referente a port scan"
+
+  events:
+    $e.metadata.event_type = "SCAN_HOST"
+    $e.security_result.category = "NETWORK_RECON"
+
+  condition:
+    $e
+}
