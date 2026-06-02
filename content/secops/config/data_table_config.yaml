@@ -1,20 +1,160 @@
-cisco_umbrella_top_1k_domains:
+Teste:
+  columns:
+  - column_index: 0
+    column_type: null
+    key_column: null
+    mapped_column_path: entity.user.userid
+    original_column: user
+  - column_index: 1
+    column_type: CIDR
+    key_column: null
+    mapped_column_path: null
+    original_column: network
+  - column_index: 2
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: domain
+  create_time: '2026-05-25T15:04:31.939042Z'
+  description: null
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/dataTables/Teste
+  row_time_to_live: null
+  rule_associations_count: null
+  rules: null
+  update_time: '2026-05-25T15:09:33.397195Z'
+  uuid: 22b35643487042d0a2f98a0ee119afe5
+allowlist_ips:
   columns:
   - column_index: 0
     column_type: STRING
     key_column: null
     mapped_column_path: null
-    original_column: rank
+    original_column: ips
+  create_time: '2025-07-01T11:43:58.999252Z'
+  description: null
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/dataTables/allowlist_ips
+  row_time_to_live: null
+  rule_associations_count: null
+  rules: null
+  update_time: '2026-02-26T02:43:57.727370Z'
+  uuid: df76f3dd03db40c0908c6d2eace6cd73
+contract_details:
+  columns:
+  - column_index: 0
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: start_date
   - column_index: 1
     column_type: STRING
     key_column: null
     mapped_column_path: null
-    original_column: domain
-  create_time: '2025-05-13T20:22:30.616601Z'
-  description: Cisco Umbrella top 1,000 domains
-  resource_name: projects/1234567891234/locations/us/instances/3f0ac524-5ae1-4bfd-b86d-53afc953e7e6/dataTables/cisco_umbrella_top_1k_domains
+    original_column: end_date
+  - column_index: 2
+    column_type: NUMBER
+    key_column: null
+    mapped_column_path: null
+    original_column: volume_gb
+  create_time: '2025-11-19T12:36:21.469749Z'
+  description: null
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/dataTables/contract_details
   row_time_to_live: null
   rule_associations_count: null
   rules: null
-  update_time: '2025-05-13T20:22:31.041118Z'
-  uuid: d9b6ce36e9874a50945bf8c1cdfc3812
+  update_time: '2026-02-26T02:43:57.449786Z'
+  uuid: ddcbeff7a0f64d4eace75df733417873
+gerenciamento_test:
+  columns:
+  - column_index: 0
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: ip
+  - column_index: 1
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: hostname
+  - column_index: 2
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: url
+  create_time: '2025-12-16T16:45:25.967852Z'
+  description: null
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/dataTables/gerenciamento_test
+  row_time_to_live: null
+  rule_associations_count: null
+  rules: null
+  update_time: '2026-02-26T02:43:57.290221Z'
+  uuid: 6f5131c310574198a1758bb4f1706dc5
+hna_location_exception:
+  columns:
+  - column_index: 0
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: facility
+  create_time: '2025-04-29T17:51:13.865044Z'
+  description: null
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/dataTables/hna_location_exception
+  row_time_to_live: null
+  rule_associations_count: null
+  rules: null
+  update_time: '2026-02-26T02:43:57.633457Z'
+  uuid: 6e9db09ca8d84862be1e97cdf2027fe2
+malicious_domains:
+  columns:
+  - column_index: 0
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: DOMAIN
+  create_time: '2025-04-29T16:46:07.136877Z'
+  description: null
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/dataTables/malicious_domains
+  row_time_to_live: null
+  rule_associations_count: null
+  rules: null
+  update_time: '2026-02-26T02:43:57.893337Z'
+  uuid: e1c67455f65c471295d4e189032c22d4
+soc_process:
+  columns:
+  - column_index: 0
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: policy_id
+  - column_index: 1
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: policy_name
+  - column_index: 2
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: owner
+  - column_index: 3
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: description
+  - column_index: 4
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: stakeholders
+  - column_index: 5
+    column_type: STRING
+    key_column: null
+    mapped_column_path: null
+    original_column: triggers_process
+  create_time: '2025-12-04T16:04:15.553187Z'
+  description: null
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/dataTables/soc_process
+  row_time_to_live: null
+  rule_associations_count: null
+  rules: null
+  update_time: '2026-02-26T02:43:57.144611Z'
+  uuid: f26711edd0d548d0b818e9ac5c1cba06

@@ -1,7 +1,29 @@
-example_list_1:
-  description: Description for example reference list 1
-  resource_name: projects/1234567891234/locations/us/instances/3f0ac524-5ae1-4bfd-b86d-53afc953e7e6/referenceLists/example_list_1
-  revision_create_time: '2024-02-26T18:28:49.613087Z'
+investigation_ips:
+  description: investigation_ips
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/referenceLists/investigation_ips
+  revision_create_time: '2025-07-01T11:48:04.714415Z'
+  rule_associations_count: null
+  rules: null
+  syntax_type: REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING
+plump_spider_domains:
+  description: Plump Spider known malicious domains and infrastructure.
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/referenceLists/plump_spider_domains
+  revision_create_time: '2026-05-08T14:54:40.667279Z'
+  rule_associations_count: null
+  rules: null
+  syntax_type: REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING
+plump_spider_ips:
+  description: Plump Spider known malicious IPs.
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/referenceLists/plump_spider_ips
+  revision_create_time: '2026-05-08T14:54:40.711743Z'
+  rule_associations_count: null
+  rules: null
+  syntax_type: REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING
+unc6692_malicious_domains:
+  description: "Dom\xEDnios conhecidos associados \xE0 campanha do grupo UNC6692 (LinkedIn\
+    \ Social Engineering)."
+  resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/referenceLists/unc6692_malicious_domains
+  revision_create_time: '2026-04-29T13:41:43.500991Z'
   rule_associations_count: null
   rules: null
   syntax_type: REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING
