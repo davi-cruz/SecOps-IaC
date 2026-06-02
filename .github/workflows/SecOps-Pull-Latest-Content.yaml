@@ -4,8 +4,8 @@ name: SecOps - Pull Latest Content
 
 on:
   schedule:
-  # Run daily at 23:05 UTC time
-  - cron: "5 23 * * *"
+    # Run daily at 23:05 UTC time
+    - cron: "5 23 * * *"
 
   # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -42,10 +42,44 @@ jobs:
           create_credentials_file: true
           cleanup_credentials: true
 
+      # --- ADDED DEBUG STEPS ---
+      - name: Debug GCP Credentials Configuration
+        run: |
+          echo "Credentials file path: $GOOGLE_APPLICATION_CREDENTIALS"
+          if [ -f "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+            cat "$GOOGLE_APPLICATION_CREDENTIALS"
+          else
+            echo "Credentials file not found!"
+          fi
+
+      - name: Validate GCP Active Identity and Grants
+        run: |
+          echo "=== Active GCP Identity ==="
+          gcloud auth list
+          echo "=== Testing Secret Manager Access ==="
+          gcloud secrets list --limit=5 || echo "Could not list secrets"
+      # -------------------------
+        
+      - name: Debug GCP Credentials Configuration
+        run: |
+          echo "Credentials file path: $GOOGLE_APPLICATION_CREDENTIALS"
+          if [ -f "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+            cat "$GOOGLE_APPLICATION_CREDENTIALS"
+          else
+            echo "Credentials file not found!"
+          fi
+
+      - name: Validate GCP Active Identity and Grants
+        run: |
+          echo "=== Active GCP Identity ==="
+          gcloud auth list
+          echo "=== Testing Secret Manager Access ==="
+          gcloud secrets list --limit=5 || echo "Could not list secrets"
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"  # Caching pip dependencies
+          cache: "pip" # Caching pip dependencies
 
       - name: Install Python project dependencies
         run: pip install -r requirements_dev.txt
@@ -69,7 +103,7 @@ jobs:
         run: git add content/secops/
 
       - name: Run git status command
-        run: git status  # For debugging
+        run: git status # For debugging
 
       - name: Commit pending changes
         run: |
@@ -82,4 +116,4 @@ jobs:
           fi
 
       - name: Show last git commit message
-        run: git log -1  # For debugging
+        run: git log -1 # For debugging
