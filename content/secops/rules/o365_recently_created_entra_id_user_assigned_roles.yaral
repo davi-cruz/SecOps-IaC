@@ -10,7 +10,7 @@ rule o365_recently_created_entra_id_user_assigned_roles {
     assumption = "The list msgraph_watchlist_roles is popualted with role names, ie Application Administrator"
     type = "alert"
     platform = "azure"
-    data_source = "o365"
+    data_source = "o365"   
     severity = "Medium"
     priority = "Medium"
 
@@ -20,7 +20,7 @@ rule o365_recently_created_entra_id_user_assigned_roles {
     $create.metadata.base_labels.namespaces = "LogStory"
     $role.metadata.base_labels.namespaces = "LogStory"
     (
-        $create.metadata.event_type = "USER_CREATION" and
+        $create.metadata.event_type = "USER_CREATION" and 
         $create.metadata.product_event_type = "Add user." and
         $create.metadata.product_name = "Office 365" and
         $create.security_result.action = "ALLOW" and
@@ -47,7 +47,7 @@ rule o365_recently_created_entra_id_user_assigned_roles {
     $mitre_attack_technique_id = "T1098.003"
     $security_summary = array_distinct($role.security_result.summary)
     $user_agent = array_distinct($role.network.http.user_agent)
-    $assigned_role = array_distinct($role.target.resource.attribute.roles.name)
+    $assigned_role = array_distinct($role.target.resource.attribute.roles.name) 
     //added to populate alert graph with additional context
     $principal_user_userid = array_distinct($create.principal.user.userid)
     //Excluded since it is already being used as match variable

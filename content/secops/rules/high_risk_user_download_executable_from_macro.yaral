@@ -1,5 +1,5 @@
 rule high_risk_user_download_executable_from_macro {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Executable downloaded by Microsoft Excel by user with GCP entity relationship"
@@ -78,5 +78,5 @@ rule high_risk_user_download_executable_from_macro {
     $target_url = array_distinct($proxy_event.target.url)
 
   condition:
-    $proxy_event and $edr_event and $user_entity and $table_context
+    $proxy_event and $edr_event and $user_entity and $table_context  
 }

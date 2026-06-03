@@ -1,5 +1,5 @@
 rule low_prevalence_hash_on_process_launch_low_prevalence_domain_accessed {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Detects when a low prevalence hash is seen during a process launch event, and a low prevalence domain is accessed within 10m."
@@ -29,7 +29,7 @@ rule low_prevalence_hash_on_process_launch_low_prevalence_domain_accessed {
     $fileprev.graph.entity.file.prevalence.rolling_max <= 2
     //Join process event to file prevalence entity
     $fileprev.graph.entity.file.sha256 = $sha256
-
+    
     // Network HTTP
     $http.metadata.event_type = "NETWORK_HTTP"
     $http.principal.ip = $ip
@@ -38,7 +38,7 @@ rule low_prevalence_hash_on_process_launch_low_prevalence_domain_accessed {
     not net.ip_in_range_cidr($http.target.ip, "127.0.0.1/32")
     not net.ip_in_range_cidr($http.target.ip, "10.0.0.0/8")
     not net.ip_in_range_cidr($http.target.ip, "172.16.0.0/12")
-    not net.ip_in_range_cidr($http.target.ip, "192.168.0.0/16")
+    not net.ip_in_range_cidr($http.target.ip, "192.168.0.0/16")  
     // Only match valid FQDN, filter out background non-routable noise
     re.regex($http.target.hostname, `(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]`)
 
@@ -47,7 +47,7 @@ rule low_prevalence_hash_on_process_launch_low_prevalence_domain_accessed {
     $domainprev.graph.metadata.source_type = "DERIVED_CONTEXT"
     $domainprev.graph.entity.domain.prevalence.day_count = 10
     $domainprev.graph.entity.domain.prevalence.rolling_max > 0
-    // Adjust rolling_max for a different threshold as needed
+    // Adjust rolling_max for a different threshold as needed        
     $domainprev.graph.entity.domain.prevalence.rolling_max < 2
     // Join network event to domain entity
     $domainprev.graph.entity.domain.name = $hostname

@@ -1,5 +1,5 @@
 rule win_short_term_account_use {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Detects the creation, login, and deletion of a user account over a predefined timeframe"
@@ -32,7 +32,7 @@ rule win_short_term_account_use {
     $delete.target.user.userid = $targetUser
 
   match:
-    $targetUser over 4h
+    $targetUser over 4h 
 
   outcome:
     $risk_score = max(65)
@@ -55,6 +55,6 @@ rule win_short_term_account_use {
     $target_url = array_distinct($login.target.url)
 
   condition:
-    $create and $login and $delete
+    $create and $login and $delete 
 
 }

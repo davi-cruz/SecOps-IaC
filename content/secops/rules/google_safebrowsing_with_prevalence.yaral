@@ -1,5 +1,5 @@
  rule google_safebrowsing_with_prevalence {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Detect process launch events that correlate to Safe Browsing hash data and have low prevalence"
@@ -11,7 +11,7 @@
 
   events:
     $execution.metadata.base_labels.namespaces = "LogStory"
-    $execution.metadata.base_labels.namespaces = "LogStory"
+    $execution.metadata.base_labels.namespaces = "LogStory" 
     $execution.metadata.event_type = "PROCESS_LAUNCH"
     $execution.principal.hostname = $hostname
     $execution.target.process.file.sha256 = $hash
@@ -22,7 +22,7 @@
     $safebrowsing.graph.metadata.product_name = "Google Safe Browsing"
     $safebrowsing.graph.metadata.source_type = "GLOBAL_CONTEXT"
     $safebrowsing.graph.entity.file.sha256 = $hash
-
+    
     //derived from events ingested by Chronicle
     $prevalence.graph.metadata.entity_type = "FILE"
     $prevalence.graph.metadata.source_type = "DERIVED_CONTEXT"

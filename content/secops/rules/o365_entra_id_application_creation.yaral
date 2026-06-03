@@ -5,7 +5,7 @@ rule o365_entra_id_application_creation {
     description = "Application creation is a legitimate activity but doesn't occur frequently. Alerts when a new application is created in Entra ID (formerly Azure AD)."
     type = "alert"
     platform = "azure"
-    data_source = "o365"
+    data_source = "o365"   
     severity = "Low"
     priority = "Medium"
 

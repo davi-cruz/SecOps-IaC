@@ -12,7 +12,7 @@ rule rule_1727979376900 {
 
   outcome:
 
-    $risk_score = 5
+    $risk_score = 0
 
   condition:
     $e

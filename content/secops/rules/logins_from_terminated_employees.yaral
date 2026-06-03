@@ -1,5 +1,5 @@
 rule logins_from_terminated_employees {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Allowed Logins from Terminated Employees"
@@ -20,8 +20,8 @@ rule logins_from_terminated_employees {
     $login.metadata.event_type = "USER_LOGIN"
     $login.security_result.action = "ALLOW"
     $login.target.user.userid = $user
-    $login.target.user.termination_date.seconds > 0
-    $login.target.user.termination_date.seconds < $login.metadata.event_timestamp.seconds
+    $login.target.user.termination_date.seconds > 0 
+    $login.target.user.termination_date.seconds < $login.metadata.event_timestamp.seconds 
 
   match:
     $user over 1d

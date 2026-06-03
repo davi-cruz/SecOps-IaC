@@ -19,8 +19,8 @@ rule brute_force {
     $fail.metadata.event_type = "USER_LOGIN"
     $fail.security_result.action = "FAIL" or $fail.security_result.action = "BLOCK"
     $fail.metadata.product_event_type = "4625"
-    $user = $fail.target.user.userid
-
+    $user = $fail.target.user.userid 
+   
     // Estabelece sequencia de eventos
     $fail.metadata.event_timestamp.seconds < $success.metadata.event_timestamp.seconds
 
@@ -28,7 +28,7 @@ rule brute_force {
     $success.metadata.event_type = "USER_LOGIN"
     $success.security_result.action = "ALLOW"
     $success.metadata.product_event_type = "4624"
-    $user = $success.target.user.userid
+    $user = $success.target.user.userid 
     $app = $success.target.application
 
   match:

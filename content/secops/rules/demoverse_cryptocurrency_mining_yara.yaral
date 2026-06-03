@@ -2,7 +2,7 @@ rule demoverse_cryptocurrency_mining_yara {
 
 
   meta:
-
+    
     author = "Jose Marin"
     description = "SCC: Malware Cryptomining activity detected in an internal Compute Instance"
     severity = "Medium"
@@ -12,7 +12,7 @@ rule demoverse_cryptocurrency_mining_yara {
     //Finding from SCC
     $gcp.metadata.product_event_type = "Execution: Cryptocurrency Mining YARA Rule"
     $gcp.security_result.severity = $cbn_severity
-
+    
 
   outcome:
 
@@ -26,8 +26,8 @@ rule demoverse_cryptocurrency_mining_yara {
     $Detection = array_distinct($gcp.metadata.product_event_type)
     $Security_Info = array_distinct($gcp.security_result.detection_fields.value)
     $Remote_Connection = array_distinct($gcp.target.domain.name)
-    $GCP_Project = array_distinct($gcp.principal.asset.attribute.labels.value)
-
+    $GCP_Project = array_distinct($gcp.principal.asset.attribute.labels.value)   
+ 
   condition:
     $gcp
 }

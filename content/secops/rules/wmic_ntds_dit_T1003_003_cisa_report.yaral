@@ -1,5 +1,5 @@
 rule wmic_ntds_dit_T1003_003_cisa_report {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects extraction of ntds.dit file using vssadmin.exe or ntdsutil.exe with wmic as identified in CISA Living of the Land pdf"
@@ -42,10 +42,10 @@ rule wmic_ntds_dit_T1003_003_cisa_report {
         $process.metadata.product_name = "ESENT" and
         $process.metadata.vendor_name = "Microsoft" and
         (
-            $process.metadata.product_event_type = "216" or
-            $process.metadata.product_event_type = "325" or
-            $process.metadata.product_event_type = "326" or
-            $process.metadata.product_event_type = "327"
+            $process.metadata.product_event_type = "216" or 
+            $process.metadata.product_event_type = "325" or 
+            $process.metadata.product_event_type = "326" or 
+            $process.metadata.product_event_type = "327" 
         )
     )
     $process.principal.hostname = $hostname

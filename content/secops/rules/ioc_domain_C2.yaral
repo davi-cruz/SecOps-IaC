@@ -1,5 +1,5 @@
 rule ioc_domain_C2 {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detect DNS events that indicate communication to a C2 domain in MISP"
@@ -9,7 +9,7 @@ rule ioc_domain_C2 {
     data_source = "microsoft sysmon"
     severity = "High"
     priority = "High"
-
+ 
   events:
     $dns.metadata.base_labels.namespaces = "LogStory"
     $dns.metadata.base_labels.namespaces = "LogStory"
@@ -23,7 +23,7 @@ rule ioc_domain_C2 {
     //Summary is used to focus on a specific subset of MISP indicators, can modify as needed
     $ioc.graph.metadata.threat.summary = "C2 domains"
     $ioc.graph.entity.hostname = $dns_query
-
+ 
   match:
     $dns_query over 5m
 

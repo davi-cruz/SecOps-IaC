@@ -25,7 +25,7 @@ rule okta_successful_high_risk_user_logins {
     $login.security_result.action = "ALLOW"
     $login.principal.user.userid = $userid
 
-    // Detect only for existing users and not net new users
+    // Detect only for existing users and not net new users 
     $first_seen.graph.metadata.entity_type = "USER"
     $first_seen.graph.entity.user.first_seen_time.seconds < $login.metadata.event_timestamp.seconds
     $first_seen.graph.entity.user.userid = $userid

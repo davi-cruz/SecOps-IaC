@@ -1,5 +1,5 @@
 rule port_proxy_forwarding_T1090_cisa_report {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects port forwarding being enabled using netsh command and registry settings created or modified in support of portproxy v4tov4"
@@ -19,7 +19,7 @@ rule port_proxy_forwarding_T1090_cisa_report {
     $process.metadata.base_labels.namespaces = "LogStory"
     (
         $process.metadata.event_type = "PROCESS_LAUNCH" and
-
+        
         // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as needed
         re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*add.*v4tov4`) nocase
         // For greater precision to align with the report, comment out the above line and uncomment the below line to incporporate exact ports referenced

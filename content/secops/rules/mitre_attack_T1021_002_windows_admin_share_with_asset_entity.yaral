@@ -21,13 +21,13 @@ rule mitre_attack_T1021_002_windows_admin_share_with_asset_entity {
     $process.metadata.event_type = "PROCESS_LAUNCH"
     $process.target.process.command_line = /net.*use.*(C|ADMIN|IPC)\$/ nocase
     $process.principal.ip = $ip
-
+  
     // Correlate with asset entity data
     $asset.graph.entity.ip = $ip
     $asset.graph.metadata.entity_type = "ASSET"
     $asset.graph.metadata.source_type = "ENTITY_CONTEXT"
     $asset.graph.entity.asset.platform_software.platform = "WINDOWS"
-    // Can be modified to focus rule on different groups or removed if not needed
+    // Can be modified to focus rule on different groups or removed if not needed 
     $asset.graph.relations.entity.group.group_display_name = "Domain Computers"
 
   match:

@@ -3,8 +3,7 @@ rule high_severity_ids_activity_by_branch {
     author = "Google Cloud Security"
     description = "Detects hosts that trigger a high number of distinct IDS alerts within an hour, with thresholds varying by business branch and alert severity. This rule is based on a complex Splunk query and assumes branch information is available in the UDM event."
     yara_version = "YL2.0"
-    priority = "Medium"
-    severity = "High"
+
   events:
     // Filter for relevant IDS/IPS events and severity levels from the Splunk query.
     $e.metadata.event_type = "NETWORK_CONNECTION"

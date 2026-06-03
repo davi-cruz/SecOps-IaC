@@ -47,7 +47,7 @@ rule ip_target_prevalence {
     $target_process_parent_process_product_specfic_process_id = array_distinct($network.target.process.parent_process.product_specific_process_id)
     $principal_user_userid = array_distinct($network.principal.user.userid)
     $target_user_userid = array_distinct($network.target.user.userid)
-
+ 
   condition:
     $network and $prevalence
 }

@@ -28,35 +28,35 @@ rule o365_ADPowerShell_app_login_subsequent_activity {
         $login.security_result.action = "ALLOW"
     )
     $login.target.user.userid = $userid
-    $login.metadata.event_timestamp.seconds < $other.metadata.event_timestamp.seconds
+    $login.metadata.event_timestamp.seconds < $other.metadata.event_timestamp.seconds 
     (
         (
-            $other.metadata.event_type = "USER_RESOURCE_CREATION" and
-            $other.metadata.product_event_type = "Add application." and
+            $other.metadata.event_type = "USER_RESOURCE_CREATION" and 
+            $other.metadata.product_event_type = "Add application." and 
             $other.metadata.product_name = "Office 365" and
             $other.metadata.vendor_name = "Microsoft"
         )
         or
         (
-            $other.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT" and
-            $other.metadata.product_event_type = "Update application." and
+            $other.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT" and 
+            $other.metadata.product_event_type = "Update application." and 
             $other.metadata.product_name = "Office 365" and
             $other.metadata.vendor_name = "Microsoft"
         )
         or
         (
-            $other.metadata.event_type = "USER_RESOURCE_UPDATE_PERMISSIONS" and
-            $other.metadata.product_event_type = "Add delegated permission grant." and
+            $other.metadata.event_type = "USER_RESOURCE_UPDATE_PERMISSIONS" and 
+            $other.metadata.product_event_type = "Add delegated permission grant." and 
             $other.metadata.product_name = "Office 365" and
             $other.metadata.vendor_name = "Microsoft"
         )
         or
         (
-            $other.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT" and
-            $other.metadata.product_event_type = /Update application.*Certificates and secrets management/ nocase and
+            $other.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT" and 
+            $other.metadata.product_event_type = /Update application.*Certificates and secrets management/ nocase and 
             $other.metadata.product_name = "Office 365" and
             $other.metadata.vendor_name = "Microsoft"
-        )
+        )      
     )
     $other.principal.user.userid = $userid
     $other.metadata.product_event_type = $other_event

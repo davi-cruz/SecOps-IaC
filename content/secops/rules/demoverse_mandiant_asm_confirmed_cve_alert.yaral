@@ -1,7 +1,7 @@
 rule demoverse_mandiant_asm_confirmed_cve_alert
 {
   meta:
-
+   
     author = "@swenzel"
     data_source = "Mandiant Attack Surface Management"
     description = "Alert matching on high confidence and confirmed CVEs from Attack Surface Management (ASM)"
@@ -9,11 +9,11 @@ rule demoverse_mandiant_asm_confirmed_cve_alert
 
   events:
     // Create matching conditions for the event
-    $event.metadata.product_name = "Mandiant Attack Surface Management"
+    $event.metadata.product_name = "Mandiant Attack Surface Management" 
     $event.security_result.confidence_details = "confirmed"
     $event.security_result.confidence = "HIGH_CONFIDENCE"
     re.regex($event.extensions.vulns.vulnerabilities.cve_id, `CVE`) nocase
-
+    
   outcome:
     // Additional columns and enrichments to be included in the alert
     $cve = array_distinct($event.principal.asset.vulnerabilities.cve_id)

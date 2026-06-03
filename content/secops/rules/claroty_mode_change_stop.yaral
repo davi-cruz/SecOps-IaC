@@ -12,7 +12,7 @@ rule claroty_mode_change_stop {
 
   outcome:
     $risk_score = 90
-    $description = $e.metadata.description
+    $description = $e.metadata.description 
 
   condition:
     $e

@@ -1,5 +1,5 @@
 rule mitre_attack_T1021_002_windows_admin_share_with_user_entity {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Net use commands for SMB/Windows admin shares focused on specific user entity characteristics"
@@ -26,17 +26,17 @@ rule mitre_attack_T1021_002_windows_admin_share_with_user_entity {
     $user.graph.entity.user.userid  = $userid
     $user.graph.metadata.entity_type = "USER"
     $user.graph.metadata.source_type = "ENTITY_CONTEXT"
-
-    /* Following two lines are used for exercise #4 in rules workshop, comment out if you want to
+    
+    /* Following two lines are used for exercise #4 in rules workshop, comment out if you want to 
     demonstrate the same logic to run based on group */
     //$user.graph.entity.user.department != "Information Technology" or
     //$user.graph.entity.user.title = "Intern"
-
+   
     // Can be modified to focus rule on different groups or removed if not needed
     any $user.graph.relations.entity.group.group_display_name = "Domain Admins"
 
   match:
-    $userid over 5m
+    $userid over 5m   
 
   outcome:
     $risk_score = max(35)

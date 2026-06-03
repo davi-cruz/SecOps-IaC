@@ -1,5 +1,5 @@
 rule windows_event_log_cleared {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects the clearing of event logs within the Windows Event Viewer. "
@@ -31,16 +31,16 @@ rule windows_event_log_cleared {
         $process.metadata.event_type = "STATUS_UPDATE" and
         $process.metadata.product_name = "PowerShell" and
         $process.metadata.vendor_name = "Microsoft" and
-        (
+        (    
             re.regex($process.security_result.description, `Remove-EventLog`) nocase or
             re.regex($process.security_result.description, `Clear-EventLog`) nocase
         )
     )
     $process.principal.hostname = $hostname
-
+    
   match:
     $hostname over 5m
-
+    
   outcome:
     $risk_score = max(65)
     $mitre_attack_tactic = "Defense Evasion"

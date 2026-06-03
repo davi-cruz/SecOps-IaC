@@ -1,5 +1,5 @@
 rule whois_recently_created_domain_access {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects access attempts to a newly created domain via WHOIS enrichment."
@@ -16,7 +16,7 @@ rule whois_recently_created_domain_access {
 
     // join access event to entity graph to use WHOIS data
     $access.target.hostname = $domain
-
+    
     // Whois domains provided by GCTI Feed
     $whois.graph.entity.domain.name = $domain
     $whois.graph.metadata.entity_type = "DOMAIN_NAME"
@@ -36,7 +36,7 @@ rule whois_recently_created_domain_access {
     $event_count = count_distinct($access.metadata.id)
     //added to populate alert graph with additional context
     $principal_hostname = array_distinct($access.principal.hostname)
-    // Commented out target.hostname because it is already represented in graph as match variable. If match changes, can uncomment to add to results
+    // Commented out target.hostname because it is already represented in graph as match variable. If match changes, can uncomment to add to results   
     //$target_hostname = array_distinct($access.target.hostname)
     $principal_process_pid = array_distinct($access.principal.process.pid)
     $principal_process_command_line = array_distinct($access.principal.process.command_line)

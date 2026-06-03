@@ -1,5 +1,5 @@
 rule suspicious_download_office {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Office Application downloading an executable(.exe in URL) or a suspiciously large file(>100KB)"

@@ -5,7 +5,7 @@ rule demoverse_Chrome_Browser_DLP_Alert_Paste_Content {
     severity = "High"
 
   events:
-    $security.metadata.product_name = "Chrome Management"
+    $security.metadata.product_name = "Chrome Management" 
     $security.metadata.product_event_type = "sensitiveDataEvent"
     $security.security_result.about.labels.value = "WEB_CONTENT_UPLOAD"
     $security.security_result.rule_name != ""

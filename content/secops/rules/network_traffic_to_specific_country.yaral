@@ -19,7 +19,7 @@ rule network_traffic_to_specific_country {
 
   match:
     $ip over 30m
-
+ 
   outcome:
     $risk_score = max(35)
     $event_count = count_distinct($network.metadata.id)

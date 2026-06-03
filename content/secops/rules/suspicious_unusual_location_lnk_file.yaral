@@ -8,7 +8,7 @@ rule suspicious_unusual_location_lnk_file {
     platform = "Windows"
     severity = "Low"
     priority = "Low"
-
+   
   events:
     $file.metadata.base_labels.namespaces = "LogStory"
     $file.metadata.base_labels.namespaces = "LogStory"
@@ -42,7 +42,7 @@ rule suspicious_unusual_location_lnk_file {
     $target_file_full_path = $file.target.file.full_path
     $src_file_sha256 = $file.src.file.sha256
     $src_file_full_path = $file.src.file.full_path
-
+  
   condition:
     $file
 }

@@ -1,5 +1,5 @@
 rule impacket_wmiexec_cisa_report {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects the artifacts generally associated with the use of wmiexec.py"
