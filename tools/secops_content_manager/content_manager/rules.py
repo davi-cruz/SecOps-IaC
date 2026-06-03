@@ -600,13 +600,14 @@ class Rules:
     )
     remote_rules = Rules.get_remote_rules(http_session=http_session)
 
-    # Create a dictionary containing the remote rules using the rule name as the
-    # key for each item.
-    remote_rules_dict = {}
+    # Create dictionaries containing the remote rules using ID and name as keys.
+    remote_rules_by_id = {}
+    remote_rules_by_name = {}
 
     if remote_rules.rules:
       for remote_rule in remote_rules.rules:
-        remote_rules_dict[remote_rule.name] = remote_rule
+        remote_rules_by_id[remote_rule.id] = remote_rule
+        remote_rules_by_name[remote_rule.name] = remote_rule
 
     # Keep track of rule updates to log a final summary of changes made.
     update_summary = {
@@ -623,11 +624,46 @@ class Rules:
     LOGGER.info("Checking if any rule updates are required")
     for local_rule in local_rules.rules:
       rule_name = local_rule.name
+      rule_id = local_rule.id
 
-      if rule_name in remote_rules_dict.keys():
-        # Rule exists in Google SecOps with same rule name as local rule.
-        rule_id = local_rule.id
-        remote_rule = remote_rules_dict[rule_name]
+      # Try to find remote rule by ID first
+      remote_rule = None
+      if rule_id is not None:
+        remote_rule = remote_rules_by_id.get(rule_id)
+
+      # Fallback to name if not found by ID
+      if not remote_rule:
+        remote_rule = remote_rules_by_name.get(rule_name)
+        if remote_rule:
+          if rule_id is not None:
+            LOGGER.warning(
+                "Local rule %s has ID %s in config, but remote rule with same name has ID %s. "
+                "Updating local ID to match remote.",
+                rule_name,
+                rule_id,
+                remote_rule.id,
+            )
+          else:
+            LOGGER.info(
+                "Local rule %s has no ID, but remote rule with same name exists (ID: %s). Linking.",
+                rule_name,
+                remote_rule.id,
+            )
+          local_rule.id = remote_rule.id
+          local_rule.resource_name = remote_rule.resource_name
+          rule_id = remote_rule.id
+
+      if remote_rule:
+        # Rule exists in Google SecOps (matched by ID or name)
+        is_rename = (rule_id is not None) and (remote_rule.id == rule_id) and (remote_rule.name != rule_name)
+
+        if is_rename:
+          LOGGER.info(
+              "Rule %s (%s) has been renamed from %s",
+              rule_name,
+              rule_id,
+              remote_rule.name,
+          )
 
         # If the rule is archived on remote but we want to make it active, unarchive it first
         # so we are allowed to update its text.
@@ -647,7 +683,6 @@ class Rules:
           update_summary["unarchived"].append((rule_id, rule_name))
 
         # Only attempt to create a new version (update text) if the rule is NOT archived.
-        # The API rejects text updates to archived rules.
         if remote_rule.archived is False:
           LOGGER.debug(
               "Rule %s (%s) - Comparing rule text in local and remote rule",
@@ -662,18 +697,24 @@ class Rules:
               is True
           ):
             LOGGER.info(
-                "Rule %s (%s) - Rule text is different. Creating new rule"
-                " version",
+                "Rule %s (%s) - Rule text is different. Updating rule",
                 rule_name,
                 rule_id,
             )
-            update_rule(
+            new_rule_version = update_rule(
                 http_session=http_session,
                 resource_name=local_rule.resource_name,
                 update_mask=["text"],
                 updates={"text": local_rule.text},
             )
             update_summary["new_version_created"].append((rule_id, rule_name))
+
+            if is_rename:
+              new_rule_version["deployment_state"] = get_rule_deployment(
+                  http_session=http_session,
+                  resource_name=new_rule_version["name"],
+              )
+              remote_rule = Rules.parse_rule(new_rule_version)
           else:
             LOGGER.debug(
                 "Rule %s (%s) - No changes found in rule text",
@@ -688,58 +729,29 @@ class Rules:
           )
 
       else:
-        # Rule does not exist in Google SecOps with same rule name as local rule
-        LOGGER.info("Local rule name %s not found in remote rules", rule_name)
-
-        # A new rule will be created if a remote rule doesn't exist with the
-        # same name as the local rule and there's no rule id value for the rule
-        # in the local rule config file.
-        if local_rule.id is None:
-          LOGGER.info(
-              "Local rule %s has no rule id value. Creating a new rule",
-              rule_name,
-          )
-          new_rule = create_rule(
-              http_session=http_session, rule_text=local_rule.text
-          )
-          new_rule["deployment_state"] = get_rule_deployment(
-              http_session=http_session,
-              resource_name=new_rule["name"],
-          )
-          remote_rule = Rules.parse_rule(new_rule)
-          LOGGER.info(
-              "Created new rule %s (%s)",
-              remote_rule.name,
-              remote_rule.id,
-          )
-          rule_id = remote_rule.id
-          local_rule.id = rule_id
-          local_rule.resource_name = remote_rule.resource_name
-          update_summary["created"].append((rule_id, rule_name))
-
-        # If a remote rule doesn't exist with the same name as the local rule,
-        # but there's a rule id for the local rule, the local rule has been
-        # renamed. Create a new version of the existing rule in Google SecOps
-        else:
-          rule_id = local_rule.id
-          LOGGER.info(
-              "Rule %s (%s) has been renamed - Creating new rule version for"
-              " existing rule",
-              rule_name,
-              rule_id,
-          )
-          new_rule_version = update_rule(
-              http_session=http_session,
-              resource_name=local_rule.resource_name,
-              update_mask=["text"],
-              updates={"text": local_rule.text},
-          )
-          new_rule_version["deployment_state"] = get_rule_deployment(
-              http_session=http_session,
-              resource_name=new_rule_version["name"],
-          )
-          remote_rule = Rules.parse_rule(new_rule_version)
-          update_summary["new_version_created"].append((rule_id, rule_name))
+        # Rule does not exist in Google SecOps (neither by ID nor by name)
+        LOGGER.info(
+            "Local rule %s (ID: %s) not found on remote. Creating new.",
+            rule_name,
+            rule_id,
+        )
+        new_rule = create_rule(
+            http_session=http_session, rule_text=local_rule.text
+        )
+        new_rule["deployment_state"] = get_rule_deployment(
+            http_session=http_session,
+            resource_name=new_rule["name"],
+        )
+        remote_rule = Rules.parse_rule(new_rule)
+        LOGGER.info(
+            "Created new rule %s (%s)",
+            remote_rule.name,
+            remote_rule.id,
+        )
+        rule_id = remote_rule.id
+        local_rule.id = rule_id
+        local_rule.resource_name = remote_rule.resource_name
+        update_summary["created"].append((rule_id, rule_name))
 
       rule_state_updates = Rules.update_remote_rule_state(
           http_session=http_session,
