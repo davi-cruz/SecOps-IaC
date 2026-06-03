@@ -16,7 +16,7 @@ rule malicious_domain {
 
   events:
     $e.metadata.event_type = "NETWORK_HTTP"
-    $e.target.hostname in %malicious_domains.DOMAIN 
+    $e.target.hostname in %malicious_domains.DOMAIN
 
   outcome:
     // For a multi-event rule an aggregation function is required

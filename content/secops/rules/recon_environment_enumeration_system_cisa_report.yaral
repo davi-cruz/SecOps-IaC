@@ -1,5 +1,5 @@
 rule recon_environment_enumeration_system_cisa_report {
- 
+
   meta:
     author = "Google Cloud Security"
     description = "Detects system enumeration events as identified in CISA Living of the Land pdf. Alone they may be normal but in concert, they may be worth looking into"
@@ -24,14 +24,14 @@ rule recon_environment_enumeration_system_cisa_report {
     re.regex($process.target.process.command_line, `wevtutil.*qe.*security.*\/rd:true.*\/f:text.*\/q:.*\[System\[\(EventID`) nocase
     // below is the more specific command down to the event id, could comment out the about and use this instead if desired
     //re.regex($process.target.process.command_line, `wevtutil.*qe.*security.*\/rd:true.*\/f:text.*\/q:\*\[System\[\(EventID=4624\).*TimeCreated\[@SystemTime.*\]\].*EventData\[Data.*\]\]`) nocase
-    
+
     or
 
     // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as desired
     // other wmic switches like /user and /password, these have been excluded to focus on the commands being issued since local access does not require these
-    ( 
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*ldifde.exe.*-f.*-p.*subtree`) nocase or 
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*reg.*query.*hklm\\software\\`) nocase or 
+    (
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*ldifde.exe.*-f.*-p.*subtree`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*reg.*query.*hklm\\software\\`) nocase or
         re.regex($process.target.process.command_line, `(|cmd.*/c).*systeminfo`) nocase or
         re.regex($process.target.process.command_line, `(|cmd.*/c).*tasklist.*\/v`) nocase or
         re.regex($process.target.process.command_line, `(|cmd.*/c).*whoami`) nocase or
@@ -43,7 +43,7 @@ rule recon_environment_enumeration_system_cisa_report {
         re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*baseboard.*list.*full`) nocase or
         re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*path.*win32_logicaldisk.*get.*(caption|filesystem|freespace|size|volumename)`) nocase
     )
-  
+
   match:
     $hostname over 15m
 

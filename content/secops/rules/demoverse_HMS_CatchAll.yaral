@@ -7,13 +7,13 @@ rule demoverse_HMS_CatchAll {
 
   events:
     $e.metadata.vendor_name  = "HMS SecOps"
-    
-    // Tune out anything we have better content for    
+
+    // Tune out anything we have better content for
     $e.metadata.product_event_type != "xyz"
 
 
   outcome:
-    $risk_score = 0
+    $risk_score = 5
 
   condition:
     $e

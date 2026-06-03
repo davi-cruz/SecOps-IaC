@@ -19,7 +19,7 @@ rule ioc_ip_target {
     not net.ip_in_range_cidr($network.target.ip, "10.0.0.0/24")
     not net.ip_in_range_cidr($network.target.ip, "172.16.0.0/12")
     not net.ip_in_range_cidr($network.target.ip, "192.168.0.0/16")
- 
+
     // Correlates with MISP data; can be modified based on your MISP parser or other TI
     $ioc.graph.metadata.product_name = "MISP"
     $ioc.graph.metadata.entity_type = "IP_ADDRESS"

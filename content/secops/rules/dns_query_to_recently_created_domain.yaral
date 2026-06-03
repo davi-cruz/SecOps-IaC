@@ -15,7 +15,7 @@ rule dns_query_to_recently_created_domain {
     $dns.metadata.event_type = "NETWORK_DNS"
     $dns.network.dns.questions.name = $dns_query
     $dns.principal.user.userid = $user
-    
+
     // whois data provided by GCTI
     $whois.graph.entity.hostname = $dns_query
     $whois.graph.metadata.entity_type = "DOMAIN_NAME"

@@ -1,11 +1,15 @@
 rule demoverse_safebrowsing_file_creation {
  meta:
+    author = "Google Cloud Security"
+    severity = "High"
+    priority = "High"
+    description = "Detects the creation or execution of a file on a host that matches a known malicious file hash flagged by Google Safe Browsing global threat intelligence."
 
  events:
    ($execution.metadata.event_type = "PROCESS_LAUNCH" or $execution.metadata.event_type = "FILE_CREATION")
    $execution.principal.hostname = $hostname
    $execution.target.process.file.sha256 != ""
-   $execution.target.process.file.sha256 = $sha256  
+   $execution.target.process.file.sha256 = $sha256
    $safebrowse.graph.entity.file.sha256 = $sha256
    $safebrowse.graph.metadata.entity_type = "FILE"
    $safebrowse.graph.metadata.product_name = "Google Safe Browsing"
@@ -13,7 +17,7 @@ rule demoverse_safebrowsing_file_creation {
 
  match:
    $hostname over 1h
-   
+
  condition:
    $execution and $safebrowse
 }

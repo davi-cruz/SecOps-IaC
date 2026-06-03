@@ -9,7 +9,7 @@ rule o365_onedrive_anonymous_filedownload {
     mitre_attack_version = "v14.1"
     type = "hunt"
     platform = "azure"
-    data_source = "o365"   
+    data_source = "o365"
     severity = "Medium"
     priority = "Medium"
 
@@ -23,7 +23,7 @@ rule o365_onedrive_anonymous_filedownload {
     $file.target.application = "OneDrive"
     (
         $file.principal.user.userid = /^urn:spo:anon#/ or
-        $file.principal.user.userid = "anonymous" 
+        $file.principal.user.userid = "anonymous"
     )
     $file.principal.ip = $ip
 

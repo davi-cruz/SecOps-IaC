@@ -1,5 +1,5 @@
 rule mitre_attack_T1140_encoded_powershell_command {
- 
+
   meta:
     author = "Google Cloud Security"
     description = "Detects encoded powershell commands"
@@ -21,7 +21,7 @@ rule mitre_attack_T1140_encoded_powershell_command {
     re.regex($process.target.process.file.full_path, `(system32|syswow64)\\WindowsPowerShell\\v1\.0\\powershell(|\_ise)\.exe`) nocase
     re.regex($process.target.process.command_line, `(?i)(?:-enc|-ec|-en)\s*\S*`)
     $encoded_value = re.capture($process.target.process.command_line, `(?i)(?:-enc|-ec|-en)\s*(\S*)`)
-    $decoded_value = re.replace(strings.base64_decode(re.capture($process.target.process.command_line, `(?i)(?:-enc|-ec|-en)\s*(\S*)`)),`\0`, "") 
+    $decoded_value = re.replace(strings.base64_decode(re.capture($process.target.process.command_line, `(?i)(?:-enc|-ec|-en)\s*(\S*)`)),`\0`, "")
 
   match:
     $hostname over 5m

@@ -15,16 +15,16 @@ rule network_connection_first_seen_in_past_day {
     $network.metadata.event_type = "NETWORK_CONNECTION"
     $network.target.ip = $ip
     //Target IP is not part of RFC1918 space, can modify as needed
-    not net.ip_in_range_cidr ($network.target.ip, "10.0.0.0/24") 
+    not net.ip_in_range_cidr ($network.target.ip, "10.0.0.0/24")
     not net.ip_in_range_cidr ($network.target.ip, "172.16.0.0/20")
     not net.ip_in_range_cidr ($network.target.ip, "192.168.0.0/16")
 
     //derived from events ingested by Chronicle
     $entity.graph.entity.artifact.ip  = $ip
     $entity.graph.metadata.entity_type = "IP_ADDRESS"
-    $entity.graph.metadata.source_type = "DERIVED_CONTEXT"  
+    $entity.graph.metadata.source_type = "DERIVED_CONTEXT"
     $entity.graph.entity.artifact.first_seen_time.seconds > 0
-   
+
     //calculate the different between current time and the first time the ip was listed as seen in the entity graph
     86400 > timestamp.current_seconds() - $entity.graph.entity.artifact.first_seen_time.seconds
 

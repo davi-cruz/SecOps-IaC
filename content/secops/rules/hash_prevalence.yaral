@@ -1,5 +1,5 @@
 rule hash_prevalence {
- 
+
   meta:
     author = "Google Cloud Security"
     description = "Correlate process events with hashes that have a low rolling max over the past 10 days"
@@ -8,7 +8,7 @@ rule hash_prevalence {
     data_source = "crowdstrike, sentinelone, microsoft sysmon, microsoft defender atp"
     severity = "Low"
     priority = "Low"
-   
+
   events:
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
@@ -43,7 +43,7 @@ rule hash_prevalence {
     $target_process_file_full_path = array_distinct($process.target.process.file.full_path)
     $target_process_product_specfic_process_id = array_distinct($process.target.process.product_specific_process_id)
     $principal_user_userid = array_distinct($process.principal.user.userid)
-    
+
   condition:
     $process and $prevalence
 }

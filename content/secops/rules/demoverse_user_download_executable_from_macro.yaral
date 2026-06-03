@@ -1,5 +1,5 @@
 rule demoverse_user_download_executable_from_macro {
-  
+
   meta:
     author = "Google Cloud Security"
     description = "Executable downloaded by Microsoft Excel by user with GCP entity relationship"
@@ -22,18 +22,18 @@ rule demoverse_user_download_executable_from_macro {
     $proxy_event.network.received_bytes > 102400
     $proxy_event.principal.user.userid = $user
     $proxy_event.principal.user.userid != /test/
-    
+
 
     // correlate with EDR event indicating Excel activity
     $edr_event.principal.user.userid  = $user
     $edr_event.principal.process.file.names = /excel/ nocase
-    $edr_event.metadata.event_type = "PROCESS_LAUNCH"    
+    $edr_event.metadata.event_type = "PROCESS_LAUNCH"
 
 
   match:
     $user over 5m
-  
-  
+
+
   outcome:
     $mitre_attack_tactic = "Execution"
     $mitre_attack_technique = "User Execution: Malicious File"
@@ -59,6 +59,6 @@ rule demoverse_user_download_executable_from_macro {
     $target_url = array_distinct($proxy_event.target.url)
 
   condition:
-    
+
     $proxy_event and $edr_event //and $user_entity
 }
