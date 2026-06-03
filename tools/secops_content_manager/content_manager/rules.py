@@ -419,7 +419,7 @@ class Rules:
     # Add the deployment state to each raw rule ready for parsing
     for raw_rule in raw_rules:
       rule_id = Rules.extract_rule_id_from_resource_name(raw_rule["name"])
-      raw_rule["deployment_state"] = rule_deployments_dict[rule_id]
+      raw_rule["deployment_state"] = rule_deployments_dict.get(rule_id, {})
 
     parsed_rules = Rules.parse_rules(rules=raw_rules)
 
