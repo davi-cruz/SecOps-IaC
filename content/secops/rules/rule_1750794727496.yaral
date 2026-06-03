@@ -18,14 +18,14 @@ rule rule_1750794727496 {
     $e.metadata.event_type = "USER_LOGIN"
     $e.security_result.action = "BLOCK"
     $user = $e.target.user.userid
-    $ip = $e.principal.ip
+    $ip = $e.principal.ip 
 
 
   outcome:
     // For a multi-event rule an aggregation function is required
     // e.g., risk_score = max(0)
     // See https://cloud.google.com/chronicle/docs/detection/yara-l-2-0-overview#outcome_conditionals_example_rule
-    $risk_score = 5
+    $risk_score = 0
 
   condition:
     #e > 5

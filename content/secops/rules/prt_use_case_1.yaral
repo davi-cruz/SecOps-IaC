@@ -8,18 +8,18 @@ rule prt_use_case_1 {
     $e.metadata.log_type = "RESERVED_LOG_TYPE_3"
     $e.target.application = "HNA PowerChart"
     (
-      $e.metadata.product_event_type = "Attempt to View Document" and
+      $e.metadata.product_event_type = "Attempt to View Document" and 
       $e.additional.fields["EVENT_NAME"] = "Maintain Clinical Document"
     ) OR (
-      $e.metadata.product_event_type = "Patient-Provider Relations" and
+      $e.metadata.product_event_type = "Patient-Provider Relations" and 
       $e.additional.fields["EVENT_NAME"] = "Maintain Encounter"
     )
     not ($e.principal.location.name in %hna_location_exception.facility)
 
   outcome:
     $risk_score = max(35)
-    $application = $e.target.application
-    $event_name = $e.additional.fields["EVENT_NAME"]
+    $application = $e.target.application  
+    $event_name = $e.additional.fields["EVENT_NAME"] 
     $event_type = $e.metadata.product_event_type
 
   condition:
