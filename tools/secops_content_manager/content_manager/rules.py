@@ -629,38 +629,63 @@ class Rules:
         rule_id = local_rule.id
         remote_rule = remote_rules_dict[rule_name]
 
-        # Create a new version of the rule if the rule text in the local rule is
-        # different from the remote rule
-        LOGGER.debug(
-            "Rule %s (%s) - Comparing rule text in local and remote rule",
-            rule_name,
-            rule_id,
-        )
-        if (
-            Rules.compare_rule_text(
-                rule_text_1=local_rule.text,
-                rule_text_2=remote_rule.text,
-            )
-            is True
-        ):
+        # If the rule is archived on remote but we want to make it active, unarchive it first
+        # so we are allowed to update its text.
+        if remote_rule.archived is True and local_rule.archived is False:
           LOGGER.info(
-              "Rule %s (%s) - Rule text is different. Creating new rule"
-              " version",
+              "Rule %s (%s) is archived on remote but active locally. Unarchiving first.",
               rule_name,
               rule_id,
           )
-          update_rule(
+          update_rule_deployment(
               http_session=http_session,
               resource_name=local_rule.resource_name,
-              update_mask=["text"],
-              updates={"text": local_rule.text},
+              update_mask=["archived"],
+              updates={"archived": False},
           )
-          update_summary["new_version_created"].append((rule_id, rule_name))
-        LOGGER.debug(
-            "Rule %s (%s) - No changes found in rule text",
-            rule_name,
-            rule_id,
-        )
+          remote_rule.archived = False
+          update_summary["unarchived"].append((rule_id, rule_name))
+
+        # Only attempt to create a new version (update text) if the rule is NOT archived.
+        # The API rejects text updates to archived rules.
+        if remote_rule.archived is False:
+          LOGGER.debug(
+              "Rule %s (%s) - Comparing rule text in local and remote rule",
+              rule_name,
+              rule_id,
+          )
+          if (
+              Rules.compare_rule_text(
+                  rule_text_1=local_rule.text,
+                  rule_text_2=remote_rule.text,
+              )
+              is True
+          ):
+            LOGGER.info(
+                "Rule %s (%s) - Rule text is different. Creating new rule"
+                " version",
+                rule_name,
+                rule_id,
+            )
+            update_rule(
+                http_session=http_session,
+                resource_name=local_rule.resource_name,
+                update_mask=["text"],
+                updates={"text": local_rule.text},
+            )
+            update_summary["new_version_created"].append((rule_id, rule_name))
+          else:
+            LOGGER.debug(
+                "Rule %s (%s) - No changes found in rule text",
+                rule_name,
+                rule_id,
+            )
+        else:
+          LOGGER.info(
+              "Rule %s (%s) is archived. Skipping rule text updates.",
+              rule_name,
+              rule_id,
+          )
 
       else:
         # Rule does not exist in Google SecOps with same rule name as local rule
