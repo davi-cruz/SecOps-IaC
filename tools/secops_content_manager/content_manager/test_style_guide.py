@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Linter tests to enforce the Chronicle YARA-L Style Guide. 
+"""Linter tests to enforce the Chronicle YARA-L Style Guide.
 
-This script serves as an example of how customers can validate YARA-L rules
-against standard style guidelines in their own CI/CD pipelines.
+This file is structured to provide highly granular test results in IDEs like VS Code.
 """
 
 import pathlib
@@ -43,98 +42,96 @@ def get_outcome_section(rule_text: str) -> str | None:
         return match.group(1)
     return None
 
-@pytest.mark.parametrize("rule_file_path", rule_files, ids=lambda p: p.name)
-def test_rule_style_guide(rule_file_path: pathlib.Path):
-    """Verify that the YARA-L rule adheres to the style guide baseline standards."""
-    with open(rule_file_path, "r", encoding="utf-8") as f:
-        content = f.read()
+@pytest.fixture(name="rule_content", scope="class")
+def rule_content_fixture(request) -> str:
+    """Fixture to read the file content once per rule parameterized run."""
+    file_path = request.param
+    with open(file_path, "r", encoding="utf-8") as f:
+        return f.read()
 
-    # ---------------------------------------------------------
-    # 1. Formatting & Whitespace Checks
-    # ---------------------------------------------------------
-    
-    # Ensure no tabs are used (style guide requirement)
-    assert "\t" not in content, (
-        f"Rule '{rule_file_path.name}' contains tab characters. "
-        "Please use spaces for indentation."
-    )
-    
-    # Ensure no trailing whitespaces
-    for line_num, line in enumerate(content.splitlines(), start=1):
-        assert not line.endswith(" ") and not line.endswith("\t"), (
-            f"Rule '{rule_file_path.name}' contains trailing whitespace on line {line_num}."
+# Parameterize at the class level so every test method runs for every rule file
+@pytest.mark.parametrize("rule_content", rule_files, indirect=True, ids=lambda p: p.name)
+class TestRuleStyle:
+    """Style guide test cases for YARA-L rules."""
+
+    def test_no_tabs(self, rule_content):
+        """Ensure no tab characters are used (use spaces for indentation)."""
+        assert "\t" not in rule_content, (
+            "Rule contains tab characters. Please replace all tabs with spaces."
         )
 
-    # ---------------------------------------------------------
-    # 2. Standard Meta Section Checks
-    # ---------------------------------------------------------
-    
-    assert "meta:" in content, (
-        f"Rule '{rule_file_path.name}' is missing a 'meta:' section."
-    )
-
-    # Verify required customer-safe meta: 'author'
-    author = extract_meta_value(content, "author")
-    assert author is not None, (
-        f"Rule '{rule_file_path.name}' is missing the 'author' field in the meta section."
-    )
-    assert author != "", (
-        f"Rule '{rule_file_path.name}' has an empty 'author' field."
-    )
-
-    # Verify required customer-safe meta: 'description'
-    description = extract_meta_value(content, "description")
-    assert description is not None, (
-        f"Rule '{rule_file_path.name}' is missing the 'description' field in the meta section."
-    )
-    assert description != "", (
-        f"Rule '{rule_file_path.name}' has an empty 'description' field."
-    )
-
-    # Verify required customer-safe meta: 'severity'
-    severity = extract_meta_value(content, "severity")
-    assert severity is not None, (
-        f"Rule '{rule_file_path.name}' is missing the 'severity' field in the meta section."
-    )
-    valid_values = {"Info", "Low", "Medium", "High", "Critical"}
-    assert severity.capitalize() in valid_values, (
-        f"Rule '{rule_file_path.name}' has an invalid severity value '{severity}'. "
-        f"Must be one of {valid_values}."
-    )
-
-    # Verify optional/recommended customer-safe meta: 'priority'
-    priority = extract_meta_value(content, "priority")
-    if priority is not None:
-        assert priority.capitalize() in valid_values, (
-            f"Rule '{rule_file_path.name}' has an invalid priority value '{priority}'. "
-            f"Must be one of {valid_values}."
-        )
-
-    # ---------------------------------------------------------
-    # 3. Outcome Section Checks
-    # ---------------------------------------------------------
-    outcome_section = get_outcome_section(content)
-    if outcome_section:
-        # Check for standard singular naming conventions for outcome variables
-        outcome_vars = re.findall(r'\$([a-zA-Z0-9_]+)\s*=', outcome_section)
-        
-        invalid_plural_vars = {"vendor_names", "product_names"}
-        for var in outcome_vars:
-            assert var not in invalid_plural_vars, (
-                f"Rule '{rule_file_path.name}' uses invalid plural outcome variable '${var}'. "
-                "Outcome variables must be singular (e.g., use '$vendor_name' instead of '$vendor_names')."
+    def test_no_trailing_whitespace(self, rule_content):
+        """Ensure no lines contain trailing whitespace."""
+        for line_num, line in enumerate(rule_content.splitlines(), start=1):
+            assert not line.endswith(" ") and not line.endswith("\t"), (
+                f"Line {line_num} contains trailing whitespace."
             )
 
-        # Verify risk score constraints (minimum floor is 5, not 0)
-        risk_score_match = re.search(
-            r'\$risk_score\s*=\s*(?:max\s*\(\s*(\d+)\s*\)|(\d+))', 
-            outcome_section, 
-            re.IGNORECASE
+    def test_has_meta_section(self, rule_content):
+        """Ensure the rule has a defined 'meta:' block."""
+        assert "meta:" in rule_content, (
+            "Rule is missing the 'meta:' section."
         )
-        if risk_score_match:
-            score_val_str = risk_score_match.group(1) or risk_score_match.group(2)
-            score_val = int(score_val_str)
-            assert score_val >= 5, (
-                f"Rule '{rule_file_path.name}' has a $risk_score of {score_val}. "
-                "The style guide mandates that the minimum floor for $risk_score is 5 (cannot be 0)."
+
+    def test_has_author(self, rule_content):
+        """Ensure the 'author' field is defined in meta and is not empty."""
+        assert "meta:" in rule_content, "Skipping: Missing meta block."
+        author = extract_meta_value(rule_content, "author")
+        assert author is not None, "Field 'author' is missing in the meta section."
+        assert author != "", "Field 'author' is defined but empty."
+
+    def test_has_description(self, rule_content):
+        """Ensure the 'description' field is defined in meta and is not empty."""
+        assert "meta:" in rule_content, "Skipping: Missing meta block."
+        description = extract_meta_value(rule_content, "description")
+        assert description is not None, "Field 'description' is missing in the meta section."
+        assert description != "", "Field 'description' is defined but empty."
+
+    def test_has_valid_severity(self, rule_content):
+        """Ensure 'severity' is defined and has a standard value."""
+        assert "meta:" in rule_content, "Skipping: Missing meta block."
+        severity = extract_meta_value(rule_content, "severity")
+        assert severity is not None, "Field 'severity' is missing in the meta section."
+        valid_values = {"Info", "Low", "Medium", "High", "Critical"}
+        assert severity.capitalize() in valid_values, (
+            f"Invalid severity value '{severity}'. Must be one of {valid_values}."
+        )
+
+    def test_has_valid_priority(self, rule_content):
+        """Ensure that if 'priority' is defined, it contains a valid value."""
+        assert "meta:" in rule_content, "Skipping: Missing meta block."
+        priority = extract_meta_value(rule_content, "priority")
+        if priority is not None:
+            valid_values = {"Info", "Low", "Medium", "High", "Critical"}
+            assert priority.capitalize() in valid_values, (
+                f"Invalid priority value '{priority}'. Must be one of {valid_values}."
             )
+
+    def test_singular_outcome_variables(self, rule_content):
+        """Ensure outcome variables use standard singular naming (e.g. $vendor_name)."""
+        outcome_section = get_outcome_section(rule_content)
+        if outcome_section:
+            outcome_vars = re.findall(r'\$([a-zA-Z0-9_]+)\s*=', outcome_section)
+            invalid_plural_vars = {"vendor_names", "product_names"}
+            for var in outcome_vars:
+                assert var not in invalid_plural_vars, (
+                    f"Uses invalid plural outcome variable '${var}'. "
+                    "Must be singular (e.g., use '$vendor_name' instead of '$vendor_names')."
+                )
+
+    def test_risk_score_floor(self, rule_content):
+        """Ensure the minimum floor for $risk_score is 5 (cannot be 0)."""
+        outcome_section = get_outcome_section(rule_content)
+        if outcome_section:
+            risk_score_match = re.search(
+                r'\$risk_score\s*=\s*(?:max\s*\(\s*(\d+)\s*\)|(\d+))',
+                outcome_section,
+                re.IGNORECASE
+            )
+            if risk_score_match:
+                score_val_str = risk_score_match.group(1) or risk_score_match.group(2)
+                score_val = int(score_val_str)
+                assert score_val >= 5, (
+                    f"Invalid $risk_score value ({score_val}). "
+                    "The style guide mandates a minimum floor of 5 (cannot be 0)."
+                )

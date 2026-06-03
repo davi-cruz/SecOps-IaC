@@ -19,7 +19,7 @@ rule suspicious_asn {
 
   match:
     $ip over 30m
- 
+
   outcome:
     $risk_score = max(35)
     $event_count = count_distinct($network.metadata.id)

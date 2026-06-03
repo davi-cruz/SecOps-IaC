@@ -1,5 +1,5 @@
 rule whois_expired_domain_accessed {
-  
+
   meta:
     author = "Google Cloud Security"
     description = "Example usage of WHOIS data, detecting an executable file download from a domain that's recently expired"
@@ -24,17 +24,17 @@ rule whois_expired_domain_accessed {
     $whois.graph.metadata.product_name = "WHOISXMLAPI Simple Whois"
     $whois.graph.metadata.source_type = "GLOBAL_CONTEXT"
     // Domain expired before the event
-    $whois.graph.entity.domain.expiration_time.seconds < $access.metadata.event_timestamp.seconds 
+    $whois.graph.entity.domain.expiration_time.seconds < $access.metadata.event_timestamp.seconds
 
   match:
     $hostname over 1h
-  
+
   outcome:
     $risk_score = max(20)
     $event_count = count_distinct($access.metadata.id)
     //added to populate alert graph with additional context
     $principal_hostname = array_distinct($access.principal.hostname)
-    // Commented out principal.hostname because it is already represented in graph as match variable. If match changes, can uncomment to add to results       
+    // Commented out principal.hostname because it is already represented in graph as match variable. If match changes, can uncomment to add to results
     //$target_hostname = array_distinct($access.target.hostname)
     $principal_process_pid = array_distinct($access.principal.process.pid)
     $principal_process_command_line = array_distinct($access.principal.process.command_line)

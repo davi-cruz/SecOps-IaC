@@ -22,7 +22,7 @@ rule ioc_hash_prevalence {
     $prevalence.graph.entity.file.prevalence.day_count = 10
     $prevalence.graph.entity.file.prevalence.rolling_max <= 3
     $prevalence.graph.entity.file.prevalence.rolling_max > 0
-    $prevalence.graph.entity.file.sha256 = $sha256  
+    $prevalence.graph.entity.file.sha256 = $sha256
 
     // Correlates with MISP data; can be modified based on your MISP parser or other TI
     $ioc.graph.metadata.entity_type = "FILE"

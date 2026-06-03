@@ -26,9 +26,9 @@ rule win_repeatedAuthFailure_thenSuccess_T1110_001_user_asset_entity {
     $fail.target.user.userid = $target_user
     $fail.security_result.action = "BLOCK"
     $fail.metadata.product_event_type = "4625"
-   
+
     $fail.metadata.event_timestamp.seconds < $success.metadata.event_timestamp.seconds
-   
+
     $success.metadata.event_type = "USER_LOGIN"
     $success.metadata.vendor_name = "Microsoft"
     $success.target.user.userid = $target_user
@@ -65,19 +65,19 @@ rule win_repeatedAuthFailure_thenSuccess_T1110_001_user_asset_entity {
     $alert_type = "Successful Brute Force Attack"
     $tlp = "red"
     // added to populate alert graph with additional context
-    // Commented out principal.hostname because it is already represented in graph as match variable. If match changes, can uncomment to add to results   
+    // Commented out principal.hostname because it is already represented in graph as match variable. If match changes, can uncomment to add to results
     //$principal_hostname = array_distinct($success.principal.hostname)
     $principal_ip = array_distinct($success.principal.ip)
     $target_hostname = array_distinct($success.target.hostname)
     $src_hostname = array_distinct($success.src.hostname)
     $target_ip = array_distinct($success.target.ip)
     $principal_user_userid = array_distinct($success.principal.user.userid)
-    // Commented out target.user.userid because it is already represented in graph as match variable. If match changes, can uncomment to add to results   
+    // Commented out target.user.userid because it is already represented in graph as match variable. If match changes, can uncomment to add to results
     //$target_user_userid = array_distinct($success.target.user.userid)
     $principal_resource_name = array_distinct($success.principal.resource.name)
     $target_resource_name = array_distinct($success.target.resource.name)
     $target_url = array_distinct($success.target.url)
-  
+
   condition:
     #fail > 4 and $success and $user and $asset
 }

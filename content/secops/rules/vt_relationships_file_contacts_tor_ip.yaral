@@ -1,5 +1,5 @@
 rule vt_relationships_file_contacts_tor_ip {
-  
+
   meta:
     author = "Google Cloud Security"
     description = "Alert on known Hash contacting Tor IP with VT Relationships."
@@ -44,7 +44,7 @@ rule vt_relationships_file_contacts_tor_ip {
   match:
     $hostname over 5m
 
-  outcome: 
+  outcome:
     $risk_score = max(
         if($gcti.graph.metadata.threat.confidence = "HIGH_CONFIDENCE", 70) +
         // Unauthorized target geographies

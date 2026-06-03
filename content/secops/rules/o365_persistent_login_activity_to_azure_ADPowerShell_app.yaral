@@ -24,7 +24,7 @@ rule o365_persistent_login_activity_to_azure_ADPowerShell_app {
     $login.security_result.action = "ALLOW"
     $login.target.user.userid = $userid
     $login.metadata.event_timestamp.seconds = $time
-  
+
   match:
     $userid over 24h
 
@@ -44,6 +44,6 @@ rule o365_persistent_login_activity_to_azure_ADPowerShell_app {
     //$target_user_userid = array_distinct($login.target.user.userid)
 
   condition:
-    // Can set based on your own threshold  
+    // Can set based on your own threshold
     #time > 1
 }

@@ -11,7 +11,7 @@ rule rule_name_xyz {
     // For a multi-event rule an aggregation function is required
     // e.g., risk_score = max(0)
     // See https://cloud.google.com/chronicle/docs/detection/yara-l-2-0-overview#outcome_conditionals_example_rule
-    $risk_score = 0
+    $risk_score = 5
 
   condition:
     $e

@@ -1,5 +1,5 @@
 rule recon_environment_enumeration_network_cisa_report {
- 
+
   meta:
     author = "Google Cloud Security"
     description = "Detects network enumeration commands as identified in CISA Living of the Land pdf. Alone they may be normal but in concert, they may be worth looking into"
@@ -21,10 +21,10 @@ rule recon_environment_enumeration_network_cisa_report {
         $process.metadata.event_type = "PROCESS_LAUNCH" and
         (
             // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as needed
-            re.regex($process.target.process.command_line, `(|cmd.*/c).*arp.*-a`) nocase or 
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*arp.*-a`) nocase or
             re.regex($process.target.process.command_line, `(|cmd.*/c).*curl.*www.ip-api.com`) nocase or
             // the following line is a broader look at dnscmd /enumrecords not explicitly called out in the report can comment out if not needed
-            //re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords`) nocase or 
+            //re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords`) nocase or
             re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords.*/zone`) nocase or
             re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumzones`) nocase or
             re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords.*/additional`) nocase or
@@ -32,7 +32,7 @@ rule recon_environment_enumeration_network_cisa_report {
             re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*firewall.*show`) nocase or
             re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*show`) nocase or
             re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*show.*v4tov4`) nocase or
-            re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*firewall.*show`) nocase or 
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*firewall.*show`) nocase or
             re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*portproxy.*show.*v4tov4`) nocase or
             re.regex($process.target.process.command_line, `(|cmd.*/c).*netstat.*-ano`) nocase
         )

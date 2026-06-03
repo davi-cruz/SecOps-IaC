@@ -6,7 +6,7 @@ rule adfs_db_suspicious_named_pipe_connection {
     reference = "https://github.com/Azure/Azure-Sentinel/blob/master/Solutions/Windows%20Security%20Events/Analytic%20Rules/ADFSDBNamedPipeConnection.yaml"
     type = "alert"
     platform = "Windows"
-    data_source = "sysmon"   
+    data_source = "sysmon"
     severity = "Medium"
     priority = "Medium"
 
@@ -19,12 +19,12 @@ rule adfs_db_suspicious_named_pipe_connection {
    not re.regex($process.target.process.file.full_path, `Microsoft.Identity.Health.Adfs.PshSurrogate.exe|Microsoft.IdentityServer.ServiceHost.exe|AzureADConnect.exe|Microsoft.Tri.Sensor.exe|wsmprovhost.exe|mmc.exe|sqlservr.exe|sqlwriter.exe`) nocase
    $process.target.resource.name = "\\MICROSOFT##WID\\tsql\\query" nocase
    /*
-   If you have a listing of ADFS servers, you can use a reference list or enumerate them in the field below. 
+   If you have a listing of ADFS servers, you can use a reference list or enumerate them in the field below.
    Alternatively, if ADFS servers are grouped in an asset attribute, that attribute could be used instead.
    */
    $process.principal.hostname = /adfs/ nocase
    $process.principal.hostname = $hostname
-   
+
  match:
    $hostname over 5m
 

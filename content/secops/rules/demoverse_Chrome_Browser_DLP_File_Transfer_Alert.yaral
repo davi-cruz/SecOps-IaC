@@ -5,7 +5,7 @@ rule demoverse_Chrome_Browser_DLP_File_Transfer_Alert {
     severity = "Low"
 
   events:
-    $security.metadata.product_name = "Chrome Management" 
+    $security.metadata.product_name = "Chrome Management"
     $security.metadata.product_event_type = "sensitiveDataEvent"
     $security.security_result.action_details = "EVENT_RESULT_BLOCKED"
     $security.security_result.rule_name != ""

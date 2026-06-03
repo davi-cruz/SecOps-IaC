@@ -1,5 +1,5 @@
 rule vt_relationships_file_downloaded_from_ip {
-  
+
   meta:
     author = "Google Cloud Security"
     description = "Alert on downloading a known file hash from a known IP with VT Relationships."
@@ -34,7 +34,7 @@ rule vt_relationships_file_downloaded_from_ip {
     $vt.graph.metadata.product_name = "VirusTotal Relationships"
     $vt.graph.entity.file.sha256 = $file_hash
 
-    //Uses VirusTotal integration via entity graph, this section maps the hash to the ip address it is downloaded from   
+    //Uses VirusTotal integration via entity graph, this section maps the hash to the ip address it is downloaded from
     $vt.graph.relations.entity_type = "IP_ADDRESS"
     $vt.graph.relations.relationship = "DOWNLOADED_FROM"
     $vt.graph.relations.entity.ip = $ip
@@ -59,7 +59,7 @@ rule vt_relationships_file_downloaded_from_ip {
     $target_process_file_full_path = array_distinct($file.target.process.file.full_path)
     $target_process_product_specfic_process_id = array_distinct($file.target.process.product_specific_process_id)
     $target_process_parent_process_product_specfic_process_id = array_distinct($file.target.process.parent_process.product_specific_process_id)
-    // Commented out principal.user.userid because it is already represented in graph as match variable. If match changes, can uncomment to add to results    
+    // Commented out principal.user.userid because it is already represented in graph as match variable. If match changes, can uncomment to add to results
     //$principal_user_userid = array_distinct($file.principal.user.userid)
     $target_user_userid = array_distinct($file.target.user.userid)
     $target_url = array_distinct($network.target.url)

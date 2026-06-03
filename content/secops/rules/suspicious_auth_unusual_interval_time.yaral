@@ -22,7 +22,7 @@ rule suspicious_auth_unusual_interval_time {
         $e1_long != $e2_long
 
         $e2.metadata.log_type = "WORKSPACE_ACTIVITY"
-        $e2.metadata.event_type = "USER_LOGIN"    
+        $e2.metadata.event_type = "USER_LOGIN"
         $e2.metadata.product_event_type = "login_success"
         // match variables
         $user = $e2.extracted.fields["actor.email"]
@@ -30,18 +30,18 @@ rule suspicious_auth_unusual_interval_time {
         $e2_long = $e2.principal.location.region_coordinates.longitude
 
     match:
-        $user, 
-        $e1_lat, 
-        $e1_long, 
-        $e2_lat, 
-        $e2_long 
+        $user,
+        $e1_lat,
+        $e1_long,
+        $e2_lat,
+        $e2_long
         over 1d
 
     outcome:
         // calculate the interval between first and last event, in seconds
         $duration_hours = cast.as_int(
             min(
-                ($e2.metadata.event_timestamp.seconds - $e1.metadata.event_timestamp.seconds) 
+                ($e2.metadata.event_timestamp.seconds - $e1.metadata.event_timestamp.seconds)
                 / 3600
             )
         )
@@ -56,9 +56,9 @@ rule suspicious_auth_unusual_interval_time {
                     $e2_long,
                     $e2_lat
                 )
-            ) 
+            )
             // convert the math.geo_distance result from meters to kilometers
-            / 1000 
+            / 1000
         )
 
         // calculate the speed in KPH
@@ -70,7 +70,7 @@ rule suspicious_auth_unusual_interval_time {
             if($kph > 250 and $kph <= 449, 50) +
             if($kph > 500 and $kph <= 999, 75) +
             if($kph >= 1000, 90)
-        ) 
+        )
 
         // change this according to your requirements
         $risk_score_threshold = 90

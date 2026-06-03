@@ -1,5 +1,5 @@
 rule whoami_execution {
- 
+
   meta:
     author = "Google Cloud Security"
     description = "Detects the execution of whoami, which is often used by attackers after exploitation to establish what credentials they are logged in under"

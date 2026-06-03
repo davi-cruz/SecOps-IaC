@@ -17,7 +17,7 @@ rule ioc_sha256_hash {
     $process.target.process.file.sha256 != ""
     $process.target.process.file.sha256 = $sha256
 
-    // Correlates with MISP data; can be modified based on your MISP parser or other TI 
+    // Correlates with MISP data; can be modified based on your MISP parser or other TI
     $ioc.graph.metadata.product_name = "MISP"
     $ioc.graph.metadata.entity_type = "FILE"
     $ioc.graph.metadata.source_type = "ENTITY_CONTEXT"

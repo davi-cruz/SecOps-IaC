@@ -19,7 +19,7 @@ rule okta_user_rejected_multiple_push_notifications {
     $login.metadata.product_name = "Okta"
     $login.metadata.vendor_name = "Okta"
     $login.metadata.event_type = "USER_UNCATEGORIZED"
-    ($login.metadata.product_event_type = "user.mfa.okta_verify.deny_push" and $login.security_result.summary = "User rejected Okta push verify") or 
+    ($login.metadata.product_event_type = "user.mfa.okta_verify.deny_push" and $login.security_result.summary = "User rejected Okta push verify") or
     ($login.metadata.product_event_type = "user.authentication.auth_via_mfa" and $login.security_result.detection_fields["factor"] = "OKTA_VERIFY_PUSH")
     $login.security_result.action = "BLOCK"
     $login.principal.user.userid = $userid
