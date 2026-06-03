@@ -13,14 +13,13 @@ on:
   # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-permissions:
-  contents: read
-  # 'id-token: write' is required to allow GitHub's OIDC provider to create a JSON Web Token for every run
-  id-token: write
-
 jobs:
   run-unit-tests:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
 
     env:
       LOGGING_LEVEL: ${{ vars.LOGGING_LEVEL }}
@@ -32,19 +31,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: google-github-actions/auth@v2
+      - uses: google-github-actions/auth@v3
         with:
           project_id: ${{ vars.GOOGLE_CLOUD_PROJECT_ID }}
-          workload_identity_provider: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER}}
+          workload_identity_provider: ${{ vars.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER}}
           access_token_lifetime: 180s
-          export_environment_variables: true
+          # export_environment_variables: true
           create_credentials_file: true
           cleanup_credentials: true
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"  # Caching pip dependencies
+          cache: "pip" # Caching pip dependencies
 
       - name: Install Python project dependencies
         run: pip install -r requirements_dev.txt
