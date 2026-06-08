@@ -9,21 +9,10 @@ on:
 
   # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    inputs:
-      environment:
-        description: "Target Google SecOps Environment"
-        required: true
-        default: "development"
-        type: choice
-        options:
-          - "development"
-          - "staging"
-          - "production"
 
 jobs:
   pull-latest-content:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment || (github.ref_name == 'main' && 'production') || (github.ref_name == 'staging' && 'staging') || 'development' }}
 
     permissions:
       contents: write
@@ -87,7 +76,7 @@ jobs:
           # Check if there are staged changes
           if ! git diff --cached --quiet; then
             git commit -m "latest content pulled from google secops api"
-            git push origin ${{ github.ref_name }}
+            git push origin main
           else
             echo "No changes to commit"
           fi

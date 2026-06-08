@@ -517,6 +517,9 @@ class Rules:
 
     parsed_rules = Rules.parse_rules(rules=raw_rules)
 
+    # Filter out rules that are archived in Google SecOps so they don't get written to Git
+    parsed_rules = [rule for rule in parsed_rules if not rule.archived]
+
     Rules.check_for_duplicate_rule_names(rules=parsed_rules)
 
     return Rules(rules=parsed_rules)
