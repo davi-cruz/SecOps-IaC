@@ -124,9 +124,15 @@ rule test_rule {
     assert new_yaml_path.exists()
     assert new_yaral_path.exists()
     
-    # Check that YARA-L rule header is also updated
+    # Check that YARA-L rule header is also updated and starts with the comment
     updated_yaral = new_yaral_path.read_text(encoding="utf-8")
+    assert updated_yaral.startswith(f"// original_name: {rule_name}\n")
     assert "rule test_rule_archived_abc1234 {" in updated_yaral
+
+    # Check that YAML config starts with the comment
+    updated_yaml = new_yaml_path.read_text(encoding="utf-8")
+    assert updated_yaml.startswith(f"# original_name: {rule_name}\n")
+
 
 
 def test_pre_process_skips_non_archived_rules(temp_rules_env):

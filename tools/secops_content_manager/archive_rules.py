@@ -103,6 +103,11 @@ def pre_process():
                     with open(yaral_path, "r", encoding="utf-8") as f:
                         yaral_text = f.read()
 
+                    # Prepend a comment with the original rule name
+                    yaral_comment = f"// original_name: {rule_name}\n"
+                    if not yaral_text.startswith(yaral_comment):
+                        yaral_text = yaral_comment + yaral_text
+
                     # Safely replace rule header (e.g. rule rule_name_xyz { -> rule rule_name_xyz_archived_sha {)
                     pattern = re.compile(rf"\brule\s+{re.escape(rule_name)}\b")
                     if pattern.search(yaral_text):
@@ -116,9 +121,20 @@ def pre_process():
                 else:
                     LOGGER.warning("YARA-L file not found for rule %s", rule_name)
 
-                # 2. Rename the .yaml config file
+                # 2. Add comment to the .yaml config file and rename it
+                with open(yaml_path, "r", encoding="utf-8") as f:
+                    yaml_text = f.read()
+
+                yaml_comment = f"# original_name: {rule_name}\n"
+                if not yaml_text.startswith(yaml_comment):
+                    yaml_text = yaml_comment + yaml_text
+
+                with open(yaml_path, "w", encoding="utf-8") as f:
+                    f.write(yaml_text)
+
                 new_yaml_path = RULES_DIR / f"{new_name}.yaml"
                 yaml_path.rename(new_yaml_path)
+
 
         except Exception as e:
             LOGGER.error("Failed to pre-process archived rule %s: %s", yaml_path.name, e)
