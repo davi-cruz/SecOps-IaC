@@ -312,3 +312,20 @@ def test_rule_config_entry():
         run_frequency=None,
         type=None,
     )
+
+
+def test_sanitize_rule_text():
+  """Tests for rules.Rules.sanitize_rule_text."""
+  # Test trailing whitespace removal
+  input_text = "rule test_rule {\n  events:\n    $e.metadata.event_type = \"USER_LOGIN\"   \n\n  outcome:\n    $risk_score = 0  \n}\n"
+  expected_text = "rule test_rule {\n  events:\n    $e.metadata.event_type = \"USER_LOGIN\"\n\n  outcome:\n    $risk_score = 5\n}\n"
+  assert Rules.sanitize_rule_text(input_text) == expected_text
+
+  # Test risk_score = max(0)
+  input_text2 = "rule test_rule2 {\n  outcome:\n    $risk_score = max(2)\n}\n"
+  expected_text2 = "rule test_rule2 {\n  outcome:\n    $risk_score = max(5)\n}\n"
+  assert Rules.sanitize_rule_text(input_text2) == expected_text2
+
+  # Test risk_score that is already valid (>= 5) is untouched
+  input_text3 = "rule test_rule3 {\n  outcome:\n    $risk_score = 15\n}\n"
+  assert Rules.sanitize_rule_text(input_text3) == input_text3

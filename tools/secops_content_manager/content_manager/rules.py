@@ -287,6 +287,45 @@ class Rules:
 
     return rule_config_parsed
 
+  @classmethod
+  def sanitize_rule_text(cls, rule_text: str) -> str:
+    """Sanitize the rule text to enforce style guide requirements automatically."""
+    # 1. Strip trailing whitespace from every line
+    lines = [line.rstrip() for line in rule_text.splitlines()]
+    rule_text = "\n".join(lines) + ("\n" if rule_text.endswith("\n") else "")
+
+    # 2. Enforce minimum risk score floor of 5 in the outcome section
+    outcome_match = re.search(
+        r'(outcome:\s*)(.*?)(?=\b(?:match|condition)\b|\})',
+        rule_text,
+        re.DOTALL | re.IGNORECASE
+    )
+    if outcome_match:
+      prefix = outcome_match.group(1)
+      outcome_content = outcome_match.group(2)
+
+      def risk_score_sub(match):
+        g1 = match.group(1)  # '$risk_score = '
+        g2 = match.group(2) or ''  # 'max(' or ''
+        g3 = match.group(3)  # '\d+'
+        g4 = match.group(4) or ''  # ')' or ''
+        val = int(g3)
+        if val < 5:
+          return f"{g1}{g2}5{g4}"
+        return match.group(0)
+
+      new_outcome_content = re.sub(
+          r'(\$risk_score\s*=\s*)(max\s*\(\s*)?(\d+)(\s*\))?',
+          risk_score_sub,
+          outcome_content,
+          flags=re.IGNORECASE
+      )
+
+      start, end = outcome_match.span(2)
+      rule_text = rule_text[:start] + new_outcome_content + rule_text[end:]
+
+    return rule_text
+
   def dump_rules(self, rules_dir: pathlib.Path = RULES_DIR):
     """Dump a list of rules to local files."""
     # Write rules out to .yaral files
@@ -295,9 +334,12 @@ class Rules:
       # Use the rule name for the file name.
       rule_file_path = f"{rules_dir}/{rule.name}.yaral"
 
+      # Sanitize the rule text to enforce style guide requirements automatically.
+      sanitized_text = self.sanitize_rule_text(rule.text)
+
       # Dump the rule to a file.
       with open(rule_file_path, "w", encoding="utf-8") as rule_file:
-        rule_file.write(rule.text)
+        rule_file.write(sanitized_text)
 
   def dump_rule_config(self):
     """Dump the configuration and metadata for a collection of rules."""
