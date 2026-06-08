@@ -642,8 +642,8 @@ aws_privilege_escalation_using_iam_login_profile:
   enabled: false
   id: ru_fa714c3b-dbea-47f5-8954-ff90d3a60b97
   resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_fa714c3b-dbea-47f5-8954-ff90d3a60b97
-  revision_create_time: '2026-06-03T02:20:21.297295Z'
-  revision_id: v_1780453221_297295000
+  revision_create_time: '2026-06-08T18:45:16.298239Z'
+  revision_id: v_1780944316_298239000
   run_frequency: HOURLY
   type: MULTI_EVENT
 aws_rds_snapshot_shared_publicly:
@@ -870,8 +870,8 @@ demoverse_HMS_CatchAll:
   enabled: true
   id: ru_98ad2771-77d0-4530-b32a-009b90c58ad0
   resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_98ad2771-77d0-4530-b32a-009b90c58ad0
-  revision_create_time: '2026-06-03T02:06:59.552655Z'
-  revision_id: v_1780452419_552655000
+  revision_create_time: '2026-06-08T18:45:14.585487Z'
+  revision_id: v_1780944314_585487000
   run_frequency: LIVE
   type: SINGLE_EVENT
 demoverse_cryptocurrency_mining_yara:
@@ -906,8 +906,8 @@ demoverse_safebrowsing_file_creation:
   enabled: true
   id: ru_163500c0-ba95-43b6-93a0-82533d65e744
   resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_163500c0-ba95-43b6-93a0-82533d65e744
-  revision_create_time: '2026-06-03T02:07:00.615215Z'
-  revision_id: v_1780452420_615215000
+  revision_create_time: '2026-06-08T18:45:14.987663Z'
+  revision_id: v_1780944314_987663000
   run_frequency: HOURLY
   type: MULTI_EVENT
 demoverse_suspicious_auth_unusual_interval_time:
@@ -966,8 +966,8 @@ demoverse_workspace_MalwareDownload:
   enabled: true
   id: ru_53420b6c-6d72-4513-8073-b07330b6d210
   resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_53420b6c-6d72-4513-8073-b07330b6d210
-  revision_create_time: '2026-06-03T02:20:48.148591Z'
-  revision_id: v_1780453248_148591000
+  revision_create_time: '2026-06-08T18:45:17.085311Z'
+  revision_id: v_1780944317_085311000
   run_frequency: LIVE
   type: SINGLE_EVENT
 dns_query_to_recently_created_domain:
