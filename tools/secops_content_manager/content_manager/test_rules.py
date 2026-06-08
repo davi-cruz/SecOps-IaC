@@ -47,7 +47,7 @@ TEST_RULE_CONFIG_FILE = TEST_DATA_DIR / "test_rule_config.yaml"
 def parsed_test_rules_fixture() -> Rules:
   """Load and parse test rules."""
   return Rules.load_rules(
-      rules_dir=TEST_RULES_DIR, rule_config_file=TEST_RULE_CONFIG_FILE
+      rules_dir=TEST_RULES_DIR
   )
 
 
@@ -62,7 +62,6 @@ def raw_test_rules_fixture() -> Sequence[Mapping[str, Any]]:
 def test_load_rules():
   """Tests for rules.Rules.load_rules."""
   RULES_DIR.mkdir(exist_ok=True)
-  RULE_CONFIG_FILE.touch(exist_ok=True)
 
   # Test that all local rules can be loaded
   rule_files_count = len(list(RULES_DIR.glob("*.yaral")))
@@ -83,6 +82,19 @@ def test_load_rules():
         / "test_rule_config_missing_rule_file.yaml",
         rules_dir=TEST_RULES_DIR,
     )
+
+
+def test_load_rules_missing_yaml_config(tmp_path):
+  """Ensure an exception occurs if a .yaral rule file doesn't have a corresponding .yaml config file."""
+  # Create a dummy .yaral file in tmp_path
+  yaral_file = tmp_path / "test_rule_no_config.yaral"
+  yaral_file.write_text("rule test_rule_no_config {\n  condition:\n    true\n}\n", encoding="utf-8")
+
+  with pytest.raises(
+      RuleConfigError,
+      match=r"Config file not found in .* with same name as rule file entry test_rule_no_config",
+  ):
+    Rules.load_rules(rules_dir=tmp_path)
 
 
 def test_parse_rules(raw_test_rules: Sequence[Mapping[str, Any]]):
@@ -254,7 +266,7 @@ def test_check_rule_config():
     )
 
   rule_config = Rules.load_rule_config(
-      rule_config_file=TEST_RULE_CONFIG_FILE, rules_dir=TEST_RULES_DIR
+      rules_dir=TEST_RULES_DIR
   )
 
   rule_config["rule_1"]["invalid_key"] = "invalid"

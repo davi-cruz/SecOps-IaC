@@ -1,0 +1,11 @@
+alerting: true
+archive_time: null
+archived: false
+create_time: '2024-07-30T20:21:24.227023Z'
+enabled: true
+id: ru_1e6885dc-68cc-453e-aab5-b8df1b669a04
+resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_1e6885dc-68cc-453e-aab5-b8df1b669a04
+revision_create_time: '2025-04-18T12:06:03.104575Z'
+revision_id: v_1744977963_104575000
+run_frequency: LIVE
+type: MULTI_EVENT

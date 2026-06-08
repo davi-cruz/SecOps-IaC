@@ -46,7 +46,6 @@ SEC_OPS_DIR = REPO_ROOT / "content" / "secops"
 CONFIG_DIR = SEC_OPS_DIR / "config"
 
 RULES_DIR = SEC_OPS_DIR / "rules"
-RULE_CONFIG_FILE = CONFIG_DIR / "rule_config.yaml"
 REF_LISTS_DIR = SEC_OPS_DIR / "reference_lists"
 REF_LIST_CONFIG_FILE = CONFIG_DIR / "reference_list_config.yaml"
 DATA_TABLES_DIR = SEC_OPS_DIR / "data_tables"
@@ -816,7 +815,6 @@ if __name__ == "__main__":
   DATA_TABLES_DIR.mkdir(exist_ok=True)
 
   # Create config files if they don't exist
-  RULE_CONFIG_FILE.touch(exist_ok=True)
   REF_LIST_CONFIG_FILE.touch(exist_ok=True)
   DATA_TABLE_CONFIG_FILE.touch(exist_ok=True)
   RULE_EXCLUSIONS_CONFIG_FILE.touch(exist_ok=True)

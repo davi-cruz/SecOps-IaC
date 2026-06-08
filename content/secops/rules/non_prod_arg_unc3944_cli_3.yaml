@@ -1,0 +1,11 @@
+alerting: false
+archive_time: null
+archived: false
+create_time: '2025-05-28T19:53:26.238543Z'
+enabled: false
+id: ru_4b27bda4-00ef-4242-976d-a67cc1cfaf71
+resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_4b27bda4-00ef-4242-976d-a67cc1cfaf71
+revision_create_time: '2025-05-28T19:53:26.238543Z'
+revision_id: v_1748462006_238543000
+run_frequency: LIVE
+type: SINGLE_EVENT

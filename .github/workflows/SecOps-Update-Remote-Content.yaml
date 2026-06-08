@@ -6,11 +6,23 @@ on:
   push:
     branches:
       - "main"
+      - "staging"
+      - "develop"
     paths:
       - "content/secops/**"
 
   # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target Google SecOps Environment"
+        required: true
+        default: "development"
+        type: choice
+        options:
+          - "development"
+          - "staging"
+          - "production"
 
 permissions:
   contents: write
@@ -20,6 +32,7 @@ permissions:
 jobs:
   update-remote-content:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || (github.ref_name == 'main' && 'production') || (github.ref_name == 'staging' && 'staging') || 'development' }}
 
     permissions:
       contents: write
@@ -63,16 +76,16 @@ jobs:
       - name: Run tests using pytest
         run: python -m pytest -v
 
-      - name: Update reference lists in Google SecOps based on files in main branch
+      - name: Update reference lists in Google SecOps
         run: python -m tools.secops_content_manager.content_manager reference-lists update
 
-      - name: Update data tables in Google SecOps based on files in main branch
+      - name: Update data tables in Google SecOps
         run: python -m tools.secops_content_manager.content_manager data-tables update
 
-      - name: Update rules in Google SecOps based on files in main branch
+      - name: Update rules in Google SecOps
         run: python -m tools.secops_content_manager.content_manager rules update
 
-      # After any changes are made to rules and reference lists in Google SecOps, the latest rules and reference lists are retrieved to update the main branch with the latest data (revision_id, revision_create_time, etc).
+      # After any changes are made to rules and reference lists in Google SecOps, the latest rules and reference lists are retrieved to update the branch with the latest data (revision_id, revision_create_time, etc).
 
       - name: Add files to git staging area
         run: git add content/secops/
@@ -85,7 +98,7 @@ jobs:
           # Check if there are staged changes
           if ! git diff --cached --quiet; then
             git commit -m "latest content pulled from google secops api"
-            git push origin main
+            git push origin ${{ github.ref_name }}
           else
             echo "No changes to commit"
           fi

@@ -161,9 +161,13 @@ class Rules:
   def load_rules(
       cls,
       rules_dir: pathlib.Path = RULES_DIR,
-      rule_config_file: pathlib.Path = RULE_CONFIG_FILE,
+      rule_config_file: pathlib.Path | None = None,
   ) -> "Rules":
     """Load rule files and config from disk."""
+    if rule_config_file is None:
+      if RULE_CONFIG_FILE.exists():
+        rule_config_file = RULE_CONFIG_FILE
+
     rule_config = Rules.load_rule_config(
         rule_config_file=rule_config_file, rules_dir=rules_dir
     )
@@ -172,7 +176,7 @@ class Rules:
     non_rule_files = [
         file_path
         for file_path in rules_dir.glob("*")
-        if not file_path.name.endswith(".yaral")
+        if not file_path.name.endswith(".yaral") and not file_path.name.endswith(".yaml")
     ]
 
     if non_rule_files:
@@ -194,7 +198,7 @@ class Rules:
 
       if rule_config.get(rule_name) is None:
         raise RuleConfigError(
-            f"{rule_name} not found in rule config file {rule_config_file}"
+            f"{rule_name} not found in rule config (source: {rule_config_file})"
         )
 
       rule = Rule(
@@ -211,7 +215,7 @@ class Rules:
           archived=rule_config[rule_name].get("archived"),
           archive_time=rule_config[rule_name].get("archive_time"),
           run_frequency=rule_config[rule_name].get("run_frequency"),
-          type=rule_config[rule_name].get("rule_type"),
+          type=rule_config[rule_name].get("type") or rule_config[rule_name].get("rule_type"),
           text=rule_text,
       )
 
@@ -230,32 +234,86 @@ class Rules:
   @classmethod
   def load_rule_config(
       cls,
-      rule_config_file: pathlib.Path = RULE_CONFIG_FILE,
+      rule_config_file: pathlib.Path | None = None,
       rules_dir: pathlib.Path = RULES_DIR,
   ) -> Mapping[str, Any]:
-    """Load rule config from file."""
+    """Load rule config from file or individual YAML files."""
     rule_config_parsed = {}
 
-    LOGGER.info("Loading rule config file from %s", rule_config_file)
-    with open(rule_config_file, "r", encoding="utf-8") as f:
-      rule_config = ruamel_yaml.load(f)
+    if rule_config_file is not None and rule_config_file.is_file():
+      LOGGER.info("Loading monolithic rule config file from %s", rule_config_file)
+      with open(rule_config_file, "r", encoding="utf-8") as f:
+        rule_config = ruamel_yaml.load(f)
 
-    if not rule_config:
-      LOGGER.info("Rule config file is empty.")
+      if not rule_config:
+        LOGGER.info("Rule config file is empty.")
+        return rule_config_parsed
+
+      Rules.check_rule_config(rule_config)
+      rule_files = list(rules_dir.glob("*.yaral"))
+      rule_file_names = [rule_file_path.stem for rule_file_path in rule_files]
+
+      for rule_name, rule_config_entry in rule_config.items():
+        # Raise an exception if a .yaral rule file is not found with the same name
+        # as the rule config entry
+        if rule_name not in rule_file_names:
+          raise RuleConfigError(
+              f"Rule file not found in {rules_dir} with same name as rule config"
+              f" entry {rule_name}"
+          )
+
+        try:
+          rule_config_entry_parsed = RuleConfigEntry(
+              name=rule_name,
+              id=rule_config_entry.get("id"),
+              resource_name=rule_config_entry.get("resource_name"),
+              create_time=rule_config_entry.get("create_time"),
+              revision_id=rule_config_entry.get("revision_id"),
+              revision_create_time=rule_config_entry.get("revision_create_time"),
+              enabled=rule_config_entry.get("enabled"),
+              alerting=rule_config_entry.get("alerting"),
+              archived=rule_config_entry.get("archived"),
+              archive_time=rule_config_entry.get("archive_time"),
+              run_frequency=rule_config_entry.get("run_frequency"),
+              type=rule_config_entry.get("type"),
+          )
+        except pydantic.ValidationError as e:
+          LOGGER.error(
+              """ValidationError occurred for rule config entry %s"
+                      %s""",
+              rule_name,
+              json.dumps(e.errors(), indent=4),
+          )
+          raise
+
+        rule_config_parsed[rule_config_entry_parsed.name] = (
+            rule_config_entry_parsed.model_dump(exclude={"name"})
+        )
+
       return rule_config_parsed
 
-    Rules.check_rule_config(rule_config)
+    # Load individual config files from the rules_dir
+    LOGGER.info("Loading individual rule config files from %s", rules_dir)
     rule_files = list(rules_dir.glob("*.yaral"))
     rule_file_names = [rule_file_path.stem for rule_file_path in rule_files]
 
-    for rule_name, rule_config_entry in rule_config.items():
-      # Raise an exception if a .yaral rule file is not found with the same name
-      # as the rule config entry
-      if rule_name not in rule_file_names:
+    for rule_name in rule_file_names:
+      yaml_file_path = rules_dir / f"{rule_name}.yaml"
+      if not yaml_file_path.is_file():
         raise RuleConfigError(
-            f"Rule file not found in {rules_dir} with same name as rule config"
+            f"Config file not found in {rules_dir} with same name as rule file"
             f" entry {rule_name}"
         )
+
+      with open(yaml_file_path, "r", encoding="utf-8") as f:
+        rule_config_entry = ruamel_yaml.load(f)
+
+      if not rule_config_entry:
+        raise RuleConfigError(
+            f"Rule config file {yaml_file_path} is empty."
+        )
+
+      Rules.check_rule_config({rule_name: rule_config_entry})
 
       try:
         rule_config_entry_parsed = RuleConfigEntry(
@@ -341,10 +399,9 @@ class Rules:
       with open(rule_file_path, "w", encoding="utf-8") as rule_file:
         rule_file.write(sanitized_text)
 
-  def dump_rule_config(self):
+  def dump_rule_config(self, rules_dir: pathlib.Path = RULES_DIR):
     """Dump the configuration and metadata for a collection of rules."""
-    rule_config = {}
-
+    LOGGER.info("Writing individual rule configs to %s", rules_dir)
     for rule in self.rules:
       try:
         rule_config_entry = RuleConfigEntry(
@@ -370,15 +427,10 @@ class Rules:
         )
         raise
 
-      rule_config[rule_config_entry.name] = rule_config_entry.model_dump(
-          exclude={"name"}
-      )
-
-    rule_config_file_path = RULE_CONFIG_FILE
-
-    LOGGER.info("Writing rule config to %s", rule_config_file_path)
-    with open(rule_config_file_path, "w", encoding="utf-8") as rule_config_file:
-      yaml.dump(rule_config, rule_config_file, sort_keys=True)
+      rule_config_file_path = rules_dir / f"{rule.name}.yaml"
+      config_data = rule_config_entry.model_dump(exclude={"name"})
+      with open(rule_config_file_path, "w", encoding="utf-8") as rule_config_file:
+        yaml.dump(config_data, rule_config_file, sort_keys=True)
 
   @classmethod
   def get_remote_rules(
@@ -621,7 +673,7 @@ class Rules:
       cls,
       http_session: requests.AuthorizedSession,
       rules_dir: pathlib.Path = RULES_DIR,
-      rule_config_file: pathlib.Path = RULE_CONFIG_FILE,
+      rule_config_file: pathlib.Path | None = None,
   ) -> Mapping[str, Sequence[Tuple[str, str]]] | None:
     """Update rules in Google SecOps based on local rule files."""
     LOGGER.info(
