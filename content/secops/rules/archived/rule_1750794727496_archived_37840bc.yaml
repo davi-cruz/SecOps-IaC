@@ -1,0 +1,12 @@
+# original_name: rule_1750794727496
+alerting: false
+archive_time: '2025-12-04T15:06:12.219863Z'
+archived: true
+create_time: '2025-06-24T19:57:30.631887Z'
+enabled: false
+id: ru_2e31e47d-fd24-498f-90f9-936464d8058c
+resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_2e31e47d-fd24-498f-90f9-936464d8058c
+revision_create_time: '2025-06-24T19:58:53.283759Z'
+revision_id: v_1750795133_283759000
+run_frequency: LIVE
+type: SINGLE_EVENT

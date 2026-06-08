@@ -81,9 +81,11 @@ class RuleOperations:
       return
 
     # Delete existing local rule files before writing a fresh copy of all rules
-    # pulled from Google SecOps
+    # pulled from Google SecOps (ignoring renamed archived rules)
     for local_rule_file in list(RULES_DIR.glob("*.yaral")):
-      local_rule_file.unlink()
+      if "_archived_" not in local_rule_file.name:
+        local_rule_file.unlink()
+
 
     remote_rules.dump_rules()
     remote_rules.dump_rule_config()

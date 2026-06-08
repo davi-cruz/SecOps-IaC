@@ -1,0 +1,12 @@
+# original_name: suspicious_auth_unusual_interval_time
+alerting: false
+archive_time: '2026-06-02T21:45:33.322635Z'
+archived: true
+create_time: '2025-06-17T12:46:10.785615Z'
+enabled: false
+id: ru_101df42b-37f9-4e2a-b151-8f9e44ccb7c0
+resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_101df42b-37f9-4e2a-b151-8f9e44ccb7c0
+revision_create_time: '2025-06-17T12:46:10.785615Z'
+revision_id: v_1750164370_785615000
+run_frequency: HOURLY
+type: MULTI_EVENT

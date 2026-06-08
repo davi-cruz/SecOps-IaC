@@ -1,0 +1,12 @@
+# original_name: prt_use_case_1
+alerting: false
+archive_time: '2025-12-04T15:54:21.680601Z'
+archived: true
+create_time: '2025-04-26T15:23:50.570415Z'
+enabled: false
+id: ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a
+resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a
+revision_create_time: '2025-04-29T17:52:59.831711Z'
+revision_id: v_1745949179_831711000
+run_frequency: LIVE
+type: SINGLE_EVENT

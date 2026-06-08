@@ -1,0 +1,20 @@
+// original_name: rule_1727979376900
+rule rule_1727979376900_archived_37840bc {
+
+
+  meta:
+
+    author = "analyst12345"
+    description = "8:00 AM local time"
+    severity = "Medium"
+
+  events:
+    $e.metadata.event_type = "USER_CREATION"
+
+  outcome:
+
+    $risk_score = 5
+
+  condition:
+    $e
+}
