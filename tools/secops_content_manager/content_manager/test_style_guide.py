@@ -27,6 +27,24 @@ RULES_DIR = REPO_ROOT / "content" / "secops" / "rules"
 # Find all local YARA-L rule files to test
 rule_files = list(RULES_DIR.glob("*.yaral"))
 
+
+class RuleContent(str):
+    """Custom string sub-class that preserves the original file path metadata."""
+
+    def __new__(cls, content, path):
+        obj = super().__new__(cls, content)
+        obj.path = path
+        return obj
+
+    @property
+    def relative_path(self) -> str:
+        """Return the path relative to the repository root."""
+        try:
+            return str(self.path.relative_to(REPO_ROOT))
+        except Exception:
+            return str(self.path)
+
+
 def extract_meta_value(rule_text: str, key: str) -> str | None:
     """Extract a metadata value from the YARA-L rule text using regex."""
     pattern = rf'^\s*{key}\s*=\s*["\']?([^"\'\n\r]+)["\']?'
@@ -35,6 +53,7 @@ def extract_meta_value(rule_text: str, key: str) -> str | None:
         return match.group(1).strip()
     return None
 
+
 def get_outcome_section(rule_text: str) -> str | None:
     """Extract the content of the outcome section if it exists."""
     match = re.search(r'outcome:\s*(.*?)(?=\b(?:match|condition)\b|\})', rule_text, re.DOTALL | re.IGNORECASE)
@@ -42,12 +61,14 @@ def get_outcome_section(rule_text: str) -> str | None:
         return match.group(1)
     return None
 
+
 @pytest.fixture(name="rule_content", scope="class")
-def rule_content_fixture(request) -> str:
+def rule_content_fixture(request) -> RuleContent:
     """Fixture to read the file content once per rule parameterized run."""
     file_path = request.param
     with open(file_path, "r", encoding="utf-8") as f:
-        return f.read()
+        return RuleContent(f.read(), file_path)
+
 
 # Parameterize at the class level so every test method runs for every rule file
 @pytest.mark.parametrize("rule_content", rule_files, indirect=True, ids=lambda p: p.name)
@@ -57,54 +78,54 @@ class TestRuleStyle:
     def test_no_tabs(self, rule_content):
         """Ensure no tab characters are used (use spaces for indentation)."""
         assert "\t" not in rule_content, (
-            "Rule contains tab characters. Please replace all tabs with spaces."
+            f"[{rule_content.relative_path}] Rule contains tab characters. Please replace all tabs with spaces."
         )
 
     def test_no_trailing_whitespace(self, rule_content):
         """Ensure no lines contain trailing whitespace."""
         for line_num, line in enumerate(rule_content.splitlines(), start=1):
             assert not line.endswith(" ") and not line.endswith("\t"), (
-                f"Line {line_num} contains trailing whitespace."
+                f"[{rule_content.relative_path}] Line {line_num} contains trailing whitespace."
             )
 
     def test_has_meta_section(self, rule_content):
         """Ensure the rule has a defined 'meta:' block."""
         assert "meta:" in rule_content, (
-            "Rule is missing the 'meta:' section."
+            f"[{rule_content.relative_path}] Rule is missing the 'meta:' section."
         )
 
     def test_has_author(self, rule_content):
         """Ensure the 'author' field is defined in meta and is not empty."""
-        assert "meta:" in rule_content, "Skipping: Missing meta block."
+        assert "meta:" in rule_content, f"[{rule_content.relative_path}] Skipping: Missing meta block."
         author = extract_meta_value(rule_content, "author")
-        assert author is not None, "Field 'author' is missing in the meta section."
-        assert author != "", "Field 'author' is defined but empty."
+        assert author is not None, f"[{rule_content.relative_path}] Field 'author' is missing in the meta section."
+        assert author != "", f"[{rule_content.relative_path}] Field 'author' is defined but empty."
 
     def test_has_description(self, rule_content):
         """Ensure the 'description' field is defined in meta and is not empty."""
-        assert "meta:" in rule_content, "Skipping: Missing meta block."
+        assert "meta:" in rule_content, f"[{rule_content.relative_path}] Skipping: Missing meta block."
         description = extract_meta_value(rule_content, "description")
-        assert description is not None, "Field 'description' is missing in the meta section."
-        assert description != "", "Field 'description' is defined but empty."
+        assert description is not None, f"[{rule_content.relative_path}] Field 'description' is missing in the meta section."
+        assert description != "", f"[{rule_content.relative_path}] Field 'description' is defined but empty."
 
     def test_has_valid_severity(self, rule_content):
         """Ensure 'severity' is defined and has a standard value."""
-        assert "meta:" in rule_content, "Skipping: Missing meta block."
+        assert "meta:" in rule_content, f"[{rule_content.relative_path}] Skipping: Missing meta block."
         severity = extract_meta_value(rule_content, "severity")
-        assert severity is not None, "Field 'severity' is missing in the meta section."
+        assert severity is not None, f"[{rule_content.relative_path}] Field 'severity' is missing in the meta section."
         valid_values = {"Info", "Low", "Medium", "High", "Critical"}
         assert severity.capitalize() in valid_values, (
-            f"Invalid severity value '{severity}'. Must be one of {valid_values}."
+            f"[{rule_content.relative_path}] Invalid severity value '{severity}'. Must be one of {valid_values}."
         )
 
     def test_has_valid_priority(self, rule_content):
         """Ensure that if 'priority' is defined, it contains a valid value."""
-        assert "meta:" in rule_content, "Skipping: Missing meta block."
+        assert "meta:" in rule_content, f"[{rule_content.relative_path}] Skipping: Missing meta block."
         priority = extract_meta_value(rule_content, "priority")
         if priority is not None:
             valid_values = {"Info", "Low", "Medium", "High", "Critical"}
             assert priority.capitalize() in valid_values, (
-                f"Invalid priority value '{priority}'. Must be one of {valid_values}."
+                f"[{rule_content.relative_path}] Invalid priority value '{priority}'. Must be one of {valid_values}."
             )
 
     def test_singular_outcome_variables(self, rule_content):
@@ -115,7 +136,7 @@ class TestRuleStyle:
             invalid_plural_vars = {"vendor_names", "product_names"}
             for var in outcome_vars:
                 assert var not in invalid_plural_vars, (
-                    f"Uses invalid plural outcome variable '${var}'. "
+                    f"[{rule_content.relative_path}] Uses invalid plural outcome variable '${var}'. "
                     "Must be singular (e.g., use '$vendor_name' instead of '$vendor_names')."
                 )
 
@@ -132,6 +153,7 @@ class TestRuleStyle:
                 score_val_str = risk_score_match.group(1) or risk_score_match.group(2)
                 score_val = int(score_val_str)
                 assert score_val >= 5, (
-                    f"Invalid $risk_score value ({score_val}). "
+                    f"[{rule_content.relative_path}] Invalid $risk_score value ({score_val}). "
                     "The style guide mandates a minimum floor of 5 (cannot be 0)."
                 )
+
