@@ -61,5 +61,4 @@ rule aws_privilege_escalation_using_iam_login_profile {
 
   condition:
     $profile and $login
-    // Trigger workflow run
 }
