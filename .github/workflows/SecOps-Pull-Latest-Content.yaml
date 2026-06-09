@@ -26,7 +26,7 @@ jobs:
       AUTHORIZATION_SCOPES: ${{ vars.AUTHORIZATION_SCOPES }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - run: |
@@ -42,7 +42,7 @@ jobs:
           create_credentials_file: true
           cleanup_credentials: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: "pip" # Caching pip dependencies

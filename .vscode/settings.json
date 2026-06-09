@@ -3,6 +3,5 @@
         "tools"
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "workbench.colorTheme": "YARA-L Theme"
+    "python.testing.pytestEnabled": true
 }
