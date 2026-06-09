@@ -40,8 +40,8 @@ rule o365_persistent_login_activity_to_azure_ADPowerShell_app {
     $country_region_login_attempt = array_distinct($login.principal.ip_geo_artifact.location.country_or_region)
     //added to populate alert graph with additional context
     $principal_ip = array_distinct($login.principal.ip)
-    //$target_user_email_addresses = array_distinct($login.target.user.email_addresses)
-    //$target_user_userid = array_distinct($login.target.user.userid)
+  //$target_user_email_addresses = array_distinct($login.target.user.email_addresses)
+  //$target_user_userid = array_distinct($login.target.user.userid)
 
   condition:
     // Can set based on your own threshold

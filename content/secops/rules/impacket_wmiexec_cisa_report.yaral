@@ -17,13 +17,13 @@ rule impacket_wmiexec_cisa_report {
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     (
-        $process.metadata.event_type = "PROCESS_LAUNCH" and
-        re.regex($process.target.process.command_line, `1&gt;.*\\ADMIN\$\\__.*2&gt;&amp;1`) nocase
+      $process.metadata.event_type = "PROCESS_LAUNCH" and
+      re.regex($process.target.process.command_line, `1&gt;.*\\ADMIN\$\\__.*2&gt;&amp;1`) nocase
     )
     or
     (
-        $process.metadata.event_type = "FILE_CREATION" and
-        re.regex($process.target.file.full_path, `\\windows\\__`) nocase
+      $process.metadata.event_type = "FILE_CREATION" and
+      re.regex($process.target.file.full_path, `\\windows\\__`) nocase
     )
     $process.principal.hostname = $hostname
 

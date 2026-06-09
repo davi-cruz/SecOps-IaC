@@ -1,4 +1,5 @@
 rule aws_s3_public_access_block_removed {
+
   meta:
     author = "Google Cloud Security"
     description = "Detect when the S3 Public Access Block configuration has been removed from a bucket or an account."

@@ -1,4 +1,5 @@
 rule ag_ioc_sha256_hash_vt_basic {
+
   meta:
     author = "Google Cloud Security"
     description = "Used for the Alert Graph Workshop. Detect file/process events with watchlisted hashes from MISP that VT flagged as MS Office docx file types"

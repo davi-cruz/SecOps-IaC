@@ -1,4 +1,5 @@
 rule apr29_unc6692_malicious_execution_temp {
+
   meta:
     author = "Gemini CLI"
     description = "Detects execution of binaries from Windows Temp directories, a common TTP for UNC6692."

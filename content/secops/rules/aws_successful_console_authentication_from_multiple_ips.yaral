@@ -29,12 +29,12 @@ rule aws_successful_console_authentication_from_multiple_ips {
 
   outcome:
     $risk_score = max(
-        // Unauthorized geographies
-        if($login.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
-        if($login.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
-        if($login.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
-        if($login.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
-        if($login.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
+      // Unauthorized geographies
+      if($login.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
+      if($login.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
+      if($login.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
+      if($login.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
+      if($login.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
     )
     $mitre_attack_tactic = "Resource Development"
     $mitre_attack_technique = "Compromise Accounts"

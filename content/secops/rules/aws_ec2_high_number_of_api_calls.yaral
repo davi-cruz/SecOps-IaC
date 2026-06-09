@@ -1,4 +1,5 @@
 rule aws_ec2_high_number_of_api_calls {
+
   meta:
     author = "Google Cloud Security"
     description = "Detect when an EC2 instance makes high number of API calls."

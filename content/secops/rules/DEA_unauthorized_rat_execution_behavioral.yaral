@@ -1,4 +1,5 @@
 rule DEA_unauthorized_rat_execution_behavioral {
+
   meta:
     author = "Gemini CLI"
     description = "Detects common RATs executed from user download directories, common in Plump Spider activity."

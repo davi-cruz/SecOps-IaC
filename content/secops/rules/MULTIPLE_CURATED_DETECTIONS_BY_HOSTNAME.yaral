@@ -13,8 +13,8 @@ rule MULTIPLE_CURATED_DETECTIONS_BY_HOSTNAME {
     $hostname = $d.detection.collection_elements.references.event.principal.hostname
     $hostname = "CYM-PROD-GCP-WIN01"
 
-    match:
-        $hostname over 1h
+  match:
+    $hostname over 1h
 
   outcome:
     $risk_score = math.ceil(sum($d.detection.detection.risk_score) / count($d.detection.detection.rule_id))

@@ -23,9 +23,9 @@ rule recon_environment_enumeration_active_directory_cisa_report {
 
     // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as desired
     (
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*net.*localgroup.*administrators`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*net.*group.*\/dom`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*net.*group.*Domain.*Admins.*\/dom`) nocase
+      re.regex($process.target.process.command_line, `(|cmd.*/c).*net.*localgroup.*administrators`) nocase or
+      re.regex($process.target.process.command_line, `(|cmd.*/c).*net.*group.*\/dom`) nocase or
+      re.regex($process.target.process.command_line, `(|cmd.*/c).*net.*group.*Domain.*Admins.*\/dom`) nocase
     )
 
   match:

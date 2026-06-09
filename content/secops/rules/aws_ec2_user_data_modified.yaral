@@ -1,4 +1,5 @@
 rule aws_ec2_user_data_modified {
+
   meta:
     author = "Google Cloud Security"
     description = "Detect modifications to user data script on an EC2 instance."

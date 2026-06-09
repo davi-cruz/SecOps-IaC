@@ -1,5 +1,6 @@
 rule demoverse_mandiant_asm_confirmed_cve_alert
 {
+
   meta:
 
     author = "@swenzel"

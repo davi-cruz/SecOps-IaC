@@ -1,4 +1,5 @@
 rule aws_console_login_without_mfa {
+
   meta:
     author = "Google Cloud Security"
     description = "Detect when a user logs into AWS console without MFA."

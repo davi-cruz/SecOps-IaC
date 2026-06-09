@@ -1,4 +1,5 @@
 rule aws_ec2_ami_or_snapshot_shared_publicly {
+
   meta:
     author = "Google Cloud Security"
     description = "Detects when an Amazon EC2 AMI or Snapshot is shared publicly."
@@ -45,5 +46,5 @@ rule aws_ec2_ami_or_snapshot_shared_publicly {
     $target_resource_product_object_id = array_distinct($cloudtrail.target.resource.product_object_id)
 
   condition:
-   $cloudtrail
+    $cloudtrail
 }

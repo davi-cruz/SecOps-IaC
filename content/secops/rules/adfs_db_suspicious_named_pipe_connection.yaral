@@ -1,4 +1,5 @@
 rule adfs_db_suspicious_named_pipe_connection {
+
   meta:
     author = "Google Cloud Security"
     description = "Connection to ADFS via named pipes that are not using specific Windows ADFS processes may be indicative of user attempting to access ADFS for suspicious purposes"
@@ -25,7 +26,7 @@ rule adfs_db_suspicious_named_pipe_connection {
     $process.principal.hostname = $hostname
 
   match:
-   $hostname over 5m
+    $hostname over 5m
 
   outcome:
     $risk_score = 65

@@ -19,8 +19,8 @@ rule aws_new_mfa_method_registered_for_user {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-    $cloudtrail.metadata.product_event_type = "CreateVirtualMFADevice" or
-    $cloudtrail.metadata.product_event_type = "EnableMFADevice"
+      $cloudtrail.metadata.product_event_type = "CreateVirtualMFADevice" or
+      $cloudtrail.metadata.product_event_type = "EnableMFADevice"
     )
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.principal.user.user_display_name = $user_id

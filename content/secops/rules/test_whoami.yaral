@@ -18,6 +18,7 @@ rule test_whoami {
   events:
     $e.target.process.command_line = /whoami/ nocase
     not ($e.metadata.base_labels.namespaces = "LogStory" or $e.metadata.base_labels.namespaces = "Cymbal")
+
   outcome:
     // For a multi-event rule an aggregation function is required
     // e.g., risk_score = max(0)

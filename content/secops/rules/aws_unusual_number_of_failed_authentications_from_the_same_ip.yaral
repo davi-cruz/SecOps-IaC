@@ -29,12 +29,12 @@ rule aws_unusual_number_of_failed_authentications_from_the_same_ip {
 
   outcome:
     $risk_score = max(
-        // Unauthorized geographies
-        if($fail.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
-        if($fail.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
-        if($fail.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
-        if($fail.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
-        if($fail.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
+      // Unauthorized geographies
+      if($fail.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
+      if($fail.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
+      if($fail.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
+      if($fail.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
+      if($fail.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
     )
     $mitre_attack_tactic = "Credential Access"
     $mitre_attack_technique = "Brute Force: Credential Stuffing"

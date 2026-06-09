@@ -21,7 +21,6 @@ rule rule_1750794727496_archived_37840bc {
     $user = $e.target.user.userid
     $ip = $e.principal.ip
 
-
   outcome:
     // For a multi-event rule an aggregation function is required
     // e.g., risk_score = max(0)

@@ -12,7 +12,7 @@ rule non_prod_arg_unc3944_cli_22 {
     slot_usage = "0.0007"
     rule_id = "9ef25611-dad8-4fc3-be64-d533ed9fdb59"
 
-  customer_meta:
+    customer_meta:
     description = "Detects the execution of the nltest /dclist:user.global.local command. This command is used to enumerate domain controllers in a specific domain, which can be used by attackers for reconnaissance purposes."
     rule_name = "UNC3944 Nltest Dclist User Global Local"
     severity = "Low"

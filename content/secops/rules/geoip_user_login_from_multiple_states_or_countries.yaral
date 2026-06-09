@@ -47,4 +47,4 @@ rule geoip_user_login_from_multiple_states_or_countries {
 
   condition:
     #country >= 1 and #state >= 2
- }
+}

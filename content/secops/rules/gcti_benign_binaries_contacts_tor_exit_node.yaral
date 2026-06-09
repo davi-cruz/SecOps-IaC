@@ -41,13 +41,13 @@ rule gcti_benign_binaries_contacts_tor_exit_node {
 
   outcome:
     $risk_score = max(
-        if($tor.graph.metadata.threat.confidence = "HIGH_CONFIDENCE", 70) +
-        // Unauthorized target geographies
-        if($network.target.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
-        if($network.target.ip_geo_artifact.location.country_or_region = "Iran", 20) +
-        if($network.target.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
-        if($network.target.ip_geo_artifact.location.country_or_region = "Russia", 20) +
-        if($network.target.ip_geo_artifact.location.country_or_region = "Syria", 20)
+      if($tor.graph.metadata.threat.confidence = "HIGH_CONFIDENCE", 70) +
+      // Unauthorized target geographies
+      if($network.target.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
+      if($network.target.ip_geo_artifact.location.country_or_region = "Iran", 20) +
+      if($network.target.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
+      if($network.target.ip_geo_artifact.location.country_or_region = "Russia", 20) +
+      if($network.target.ip_geo_artifact.location.country_or_region = "Syria", 20)
     )
     $mitre_attack_tactic = "Command and Control"
     $mitre_attack_technique = "Proxy: Multi-hop Proxy"

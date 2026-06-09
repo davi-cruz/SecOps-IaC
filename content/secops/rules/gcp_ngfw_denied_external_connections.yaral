@@ -20,7 +20,7 @@ rule gcp_ngfw_denied_external_connections {
     $network.principal.resource_ancestors.product_object_id = "fw-ips" or $network.target.resource_ancestors.product_object_id = "fw-ips"
     $network.metadata.log_type = "GCP_FIREWALL"
     $network.security_result.action_details = "DENIED"
-//    not net.ip_in_range_cidr($network.target.ip, "10.0.0.0/8") or not net.ip_in_range_cidr($network.target.ip, "172.16.0.0/12") not net.ip_in_range_cidr($network.target.ip, "192.168.0.0/16") // Checks if does not match RFC1918 ranges
+  //    not net.ip_in_range_cidr($network.target.ip, "10.0.0.0/8") or not net.ip_in_range_cidr($network.target.ip, "172.16.0.0/12") not net.ip_in_range_cidr($network.target.ip, "192.168.0.0/16") // Checks if does not match RFC1918 ranges
 
   outcome:
     // For a multi-event rule an aggregation function is required

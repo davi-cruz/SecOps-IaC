@@ -24,7 +24,6 @@ rule demoverse_Chrome_Browser_Alert_SideLoaded_Extensions {
     $Userid = array_distinct($user)
     $LocalUserID = array_distinct($local_user)
 
-
   condition:
     $event
 }

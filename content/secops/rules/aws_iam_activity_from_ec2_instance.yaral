@@ -20,15 +20,15 @@ rule aws_iam_activity_from_ec2_instance {
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     $cloudtrail.target.application = "iam.amazonaws.com"
     (
-    $cloudtrail.metadata.product_event_type = "CreateUser" or
-    $cloudtrail.metadata.product_event_type = "AttachUserPolicy" or
-    $cloudtrail.metadata.product_event_type = "CreateLoginProfile" or
-    $cloudtrail.metadata.product_event_type = "UpdateLoginProfile" or
-    $cloudtrail.metadata.product_event_type = "CreateAccessKey" or
-    $cloudtrail.metadata.product_event_type = "CreateGroup" or
-    $cloudtrail.metadata.product_event_type = "AttachGroupPolicy" or
-    $cloudtrail.metadata.product_event_type = "CreateRole" or
-    $cloudtrail.metadata.product_event_type = "AttachRolePolicy"
+      $cloudtrail.metadata.product_event_type = "CreateUser" or
+      $cloudtrail.metadata.product_event_type = "AttachUserPolicy" or
+      $cloudtrail.metadata.product_event_type = "CreateLoginProfile" or
+      $cloudtrail.metadata.product_event_type = "UpdateLoginProfile" or
+      $cloudtrail.metadata.product_event_type = "CreateAccessKey" or
+      $cloudtrail.metadata.product_event_type = "CreateGroup" or
+      $cloudtrail.metadata.product_event_type = "AttachGroupPolicy" or
+      $cloudtrail.metadata.product_event_type = "CreateRole" or
+      $cloudtrail.metadata.product_event_type = "AttachRolePolicy"
     )
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.principal.ip = $ip

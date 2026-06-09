@@ -24,8 +24,8 @@ rule okta_user_login_out_of_hours {
     $login.metadata.event_timestamp.seconds = $timestamp
 
     (
-        01 = timestamp.get_day_of_week($timestamp, "UTC") or //Sunday
-        07 = timestamp.get_day_of_week($timestamp, "UTC")  //Saturday
+      01 = timestamp.get_day_of_week($timestamp, "UTC") or //Sunday
+      07 = timestamp.get_day_of_week($timestamp, "UTC")  //Saturday
     )
 
   match:
@@ -33,9 +33,9 @@ rule okta_user_login_out_of_hours {
 
   outcome:
     $risk_score = max(
-        if (01 = timestamp.get_day_of_week($timestamp, "UTC"), 10) +
-        if (07 = timestamp.get_day_of_week($timestamp, "UTC"), 15) +
-        if ( ( timestamp.get_hour($timestamp, "UTC") >= 0 and timestamp.get_hour($timestamp,"UTC")<= 7) or timestamp.get_hour($timestamp,"UTC") > 20, 50)
+      if (01 = timestamp.get_day_of_week($timestamp, "UTC"), 10) +
+      if (07 = timestamp.get_day_of_week($timestamp, "UTC"), 15) +
+      if ( ( timestamp.get_hour($timestamp, "UTC") >= 0 and timestamp.get_hour($timestamp,"UTC")<= 7) or timestamp.get_hour($timestamp,"UTC") > 20, 50)
     )
     $mitre_attack_tactic = "Defense Evasion, Persistence, Privilege Escalation, Initial Access"
     $mitre_attack_technique = "Valid Accounts"

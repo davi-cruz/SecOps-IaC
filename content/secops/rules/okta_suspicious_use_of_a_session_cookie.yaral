@@ -21,9 +21,9 @@ rule okta_suspicious_use_of_a_session_cookie {
     $login.metadata.event_type = "USER_UNCATEGORIZED"
     $login.metadata.product_event_type = "policy.evaluate_sign_on"
     (
-        $login.security_result.action = "ALLOW" or
-        $login.security_result.action = "ALLOW_WITH_MODIFICATION" or
-        $login.security_result.action = "CHALLENGE"
+      $login.security_result.action = "ALLOW" or
+      $login.security_result.action = "ALLOW_WITH_MODIFICATION" or
+      $login.security_result.action = "CHALLENGE"
     )
     $login.principal.user.userid = $userid
     $login.security_result.detection_fields["dtHash"] = $dtHash

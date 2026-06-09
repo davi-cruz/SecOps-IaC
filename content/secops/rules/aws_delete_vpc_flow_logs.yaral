@@ -1,4 +1,5 @@
 rule aws_delete_vpc_flow_logs {
+
   meta:
     author = "Google Cloud Security"
     description = "Detects when AWS VPC FLow Logs are deleted."

@@ -1,4 +1,5 @@
 rule gemini_rule_port_scan {
+
   meta:
     author = "Gemini in Google SecOps"
     description = "Prompt: Crie uma regra referente a port scan"

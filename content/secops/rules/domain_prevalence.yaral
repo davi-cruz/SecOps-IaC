@@ -42,7 +42,6 @@ rule domain_prevalence {
     $principal_process_parent_process_product_specfic_process_id = array_distinct($dns.principal.process.parent_process.product_specific_process_id)
     $principal_user_userid = array_distinct($dns.principal.user.userid)
 
-
   condition:
     $dns and $prevalence
 }

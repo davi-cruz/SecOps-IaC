@@ -1,4 +1,4 @@
- rule google_safebrowsing_with_prevalence {
+rule google_safebrowsing_with_prevalence {
 
   meta:
     author = "Google Cloud Security"
@@ -34,7 +34,7 @@
   match:
     $hostname, $hash over 5m
 
-   outcome:
+  outcome:
     $risk_score = max(95)
     $event_count = count_distinct($execution.metadata.id)
     // added to populate alert graph with additional context

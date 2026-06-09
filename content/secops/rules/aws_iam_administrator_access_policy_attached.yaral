@@ -19,9 +19,9 @@ rule aws_iam_administrator_access_policy_attached {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-        $cloudtrail.metadata.product_event_type = "AttachUserPolicy" or
-        $cloudtrail.metadata.product_event_type = "AttachGroupPolicy" or
-        $cloudtrail.metadata.product_event_type = "AttachRolePolicy"
+      $cloudtrail.metadata.product_event_type = "AttachUserPolicy" or
+      $cloudtrail.metadata.product_event_type = "AttachGroupPolicy" or
+      $cloudtrail.metadata.product_event_type = "AttachRolePolicy"
     )
     $cloudtrail.target.resource.name = "arn:aws:iam::aws:policy/AdministratorAccess"
     $cloudtrail.security_result.action = "ALLOW"

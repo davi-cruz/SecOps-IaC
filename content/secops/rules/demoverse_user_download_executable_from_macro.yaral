@@ -23,16 +23,13 @@ rule demoverse_user_download_executable_from_macro {
     $proxy_event.principal.user.userid = $user
     $proxy_event.principal.user.userid != /test/
 
-
     // correlate with EDR event indicating Excel activity
     $edr_event.principal.user.userid  = $user
     $edr_event.principal.process.file.names = /excel/ nocase
     $edr_event.metadata.event_type = "PROCESS_LAUNCH"
 
-
   match:
     $user over 5m
-
 
   outcome:
     $mitre_attack_tactic = "Execution"

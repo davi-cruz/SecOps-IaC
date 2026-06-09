@@ -31,6 +31,7 @@ rule gcp_ngfw_enterprise_threats {
     $target_ip = array_distinct($network.target.ip)
     $severity = array_distinct($network.security_result.severity)
     $action = array_distinct($network.security_result.action_details)
+
   condition:
     $network
 }

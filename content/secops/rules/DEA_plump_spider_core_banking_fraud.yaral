@@ -1,4 +1,5 @@
 rule DEA_plump_spider_core_banking_fraud {
+
   meta:
     author = "Gemini CLI"
     description = "Detects potential credit limit fraud in core banking platforms by monitoring for limit increases in anomalous patterns."

@@ -1,4 +1,5 @@
 rule aws_account_leaving_or_removed_from_organization {
+
   meta:
     author = "Google Cloud Security"
     description = "Detect an AWS account attempting to leave or being removed from an AWS organization."

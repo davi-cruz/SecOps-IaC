@@ -19,27 +19,27 @@ rule aws_ses_service_modification {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-        $cloudtrail.metadata.product_event_type = "CreateEmailIdentity" or
-        $cloudtrail.metadata.product_event_type = "DeleteEmailIdentity" or
-        $cloudtrail.metadata.product_event_type = "VerifyEmailIdentity" or
-        $cloudtrail.metadata.product_event_type = "VerifyDomainIdentity" or
-        $cloudtrail.metadata.product_event_type = "VerifyDomainDkim"
+      $cloudtrail.metadata.product_event_type = "CreateEmailIdentity" or
+      $cloudtrail.metadata.product_event_type = "DeleteEmailIdentity" or
+      $cloudtrail.metadata.product_event_type = "VerifyEmailIdentity" or
+      $cloudtrail.metadata.product_event_type = "VerifyDomainIdentity" or
+      $cloudtrail.metadata.product_event_type = "VerifyDomainDkim"
     )
     or
     (
-        (
-            $cloudtrail.metadata.product_event_type = "UpdateAccountSendingEnabled" or
-            $cloudtrail.metadata.product_event_type = "UpdateConfigurationSetSendingEnabled"
-        )
-        and $cloudtrail.target.resource.attribute.labels["enabled"] = "true"
+      (
+        $cloudtrail.metadata.product_event_type = "UpdateAccountSendingEnabled" or
+        $cloudtrail.metadata.product_event_type = "UpdateConfigurationSetSendingEnabled"
+      )
+      and $cloudtrail.target.resource.attribute.labels["enabled"] = "true"
     )
     or
     (
-        (
-            $cloudtrail.metadata.product_event_type = "PutAccountSendingAttributes" or
-            $cloudtrail.metadata.product_event_type = "PutConfigurationSetSendingOptions"
-        )
-        and $cloudtrail.target.resource.attribute.labels["sendingEnabled"] = "true"
+      (
+        $cloudtrail.metadata.product_event_type = "PutAccountSendingAttributes" or
+        $cloudtrail.metadata.product_event_type = "PutConfigurationSetSendingOptions"
+      )
+      and $cloudtrail.target.resource.attribute.labels["sendingEnabled"] = "true"
     )
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.principal.user.userid = $user_id

@@ -1,4 +1,5 @@
 rule aws_cloudtrail_logging_tampered {
+
   meta:
     author = "Google Cloud Security"
     description = "Detects when CloudTrail logging is updated, stopped or deleted."

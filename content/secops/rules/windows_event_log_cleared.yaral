@@ -17,24 +17,24 @@ rule windows_event_log_cleared {
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     (
-        $process.metadata.event_type = "PROCESS_LAUNCH" and
-        // currently the command line is focused on the three primary log sets, could expand this further if desired
-        re.regex($process.target.process.command_line, `wevtutil.*cl.*(system|application|security)`) nocase
+      $process.metadata.event_type = "PROCESS_LAUNCH" and
+      // currently the command line is focused on the three primary log sets, could expand this further if desired
+      re.regex($process.target.process.command_line, `wevtutil.*cl.*(system|application|security)`) nocase
     )
     or
     (
-        $process.metadata.event_type = "SYSTEM_AUDIT_LOG_WIPE" and
-        $process.metadata.vendor_name = "Microsoft"
+      $process.metadata.event_type = "SYSTEM_AUDIT_LOG_WIPE" and
+      $process.metadata.vendor_name = "Microsoft"
     )
     or
     (
-        $process.metadata.event_type = "STATUS_UPDATE" and
-        $process.metadata.product_name = "PowerShell" and
-        $process.metadata.vendor_name = "Microsoft" and
-        (
-            re.regex($process.security_result.description, `Remove-EventLog`) nocase or
-            re.regex($process.security_result.description, `Clear-EventLog`) nocase
-        )
+      $process.metadata.event_type = "STATUS_UPDATE" and
+      $process.metadata.product_name = "PowerShell" and
+      $process.metadata.vendor_name = "Microsoft" and
+      (
+        re.regex($process.security_result.description, `Remove-EventLog`) nocase or
+        re.regex($process.security_result.description, `Clear-EventLog`) nocase
+      )
     )
     $process.principal.hostname = $hostname
 

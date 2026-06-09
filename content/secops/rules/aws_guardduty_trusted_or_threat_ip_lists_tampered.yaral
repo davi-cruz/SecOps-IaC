@@ -21,8 +21,8 @@ rule aws_guardduty_trusted_or_threat_ip_lists_tampered {
     $cloudtrail.metadata.product_event_type = "DeleteIPSet" or $cloudtrail.metadata.product_event_type = "DeleteThreatIntelSet" or
     (
       (
-          $cloudtrail.metadata.product_event_type = "UpdateIPSet" or
-          $cloudtrail.metadata.product_event_type = "UpdateThreatIntelSet"
+        $cloudtrail.metadata.product_event_type = "UpdateIPSet" or
+        $cloudtrail.metadata.product_event_type = "UpdateThreatIntelSet"
       )
       and $cloudtrail.target.resource.attribute.labels["activate"] = "false"
     )
@@ -30,12 +30,12 @@ rule aws_guardduty_trusted_or_threat_ip_lists_tampered {
 
   outcome:
     $risk_score = max(
-        // Unauthorized geographies
-        if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
-        if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
-        if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
-        if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
-        if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
+      // Unauthorized geographies
+      if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
+      if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
+      if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
+      if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
+      if($cloudtrail.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
     )
     $mitre_attack_tactic = "Defense Evasion"
     $mitre_attack_technique = "Impair Defenses"

@@ -1,4 +1,5 @@
 rule aws_s3_made_public_by_acl {
+
   meta:
     author = "Google Cloud Security"
     description = "Detect when an AWS S3 bucket is made public using ACL."
@@ -19,8 +20,8 @@ rule aws_s3_made_public_by_acl {
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     $cloudtrail.metadata.product_event_type = "PutBucketAcl"
     (
-        $cloudtrail.target.resource.attribute.labels["URI"] = "http://acs.amazonaws.com/groups/global/AuthenticatedUsers" or
-        $cloudtrail.target.resource.attribute.labels["URI"] = "http://acs.amazonaws.com/groups/global/AllUsers"
+      $cloudtrail.target.resource.attribute.labels["URI"] = "http://acs.amazonaws.com/groups/global/AuthenticatedUsers" or
+      $cloudtrail.target.resource.attribute.labels["URI"] = "http://acs.amazonaws.com/groups/global/AllUsers"
     )
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.principal.user.userid = $user_id

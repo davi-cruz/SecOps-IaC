@@ -1,6 +1,5 @@
 rule demoverse_cryptocurrency_mining_yara {
 
-
   meta:
 
     author = "Jose Marin"
@@ -12,7 +11,6 @@ rule demoverse_cryptocurrency_mining_yara {
     //Finding from SCC
     $gcp.metadata.product_event_type = "Execution: Cryptocurrency Mining YARA Rule"
     $gcp.security_result.severity = $cbn_severity
-
 
   outcome:
 

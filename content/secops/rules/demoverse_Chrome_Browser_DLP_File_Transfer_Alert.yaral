@@ -1,4 +1,5 @@
 rule demoverse_Chrome_Browser_DLP_File_Transfer_Alert {
+
   meta:
     author = "GK"
     description = "Reports sensitive data event where a user allowed the event"
@@ -15,7 +16,7 @@ rule demoverse_Chrome_Browser_DLP_File_Transfer_Alert {
     $security.target.file.full_path = $local_file
 
   match:
-      $userid over 5m
+    $userid over 5m
 
   outcome:
 
