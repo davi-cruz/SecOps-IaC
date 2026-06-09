@@ -1,6 +1,9 @@
 rule demoverse_safebrowsing_file_creation {
 
   meta:
+    author = "Google Cloud Security"
+    description = "Detects when a file is created on a host and that file has been flagged as malicious by Google Safe Browsing. This rule is intended to be used with the Demoverse"
+    severity = "High"
 
   events:
     ($execution.metadata.event_type = "PROCESS_LAUNCH" or $execution.metadata.event_type = "FILE_CREATION")
