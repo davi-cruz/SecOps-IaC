@@ -24,8 +24,9 @@ import pytest
 REPO_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
 RULES_DIR = REPO_ROOT / "content" / "secops" / "rules"
 
-# Find all local YARA-L rule files to test
-rule_files = list(RULES_DIR.glob("*.yaral"))
+# Find all local YARA-L rule files to test, including archived rules
+rule_files = list(RULES_DIR.glob("*.yaral")) + list((RULES_DIR / "archived").glob("*.yaral"))
+
 
 
 class RuleContent(str):
@@ -70,8 +71,16 @@ def rule_content_fixture(request) -> RuleContent:
         return RuleContent(f.read(), file_path)
 
 
+def _get_relative_path_id(p: pathlib.Path) -> str:
+    """Return the relative path of a rule file to make test failures easier to find."""
+    try:
+        return str(p.relative_to(REPO_ROOT))
+    except ValueError:
+        return p.name
+
+
 # Parameterize at the class level so every test method runs for every rule file
-@pytest.mark.parametrize("rule_content", rule_files, indirect=True, ids=lambda p: p.name)
+@pytest.mark.parametrize("rule_content", rule_files, indirect=True, ids=_get_relative_path_id)
 class TestRuleStyle:
     """Style guide test cases for YARA-L rules."""
 

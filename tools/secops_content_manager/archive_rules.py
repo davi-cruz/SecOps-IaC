@@ -112,6 +112,11 @@ def pre_process():
                     pattern = re.compile(rf"\brule\s+{re.escape(rule_name)}\b")
                     if pattern.search(yaral_text):
                         new_yaral_text = pattern.sub(f"rule {new_name}", yaral_text, count=1)
+                        
+                        # Apply standard linter formatting / sanitization automatically
+                        from tools.secops_content_manager.content_manager.rules import Rules
+                        new_yaral_text = Rules.sanitize_rule_text(new_yaral_text)
+                        
                         with open(yaral_path, "w", encoding="utf-8") as f:
                             f.write(new_yaral_text)
                     else:
