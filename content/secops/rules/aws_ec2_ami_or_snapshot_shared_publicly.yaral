@@ -1,5 +1,4 @@
 rule aws_ec2_ami_or_snapshot_shared_publicly {
-
   meta:
     author = "Google Cloud Security"
     description = "Detects when an Amazon EC2 AMI or Snapshot is shared publicly."
@@ -19,8 +18,8 @@ rule aws_ec2_ami_or_snapshot_shared_publicly {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-        $cloudtrail.metadata.product_event_type = "ModifyImageAttribute" or
-        $cloudtrail.metadata.product_event_type = "ModifySnapshotAttribute"
+      $cloudtrail.metadata.product_event_type = "ModifyImageAttribute" or
+      $cloudtrail.metadata.product_event_type = "ModifySnapshotAttribute"
     )
     $cloudtrail.target.resource.attribute.labels["group"] = "all"
     $cloudtrail.security_result.action = "ALLOW"
@@ -46,5 +45,5 @@ rule aws_ec2_ami_or_snapshot_shared_publicly {
     $target_resource_product_object_id = array_distinct($cloudtrail.target.resource.product_object_id)
 
   condition:
-    $cloudtrail
+   $cloudtrail
 }

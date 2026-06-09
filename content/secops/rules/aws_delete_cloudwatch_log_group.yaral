@@ -1,5 +1,4 @@
 rule aws_delete_cloudwatch_log_group {
-
   meta:
     author = "Google Cloud Security"
     description = "Detects when a CloudWatch log group is deleted."
@@ -18,12 +17,12 @@ rule aws_delete_cloudwatch_log_group {
     $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
-    ($cloudtrail.metadata.product_event_type = "DeleteLogGroup")
+    $cloudtrail.metadata.product_event_type = "DeleteLogGroup"
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.principal.user.user_display_name = $user_id
 
   match:
-    $user_id over 1h
+   $user_id over 1h
 
   outcome:
     $risk_score = max(75)
@@ -42,5 +41,5 @@ rule aws_delete_cloudwatch_log_group {
     $target_resource_product_object_id = array_distinct($cloudtrail.target.resource.product_object_id)
 
   condition:
-    $cloudtrail
+   $cloudtrail
 }

@@ -23,5 +23,5 @@ rule AI_C2_Command_Execution_PROMPTSPY {
     $hostname over 5m
 
   condition:
-   $net and $proc
+    $net and $proc
 }

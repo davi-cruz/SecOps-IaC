@@ -1,5 +1,4 @@
 rule aws_account_leaving_or_removed_from_organization {
-
   meta:
     author = "Google Cloud Security"
     description = "Detect an AWS account attempting to leave or being removed from an AWS organization."
@@ -19,8 +18,8 @@ rule aws_account_leaving_or_removed_from_organization {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-     $cloudtrail.metadata.product_event_type = "LeaveOrganization" or
-     $cloudtrail.metadata.product_event_type = "RemoveAccountFromOrganization"
+      $cloudtrail.metadata.product_event_type = "LeaveOrganization" or
+      $cloudtrail.metadata.product_event_type = "RemoveAccountFromOrganization"
     )
 
   outcome:
