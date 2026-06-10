@@ -18,15 +18,15 @@ rule recon_successful_logon_enumeration_powershell_T1033_cisa_report {
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     (
-      $process.metadata.event_type = "PROCESS_LAUNCH" and
-      // cisa report referenced cmd /c and other wmic switches like /user and /password, these have been excluded to focus on the commands being issued since
-      // focused on event code 4624 but could be modified to look for other event codes if needed
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*Get-EventLog.*security.*-instanceid.*4624`) nocase
+        $process.metadata.event_type = "PROCESS_LAUNCH" and
+        // cisa report referenced cmd /c and other wmic switches like /user and /password, these have been excluded to focus on the commands being issued since
+        // focused on event code 4624 but could be modified to look for other event codes if needed
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*Get-EventLog.*security.*-instanceid.*4624`) nocase
     )
     or
     (
-      $process.metadata.event_type = "STATUS_UPDATE" and
-      re.regex($process.security_result.description, `Get-EventLog.*security.*-instanceid.*4624`) nocase
+        $process.metadata.event_type = "STATUS_UPDATE" and
+        re.regex($process.security_result.description, `Get-EventLog.*security.*-instanceid.*4624`) nocase
     )
     $process.principal.hostname = $hostname
 

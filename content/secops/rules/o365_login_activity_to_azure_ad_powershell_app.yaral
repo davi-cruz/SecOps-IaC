@@ -43,9 +43,12 @@ rule o365_login_activity_to_azure_ad_powershell_app {
     $country_region_login_attempt = array_distinct($login.principal.ip_geo_artifact.location.country_or_region)
     //added to populate alert graph with additional context
     $principal_ip = array_distinct($login.principal.ip)
-  //$target_user_email_addresses = array_distinct($login.target.user.email_addresses)
-  //$target_user_userid = array_distinct($login.target.user.userid)
+    //$target_user_email_addresses = array_distinct($login.target.user.email_addresses)
+    //$target_user_userid = array_distinct($login.target.user.userid)
 
   condition:
     $login
 }
+
+
+

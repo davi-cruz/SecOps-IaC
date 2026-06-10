@@ -20,21 +20,21 @@ rule o365_recently_created_entra_id_user_assigned_roles {
     $create.metadata.base_labels.namespaces = "LogStory"
     $role.metadata.base_labels.namespaces = "LogStory"
     (
-      $create.metadata.event_type = "USER_CREATION" and
-      $create.metadata.product_event_type = "Add user." and
-      $create.metadata.product_name = "Office 365" and
-      $create.security_result.action = "ALLOW" and
-      $create.target.user.userid = $userid
+        $create.metadata.event_type = "USER_CREATION" and
+        $create.metadata.product_event_type = "Add user." and
+        $create.metadata.product_name = "Office 365" and
+        $create.security_result.action = "ALLOW" and
+        $create.target.user.userid = $userid
     )
     $create.metadata.event_timestamp.seconds < $role.metadata.event_timestamp.seconds
     (
-      $role.metadata.event_type = "USER_UNCATEGORIZED" and
-      $role.metadata.product_event_type = "Add member to role." and
-      $role.metadata.product_name = "Office 365" and
-      $role.security_result.action = "ALLOW" and
-      //If you wanted to detect on specific roles, they could be added to a reference list and the following line uncommented
-      //$role.target.resource.attribute.roles.name in %msgraph_watchlist_roles and
-      $role.target.user.userid = $userid
+        $role.metadata.event_type = "USER_UNCATEGORIZED" and
+        $role.metadata.product_event_type = "Add member to role." and
+        $role.metadata.product_name = "Office 365" and
+        $role.security_result.action = "ALLOW" and
+        //If you wanted to detect on specific roles, they could be added to a reference list and the following line uncommented
+        //$role.target.resource.attribute.roles.name in %msgraph_watchlist_roles and
+        $role.target.user.userid = $userid
     )
 
   match:
@@ -50,8 +50,8 @@ rule o365_recently_created_entra_id_user_assigned_roles {
     $assigned_role = array_distinct($role.target.resource.attribute.roles.name)
     //added to populate alert graph with additional context
     $principal_user_userid = array_distinct($create.principal.user.userid)
-  //Excluded since it is already being used as match variable
-  //$target_user_userid = array_distinct($create.target.user.userid)
+    //Excluded since it is already being used as match variable
+    //$target_user_userid = array_distinct($create.target.user.userid)
 
   condition:
     $create and $role

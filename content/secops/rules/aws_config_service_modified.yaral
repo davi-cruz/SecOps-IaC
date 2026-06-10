@@ -19,11 +19,11 @@ rule aws_config_service_modified {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-      $cloudtrail.metadata.product_event_type = "StopConfigurationRecorder" or
-      $cloudtrail.metadata.product_event_type = "DeleteConfigurationRecorder" or
-      $cloudtrail.metadata.product_event_type = "DeleteDeliveryChannel" or
-      $cloudtrail.metadata.product_event_type = "PutDeliveryChannel" or
-      $cloudtrail.metadata.product_event_type = "PutConfigurationRecorder"
+     $cloudtrail.metadata.product_event_type = "StopConfigurationRecorder" or
+     $cloudtrail.metadata.product_event_type = "DeleteConfigurationRecorder" or
+     $cloudtrail.metadata.product_event_type = "DeleteDeliveryChannel" or
+     $cloudtrail.metadata.product_event_type = "PutDeliveryChannel" or
+     $cloudtrail.metadata.product_event_type = "PutConfigurationRecorder"
     )
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.principal.user.user_display_name = $user_id

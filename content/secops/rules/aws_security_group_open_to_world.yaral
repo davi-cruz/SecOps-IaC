@@ -20,8 +20,8 @@ rule aws_security_group_open_to_world {
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     $cloudtrail.metadata.product_event_type = "AuthorizeSecurityGroupIngress"
     (
-      $cloudtrail.target.resource.attribute.labels["cidrIp"] = "0.0.0.0/0" or
-      $cloudtrail.target.resource.attribute.labels["cidrIpv6"] = "::/0"
+        $cloudtrail.target.resource.attribute.labels["cidrIp"] = "0.0.0.0/0" or
+        $cloudtrail.target.resource.attribute.labels["cidrIpv6"] = "::/0"
     )
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.target.resource.attribute.labels["Recipient Account Id"] = $accountId

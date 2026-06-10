@@ -25,7 +25,7 @@ rule ssh_bruteforce {
 
     $success.metadata.event_timestamp.seconds >= $fail.metadata.event_timestamp.seconds
 
-  match:
+match:
     $host, $attacker_ip over 1h
 
   outcome:

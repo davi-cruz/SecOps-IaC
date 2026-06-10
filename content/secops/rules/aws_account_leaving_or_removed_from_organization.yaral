@@ -19,8 +19,8 @@ rule aws_account_leaving_or_removed_from_organization {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-      $cloudtrail.metadata.product_event_type = "LeaveOrganization" or
-      $cloudtrail.metadata.product_event_type = "RemoveAccountFromOrganization"
+     $cloudtrail.metadata.product_event_type = "LeaveOrganization" or
+     $cloudtrail.metadata.product_event_type = "RemoveAccountFromOrganization"
     )
 
   outcome:

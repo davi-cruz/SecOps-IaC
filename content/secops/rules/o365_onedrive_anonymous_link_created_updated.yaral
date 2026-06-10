@@ -13,15 +13,15 @@ rule o365_onedrive_anonymous_link_created_updated {
     $file.metadata.base_labels.namespaces = "LogStory"
     $file.metadata.base_labels.namespaces = "LogStory"
     (
-      (
-        $file.metadata.event_type = "USER_RESOURCE_CREATION" and
-        $file.metadata.product_event_type = "AnonymousLinkCreated"
-      )
-      or
-      (
-        $file.metadata.event_type = "STATUS_UPDATE" and
-        $file.metadata.product_event_type = "AnonymousLinkUpdated"
-      )
+        (
+            $file.metadata.event_type = "USER_RESOURCE_CREATION" and
+            $file.metadata.product_event_type = "AnonymousLinkCreated"
+        )
+    or
+        (
+            $file.metadata.event_type = "STATUS_UPDATE" and
+            $file.metadata.product_event_type = "AnonymousLinkUpdated"
+        )
     )
     $file.metadata.product_name = "Office 365"
     $file.metadata.vendor_name = "Microsoft"

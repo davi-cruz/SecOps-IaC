@@ -41,14 +41,14 @@ rule aws_successful_login_after_multiple_failed_attempts {
 
   outcome:
     $risk_score = max(
-      // Country mismatch
-      if($fail.principal.ip_geo_artifact.location.country_or_region = $success.principal.ip_geo_artifact.location.country_or_region, 40) +
-      // Unauthorized geographies
-      if($success.principal.ip_geo_artifact.location.country_or_region = "Cuba", 10) +
-      if($success.principal.ip_geo_artifact.location.country_or_region = "Iran", 10) +
-      if($success.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 10) +
-      if($success.principal.ip_geo_artifact.location.country_or_region = "Russia", 10) +
-      if($success.principal.ip_geo_artifact.location.country_or_region = "Syria", 10)
+        // Country mismatch
+        if($fail.principal.ip_geo_artifact.location.country_or_region = $success.principal.ip_geo_artifact.location.country_or_region, 40) +
+        // Unauthorized geographies
+        if($success.principal.ip_geo_artifact.location.country_or_region = "Cuba", 10) +
+        if($success.principal.ip_geo_artifact.location.country_or_region = "Iran", 10) +
+        if($success.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 10) +
+        if($success.principal.ip_geo_artifact.location.country_or_region = "Russia", 10) +
+        if($success.principal.ip_geo_artifact.location.country_or_region = "Syria", 10)
     )
     $mitre_attack_tactic = "Defense Evasion, Persistence, Privilege Escalation, Initial Access"
     $mitre_attack_technique = "Valid Accounts"

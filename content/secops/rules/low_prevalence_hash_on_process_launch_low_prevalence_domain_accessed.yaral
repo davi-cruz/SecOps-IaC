@@ -60,10 +60,10 @@ rule low_prevalence_hash_on_process_launch_low_prevalence_domain_accessed {
 
   outcome:
     $risk_score = max(
-      // increment risk score based upon rolling_max prevalence
-      if ( $domainprev.graph.entity.domain.prevalence.rolling_max >= 10, 10) +
-      if ( $domainprev.graph.entity.domain.prevalence.rolling_max >= 2 and $domainprev.graph.entity.domain.prevalence.rolling_max <= 9 , 20) +
-      if ( $domainprev.graph.entity.domain.prevalence.rolling_max = 1, 30)
+        // increment risk score based upon rolling_max prevalence
+        if ( $domainprev.graph.entity.domain.prevalence.rolling_max >= 10, 10) +
+        if ( $domainprev.graph.entity.domain.prevalence.rolling_max >= 2 and $domainprev.graph.entity.domain.prevalence.rolling_max <= 9 , 20) +
+        if ( $domainprev.graph.entity.domain.prevalence.rolling_max = 1, 30)
     )
     // added to populate alert graph with additional context
     // Commented out principal.ip because it is already represented in graph as match variable. If match changes, can uncomment to add to results

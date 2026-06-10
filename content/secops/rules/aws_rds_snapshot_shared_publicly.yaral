@@ -19,8 +19,8 @@ rule aws_rds_snapshot_shared_publicly {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-      $cloudtrail.metadata.product_event_type = "ModifyDBSnapshotAttribute" or
-      $cloudtrail.metadata.product_event_type = "ModifyDBClusterSnapshotAttribute"
+        $cloudtrail.metadata.product_event_type = "ModifyDBSnapshotAttribute" or
+        $cloudtrail.metadata.product_event_type = "ModifyDBClusterSnapshotAttribute"
     )
     $cloudtrail.target.resource.attribute.labels["valuesToAdd"] = "all"
     $cloudtrail.target.resource.attribute.labels["attributeName"] = "restore"

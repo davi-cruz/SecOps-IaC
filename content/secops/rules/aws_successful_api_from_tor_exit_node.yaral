@@ -33,14 +33,14 @@ rule aws_successful_api_from_tor_exit_node {
 
   outcome:
     $risk_score = max(
-      //Baseline
-      35 +
-      // Unauthorized geographies
-      if($api.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
-      if($api.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
-      if($api.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
-      if($api.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
-      if($api.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
+        //Baseline
+        35 +
+        // Unauthorized geographies
+        if($api.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
+        if($api.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
+        if($api.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
+        if($api.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
+        if($api.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
     )
     $mitre_attack_tactic = "Execution"
     $mitre_attack_technique = "User Execution"

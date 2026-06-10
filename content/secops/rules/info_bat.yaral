@@ -14,8 +14,8 @@ rule info_bat {
     $batch_file.metadata.base_labels.namespaces = "LogStory"
     $batch_file.target.process.file.full_path = /.*\.bat$/
     (
-      $batch_file.metadata.event_type = "PROCESS_LAUNCH" or
-      $batch_file.metadata.event_type = "FILE_CREATION"
+        $batch_file.metadata.event_type = "PROCESS_LAUNCH" or
+        $batch_file.metadata.event_type = "FILE_CREATION"
     )
 
   outcome:

@@ -53,7 +53,7 @@ rule win_repeatedAuthFailure_thenSuccess_T1110_001_user_asset_entity {
   match:
     $target_user, $hostname over 15m
 
-  outcome:
+    outcome:
     //increment risk score if the system targeted is active directory server, can modify as you see fit, using this as an example
     $risk_score = max(if($hostname = /activedir/, 75, 50))
     $mitre_attack_tactic = "Credential Access"

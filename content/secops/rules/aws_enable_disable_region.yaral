@@ -19,8 +19,8 @@ rule aws_enable_disable_region {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-      $cloudtrail.metadata.product_event_type = "EnableRegion" or
-      $cloudtrail.metadata.product_event_type = "DisableRegion"
+     $cloudtrail.metadata.product_event_type = "EnableRegion" or
+     $cloudtrail.metadata.product_event_type = "DisableRegion"
     )
     $cloudtrail.security_result.action = "ALLOW"
 

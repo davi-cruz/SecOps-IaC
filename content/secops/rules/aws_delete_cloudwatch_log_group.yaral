@@ -18,7 +18,7 @@ rule aws_delete_cloudwatch_log_group {
     $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
-    $cloudtrail.metadata.product_event_type = "DeleteLogGroup"
+    ($cloudtrail.metadata.product_event_type = "DeleteLogGroup")
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.principal.user.user_display_name = $user_id
 

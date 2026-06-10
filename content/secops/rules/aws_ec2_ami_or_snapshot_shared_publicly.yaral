@@ -19,8 +19,8 @@ rule aws_ec2_ami_or_snapshot_shared_publicly {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-      $cloudtrail.metadata.product_event_type = "ModifyImageAttribute" or
-      $cloudtrail.metadata.product_event_type = "ModifySnapshotAttribute"
+        $cloudtrail.metadata.product_event_type = "ModifyImageAttribute" or
+        $cloudtrail.metadata.product_event_type = "ModifySnapshotAttribute"
     )
     $cloudtrail.target.resource.attribute.labels["group"] = "all"
     $cloudtrail.security_result.action = "ALLOW"

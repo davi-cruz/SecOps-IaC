@@ -19,10 +19,10 @@ rule aws_cloudtrail_logging_tampered {
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"
     (
-      $cloudtrail.metadata.product_event_type = "UpdateTrail" or
-      $cloudtrail.metadata.product_event_type = "StopLogging" or
-      $cloudtrail.metadata.product_event_type = "DeleteTrail" or
-      $cloudtrail.metadata.product_event_type = "PutEventSelectors"
+     $cloudtrail.metadata.product_event_type = "UpdateTrail" or
+     $cloudtrail.metadata.product_event_type = "StopLogging" or
+     $cloudtrail.metadata.product_event_type = "DeleteTrail" or
+     $cloudtrail.metadata.product_event_type = "PutEventSelectors"
     )
     $cloudtrail.security_result.action = "ALLOW"
     $cloudtrail.principal.user.user_display_name = $user_id

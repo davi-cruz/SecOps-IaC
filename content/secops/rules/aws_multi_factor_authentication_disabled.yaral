@@ -30,10 +30,10 @@ rule aws_multi_factor_authentication_disabled {
 
   outcome:
     $risk_score = max(
-      //Baseline
-      35 +
-      // High Risk for AWS Root User
-      if($cloudtrail.src.user.user_display_name = "AWS Root User", 50)
+        //Baseline
+        35 +
+        // High Risk for AWS Root User
+        if($cloudtrail.src.user.user_display_name = "AWS Root User", 50)
     )
     $mitre_attack_tactic = "Credential Access, Defense Evasion, Persistence"
     $mitre_attack_technique = "Modify Authentication Process: Multi-Factor Authentication"

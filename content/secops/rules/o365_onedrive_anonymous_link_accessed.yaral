@@ -23,8 +23,8 @@ rule o365_onedrive_anonymous_link_accessed {
     $file.metadata.vendor_name = "Microsoft"
     $file.target.application = "OneDrive"
     (
-      $file.principal.user.userid = /^urn:spo:anon#/ or
-      $file.principal.user.userid = "anonymous"
+        $file.principal.user.userid = /^urn:spo:anon#/ or
+        $file.principal.user.userid = "anonymous"
     )
     $file.principal.ip = $ip
 
