@@ -18,32 +18,32 @@ rule recon_environment_enumeration_network_cisa_report {
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     (
-      $process.metadata.event_type = "PROCESS_LAUNCH" and
-      (
-        // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as needed
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*arp.*-a`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*curl.*www.ip-api.com`) nocase or
-        // the following line is a broader look at dnscmd /enumrecords not explicitly called out in the report can comment out if not needed
-        //re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords.*/zone`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumzones`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords.*/additional`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*ipconfig.*/all`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*firewall.*show`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*show`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*show.*v4tov4`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*firewall.*show`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*portproxy.*show.*v4tov4`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*netstat.*-ano`) nocase
-      )
+        $process.metadata.event_type = "PROCESS_LAUNCH" and
+        (
+            // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as needed
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*arp.*-a`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*curl.*www.ip-api.com`) nocase or
+            // the following line is a broader look at dnscmd /enumrecords not explicitly called out in the report can comment out if not needed
+            //re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords.*/zone`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumzones`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*dnscmd.*/enumrecords.*/additional`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*ipconfig.*/all`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*firewall.*show`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*show`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*show.*v4tov4`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*firewall.*show`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*portproxy.*show.*v4tov4`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*netstat.*-ano`) nocase
+        )
     )
     or
-    (
-      // C2 like Covenant will mask curl command running from PowerShell; added this to detect DNS lookup for this site as another method to identify
-      $process.metadata.event_type = "NETWORK_DNS" and
-      $process.network.application_protocol = "DNS" and
-      $process.network.dns.questions.name = "www.ip-api.com"
-    )
+        (
+            // C2 like Covenant will mask curl command running from PowerShell; added this to detect DNS lookup for this site as another method to identify
+            $process.metadata.event_type = "NETWORK_DNS" and
+            $process.network.application_protocol = "DNS" and
+            $process.network.dns.questions.name = "www.ip-api.com"
+        )
 
     $process.principal.hostname = $hostname
     $process.target.process.command_line = $command_line

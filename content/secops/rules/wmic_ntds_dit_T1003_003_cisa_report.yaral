@@ -18,35 +18,35 @@ rule wmic_ntds_dit_T1003_003_cisa_report {
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     (
-      $process.metadata.event_type = "PROCESS_LAUNCH" and
-      (
-        // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as needed
-        // other wmic switches like /user and /password, these have been excluded to focus on the commands being issued since local access does not require these
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*process.*call.*create.*ntdsutil.*create.*full`) nocase or
-        // for greater precision to align with the report, the following line can be used instead of the previous line to focus on specific folders referenced
-        //re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*process.*call.*create.*ntdsutil.*create.*full.*windows\\temp\\(tmp|pro|msafee_logs)`) nocase or
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*vssadmin.*create.*shadow`) nocase or
-        // To detect this without wmic being used but written to c:\windows\temp\ in general
-        re.regex($process.target.process.command_line, `(|cmd.*/c).*ntdsutil.*create.*full.*windows\\temp\\`) nocase
-      )
+        $process.metadata.event_type = "PROCESS_LAUNCH" and
+        (
+            // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as needed
+            // other wmic switches like /user and /password, these have been excluded to focus on the commands being issued since local access does not require these
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*process.*call.*create.*ntdsutil.*create.*full`) nocase or
+            // for greater precision to align with the report, the following line can be used instead of the previous line to focus on specific folders referenced
+            //re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*process.*call.*create.*ntdsutil.*create.*full.*windows\\temp\\(tmp|pro|msafee_logs)`) nocase or
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*vssadmin.*create.*shadow`) nocase or
+            // To detect this without wmic being used but written to c:\windows\temp\ in general
+            re.regex($process.target.process.command_line, `(|cmd.*/c).*ntdsutil.*create.*full.*windows\\temp\\`) nocase
+        )
     )
     or
     (
-      // This does not detect one of the utilitites responsible for excuting ntdsutil or vssadmin, but does detect .dit file being created in monitored folders
-      $process.metadata.event_type = "FILE_CREATION" and
-      re.regex($process.target.file.full_path, `\.dit$`) nocase
+        // This does not detect one of the utilitites responsible for excuting ntdsutil or vssadmin, but does detect .dit file being created in monitored folders
+        $process.metadata.event_type = "FILE_CREATION" and
+        re.regex($process.target.file.full_path, `\.dit$`) nocase
     )
     or
     (
-      //Identify application event log actions associated with the creation of the ntds.dit file and with ntds database
-      $process.metadata.product_name = "ESENT" and
-      $process.metadata.vendor_name = "Microsoft" and
-      (
-        $process.metadata.product_event_type = "216" or
-        $process.metadata.product_event_type = "325" or
-        $process.metadata.product_event_type = "326" or
-        $process.metadata.product_event_type = "327"
-      )
+        //Identify application event log actions associated with the creation of the ntds.dit file and with ntds database
+        $process.metadata.product_name = "ESENT" and
+        $process.metadata.vendor_name = "Microsoft" and
+        (
+            $process.metadata.product_event_type = "216" or
+            $process.metadata.product_event_type = "325" or
+            $process.metadata.product_event_type = "326" or
+            $process.metadata.product_event_type = "327"
+        )
     )
     $process.principal.hostname = $hostname
 

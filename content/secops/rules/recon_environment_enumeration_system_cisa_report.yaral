@@ -30,18 +30,18 @@ rule recon_environment_enumeration_system_cisa_report {
     // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as desired
     // other wmic switches like /user and /password, these have been excluded to focus on the commands being issued since local access does not require these
     (
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*ldifde.exe.*-f.*-p.*subtree`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*reg.*query.*hklm\\software\\`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*systeminfo`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*tasklist.*\/v`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*whoami`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*volume.*list.*brief`) nocase or
-      // cisa report called out wmic volume list brief, below is alternate that removed brief to widen criteria
-      //re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*volume.*list`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*service.*brief`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*product.*list.*brief`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*baseboard.*list.*full`) nocase or
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*path.*win32_logicaldisk.*get.*(caption|filesystem|freespace|size|volumename)`) nocase
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*ldifde.exe.*-f.*-p.*subtree`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*reg.*query.*hklm\\software\\`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*systeminfo`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*tasklist.*\/v`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*whoami`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*volume.*list.*brief`) nocase or
+        // cisa report called out wmic volume list brief, below is alternate that removed brief to widen criteria
+        //re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*volume.*list`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*service.*brief`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*product.*list.*brief`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*baseboard.*list.*full`) nocase or
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*wmic.*path.*win32_logicaldisk.*get.*(caption|filesystem|freespace|size|volumename)`) nocase
     )
 
   match:

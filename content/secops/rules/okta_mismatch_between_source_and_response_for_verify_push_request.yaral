@@ -42,24 +42,24 @@ rule okta_mismatch_between_source_and_response_for_verify_push_request {
 
   outcome:
     $risk_score = max(
-      // Baseline
-      35 +
-      // If the IP Address is marked as suspicious IP address by Okta ThreatInsight
-      if($push.security_result.detection_fields["threatSuspected"] = "true", 30) +
-      // Based on Okta Behavior Detection pattern analysis
-      if($push.security_result.description = /New Geo-Location=POSITIVE/, 10) +
-      if($push.security_result.description = /New Device=POSITIVE/, 20) +
-      if($push.security_result.description = /New IP=POSITIVE/, 5) +
-      if($push.security_result.description = /New City=POSITIVE/, 5) +
-      if($push.security_result.description = /New State=POSITIVE/, 10) +
-      if($push.security_result.description = /New Country=POSITIVE/, 10) +
-      if($push.security_result.description = /Velocity=POSITIVE/, 10) +
-      // Unauthorized target geographies
-      if($push.target.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
-      if($push.target.ip_geo_artifact.location.country_or_region = "Iran", 20) +
-      if($push.target.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
-      if($push.target.ip_geo_artifact.location.country_or_region = "Russia", 20) +
-      if($push.target.ip_geo_artifact.location.country_or_region = "Syria", 20)
+        // Baseline
+        35 +
+        // If the IP Address is marked as suspicious IP address by Okta ThreatInsight
+        if($push.security_result.detection_fields["threatSuspected"] = "true", 30) +
+        // Based on Okta Behavior Detection pattern analysis
+        if($push.security_result.description = /New Geo-Location=POSITIVE/, 10) +
+        if($push.security_result.description = /New Device=POSITIVE/, 20) +
+        if($push.security_result.description = /New IP=POSITIVE/, 5) +
+        if($push.security_result.description = /New City=POSITIVE/, 5) +
+        if($push.security_result.description = /New State=POSITIVE/, 10) +
+        if($push.security_result.description = /New Country=POSITIVE/, 10) +
+        if($push.security_result.description = /Velocity=POSITIVE/, 10) +
+        // Unauthorized target geographies
+        if($push.target.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
+        if($push.target.ip_geo_artifact.location.country_or_region = "Iran", 20) +
+        if($push.target.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
+        if($push.target.ip_geo_artifact.location.country_or_region = "Russia", 20) +
+        if($push.target.ip_geo_artifact.location.country_or_region = "Syria", 20)
     )
     $mitre_attack_tactic = "Credential Access"
     $mitre_attack_technique = "Multi-Factor Authentication Request Generation"

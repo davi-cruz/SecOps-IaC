@@ -19,8 +19,8 @@ rule okta_user_account_lockout {
     $login.metadata.product_name = "Okta"
     $login.metadata.vendor_name = "Okta"
     (
-      $login.metadata.product_event_type = "user.account.lock.limit" or
-      $login.metadata.product_event_type = "user.account.lock"
+        $login.metadata.product_event_type = "user.account.lock.limit" or
+        $login.metadata.product_event_type = "user.account.lock"
     )
     $login.security_result.action = "BLOCK"
     $login.principal.user.userid = $userid

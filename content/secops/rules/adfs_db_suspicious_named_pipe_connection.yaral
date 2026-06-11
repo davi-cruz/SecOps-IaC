@@ -10,25 +10,25 @@ rule adfs_db_suspicious_named_pipe_connection {
     severity = "Medium"
     priority = "Medium"
 
-  events:
+ events:
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
-    $process.metadata.event_type = "PROCESS_UNCATEGORIZED"
-    $process.metadata.product_event_type = "18"
-    $process.metadata.product_name = "Microsoft-Windows-Sysmon"
-    not re.regex($process.target.process.file.full_path, `Microsoft.Identity.Health.Adfs.PshSurrogate.exe|Microsoft.IdentityServer.ServiceHost.exe|AzureADConnect.exe|Microsoft.Tri.Sensor.exe|wsmprovhost.exe|mmc.exe|sqlservr.exe|sqlwriter.exe`) nocase
-    $process.target.resource.name = "\\MICROSOFT##WID\\tsql\\query" nocase
-    /*
-    If you have a listing of ADFS servers, you can use a reference list or enumerate them in the field below.
-    Alternatively, if ADFS servers are grouped in an asset attribute, that attribute could be used instead.
-    */
-    $process.principal.hostname = /adfs/ nocase
-    $process.principal.hostname = $hostname
+   $process.metadata.event_type = "PROCESS_UNCATEGORIZED"
+   $process.metadata.product_event_type = "18"
+   $process.metadata.product_name = "Microsoft-Windows-Sysmon"
+   not re.regex($process.target.process.file.full_path, `Microsoft.Identity.Health.Adfs.PshSurrogate.exe|Microsoft.IdentityServer.ServiceHost.exe|AzureADConnect.exe|Microsoft.Tri.Sensor.exe|wsmprovhost.exe|mmc.exe|sqlservr.exe|sqlwriter.exe`) nocase
+   $process.target.resource.name = "\\MICROSOFT##WID\\tsql\\query" nocase
+   /*
+   If you have a listing of ADFS servers, you can use a reference list or enumerate them in the field below.
+   Alternatively, if ADFS servers are grouped in an asset attribute, that attribute could be used instead.
+   */
+   $process.principal.hostname = /adfs/ nocase
+   $process.principal.hostname = $hostname
 
-  match:
-    $hostname over 5m
+ match:
+   $hostname over 5m
 
-  outcome:
+ outcome:
     $risk_score = 65
     $event_count = count_distinct($process.metadata.id)
     $security_summary = array_distinct($process.security_result.summary)
@@ -45,6 +45,7 @@ rule adfs_db_suspicious_named_pipe_connection {
     $target_process_parent_product_specfic_process_id = array_distinct($process.target.process.parent_process.product_specific_process_id)
     $target_resource_name = array_distinct($process.target.resource.name)
 
-  condition:
-    $process
+
+ condition:
+   $process
 }

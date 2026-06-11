@@ -28,15 +28,15 @@ rule okta_threatinsight_suspected_brute_force_attack {
 
   outcome:
     $risk_score = max(
-      35 +
-      // If the IP Address is marked as suspicious IP address by Okta ThreatInsight
-      if($bruteforce.security_result.detection_fields["threatSuspected"] = "true", 30) +
-      // Unauthorized target geographies
-      if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
-      if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "Iran", 20) +
-      if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
-      if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "Russia", 20) +
-      if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "Syria", 20)
+        35 +
+        // If the IP Address is marked as suspicious IP address by Okta ThreatInsight
+        if($bruteforce.security_result.detection_fields["threatSuspected"] = "true", 30) +
+        // Unauthorized target geographies
+        if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
+        if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "Iran", 20) +
+        if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
+        if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "Russia", 20) +
+        if($bruteforce.principal.ip_geo_artifact.location.country_or_region = "Syria", 20)
     )
     $mitre_attack_tactic = "Credential Access"
     $mitre_attack_technique = "Brute Force: Password Guessing"

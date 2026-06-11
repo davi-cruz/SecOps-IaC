@@ -18,21 +18,21 @@ rule port_proxy_forwarding_T1090_cisa_report {
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     (
-      $process.metadata.event_type = "PROCESS_LAUNCH" and
+        $process.metadata.event_type = "PROCESS_LAUNCH" and
 
-      // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as needed
-      re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*add.*v4tov4`) nocase
-      // For greater precision to align with the report, comment out the above line and uncomment the below line to incporporate exact ports referenced
-      //re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*add.*v4tov4.*port\=(9999|50100).*port\=(8443|1433)`) nocase
+        // cisa report referenced cmd /c in their report throughout, can filter this in/out for tuning as needed
+        re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*add.*v4tov4`) nocase
+        // For greater precision to align with the report, comment out the above line and uncomment the below line to incporporate exact ports referenced
+        //re.regex($process.target.process.command_line, `(|cmd.*/c).*netsh.*interface.*portproxy.*add.*v4tov4.*port\=(9999|50100).*port\=(8443|1433)`) nocase
     )
     or
     (
-      // Looks for the actual registry creation or modification that would accompany portproxy command executing
-      (
+        // Looks for the actual registry creation or modification that would accompany portproxy command executing
+        (
         $process.metadata.event_type = "REGISTRY_CREATION" or
         $process.metadata.event_type = "REGISTRY_MODIFICATION"
-      ) and
-      $process.target.registry.registry_key = "HKLM\\System\\CurrentControlSet\\Services\\PortProxy\\v4tov4"
+        ) and
+        $process.target.registry.registry_key = "HKLM\\System\\CurrentControlSet\\Services\\PortProxy\\v4tov4"
     )
 
     $process.principal.hostname = $hostname

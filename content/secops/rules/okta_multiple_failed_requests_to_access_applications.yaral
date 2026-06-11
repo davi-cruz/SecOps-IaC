@@ -37,22 +37,22 @@ rule okta_multiple_failed_requests_to_access_applications {
 
   outcome:
     $risk_score = max(
-      // Baseline
-      35 +
-      // Based on Okta Behavior Detection pattern analysis
-      if($login.security_result.description = /New Geo-Location=POSITIVE/, 10) +
-      if($login.security_result.description = /New Device=POSITIVE/, 20) +
-      if($login.security_result.description = /New IP=POSITIVE/, 5) +
-      if($login.security_result.description = /New City=POSITIVE/, 5) +
-      if($login.security_result.description = /New State=POSITIVE/, 10) +
-      if($login.security_result.description = /New Country=POSITIVE/, 10) +
-      if($login.security_result.description = /Velocity=POSITIVE/, 10) +
-      // Unauthorized target geographies
-      if($login.target.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
-      if($login.target.ip_geo_artifact.location.country_or_region = "Iran", 20) +
-      if($login.target.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
-      if($login.target.ip_geo_artifact.location.country_or_region = "Russia", 20) +
-      if($login.target.ip_geo_artifact.location.country_or_region = "Syria", 20)
+        // Baseline
+        35 +
+        // Based on Okta Behavior Detection pattern analysis
+        if($login.security_result.description = /New Geo-Location=POSITIVE/, 10) +
+        if($login.security_result.description = /New Device=POSITIVE/, 20) +
+        if($login.security_result.description = /New IP=POSITIVE/, 5) +
+        if($login.security_result.description = /New City=POSITIVE/, 5) +
+        if($login.security_result.description = /New State=POSITIVE/, 10) +
+        if($login.security_result.description = /New Country=POSITIVE/, 10) +
+        if($login.security_result.description = /Velocity=POSITIVE/, 10) +
+        // Unauthorized target geographies
+        if($login.target.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
+        if($login.target.ip_geo_artifact.location.country_or_region = "Iran", 20) +
+        if($login.target.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
+        if($login.target.ip_geo_artifact.location.country_or_region = "Russia", 20) +
+        if($login.target.ip_geo_artifact.location.country_or_region = "Syria", 20)
     )
     $mitre_attack_tactic = "Defense Evasion, Lateral Movement"
     $mitre_attack_technique = "Use Alternate Authentication Material: Web Session Cookie"

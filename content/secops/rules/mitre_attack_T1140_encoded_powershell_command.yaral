@@ -50,6 +50,6 @@ rule mitre_attack_T1140_encoded_powershell_command {
     $target_process_product_specfic_process_id = array_distinct($process.target.process.product_specific_process_id)
     $principal_user_userid = array_distinct($process.principal.user.userid)
 
-  condition:
+condition:
     $process
 }

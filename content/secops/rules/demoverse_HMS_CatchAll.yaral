@@ -11,6 +11,7 @@ rule demoverse_HMS_CatchAll {
     // Tune out anything we have better content for
     $e.metadata.product_event_type != "xyz"
 
+
   outcome:
     $risk_score = 5
 

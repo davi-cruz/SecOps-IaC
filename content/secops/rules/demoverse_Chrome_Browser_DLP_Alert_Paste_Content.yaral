@@ -1,5 +1,4 @@
 rule demoverse_Chrome_Browser_DLP_Alert_Paste_Content {
-
   meta:
     author = "GK"
     description = "Reports pastes of sensitive data to unauthorized sites "
@@ -16,7 +15,7 @@ rule demoverse_Chrome_Browser_DLP_Alert_Paste_Content {
     $security.target.file.full_path = "Text data"
 
   match:
-    $userid over 2m
+      $userid over 2m
 
   outcome:
     $tlp = array_distinct("amber")

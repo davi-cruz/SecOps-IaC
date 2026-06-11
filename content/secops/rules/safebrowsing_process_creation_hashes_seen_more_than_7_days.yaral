@@ -35,11 +35,11 @@ rule safebrowsing_process_creation_hashes_seen_more_than_7_days {
   outcome:
     $risk_score = max( if($seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds > 604800 and
         $seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds < 1209600, 25, 0) +
-      if($seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds >= 1209600 and
-        $seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds < 1814400, 50, 0) +
-      if($seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds >= 1814400 and
-        $seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds < 2592000, 75, 0) +
-      if($seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds >= 2592000, 100, 0))
+            if($seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds >= 1209600 and
+                $seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds < 1814400, 50, 0) +
+            if($seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds >= 1814400 and
+                $seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds < 2592000, 75, 0) +
+            if($seen.graph.entity.file.last_seen_time.seconds - $seen.graph.entity.file.first_seen_time.seconds >= 2592000, 100, 0))
     $event_count = count_distinct($execution.metadata.id)
     // added to populate alert graph with additional context
     $principal_hostname = array_distinct($execution.principal.hostname)

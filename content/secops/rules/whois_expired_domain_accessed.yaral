@@ -52,6 +52,6 @@ rule whois_expired_domain_accessed {
     $target_user_userid = array_distinct($access.target.user.userid)
     $target_url = array_distinct($access.target.url)
 
-  condition:
+ condition:
     $access and $whois
 }

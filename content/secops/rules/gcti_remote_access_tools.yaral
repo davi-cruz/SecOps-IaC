@@ -13,7 +13,7 @@ rule gcti_remote_access_tools {
     severity = "High"
     priority = "High"
 
-  events:
+    events:
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     // find a process launch event
