@@ -346,15 +346,65 @@ class Rules:
     return rule_config_parsed
 
   @classmethod
+  def sanitize_meta_section(cls, meta_content: str) -> str:
+    """Sanitize the meta section content by appending missing required fields."""
+    def has_active_key(content, key):
+      pattern = rf'^[ \t]*(?!\/\/)[ \t]*{key}[ \t]*='
+      return re.search(pattern, content, re.MULTILINE | re.IGNORECASE) is not None
+
+    cleaned_content = meta_content.rstrip()
+
+    if not cleaned_content.strip():
+      return "\n    author = \"Google Cloud Security\"\n    description = \"Automatically imported rule\"\n    severity = \"Low\"\n"
+
+    if not has_active_key(cleaned_content, "author"):
+      cleaned_content += "\n    author = \"Google Cloud Security\""
+
+    if not has_active_key(cleaned_content, "description"):
+      cleaned_content += "\n    description = \"Automatically imported rule\""
+
+    if not has_active_key(cleaned_content, "severity"):
+      cleaned_content += "\n    severity = \"Low\""
+
+    return cleaned_content + "\n"
+
+  @classmethod
   def sanitize_rule_text(cls, rule_text: str) -> str:
     """Sanitize the rule text to enforce style guide requirements automatically."""
-    # 1. Strip trailing whitespace from every line
+    # 1. Replace tabs with spaces (4 spaces per tab)
+    rule_text = rule_text.expandtabs(4)
+
+    # 2. Strip trailing whitespace from every line
     lines = [line.rstrip() for line in rule_text.splitlines()]
     rule_text = "\n".join(lines) + ("\n" if rule_text.endswith("\n") else "")
 
-    # 2. Enforce minimum risk score floor of 5 in the outcome section
+    # 3. Ensure meta section exists and has required fields
+    if "meta:" not in rule_text:
+      # Insert meta section after the opening brace of the rule
+      brace_idx = rule_text.find("{")
+      if brace_idx != -1:
+        meta_insert = "\n  meta:\n    author = \"Google Cloud Security\"\n    description = \"Automatically imported rule\"\n    severity = \"Low\"\n"
+        rule_text = rule_text[:brace_idx+1] + meta_insert + rule_text[brace_idx+1:]
+    else:
+      # meta: exists, check for fields
+      # Improved regex to require colon after section headers
+      meta_match = re.search(r'(\bmeta:)(.*?)(?=\b(?:events|match|condition|outcome)\s*:|\})', rule_text, re.DOTALL | re.IGNORECASE)
+      if meta_match:
+        meta_content = meta_match.group(2)
+        new_meta_content = cls.sanitize_meta_section(meta_content)
+
+        # Preserve trailing whitespace of group(2)
+        trailing_ws_match = re.search(r'(\s*)$', meta_content)
+        trailing_ws = trailing_ws_match.group(1) if trailing_ws_match else ""
+
+        new_meta_content = new_meta_content.rstrip() + trailing_ws
+
+        start, end = meta_match.span(2)
+        rule_text = rule_text[:start] + new_meta_content + rule_text[end:]
+
+    # 4. Enforce minimum risk score floor of 5 in the outcome section
     outcome_match = re.search(
-        r'(outcome:\s*)(.*?)(?=\b(?:match|condition)\b|\})',
+        r'(outcome:\s*)(.*?)(?=\b(?:match|condition)\s*:|\})',
         rule_text,
         re.DOTALL | re.IGNORECASE
     )

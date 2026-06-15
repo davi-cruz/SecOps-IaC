@@ -1,5 +1,8 @@
 rule demoverse_safebrowsing_file_creation {
  meta:
+    author = "Google Cloud Security"
+    description = "Automatically imported rule"
+    severity = "Low"
 
  events:
    ($execution.metadata.event_type = "PROCESS_LAUNCH" or $execution.metadata.event_type = "FILE_CREATION")

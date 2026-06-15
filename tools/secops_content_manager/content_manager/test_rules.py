@@ -328,16 +328,50 @@ def test_rule_config_entry():
 
 def test_sanitize_rule_text():
   """Tests for rules.Rules.sanitize_rule_text."""
-  # Test trailing whitespace removal
+  # Test trailing whitespace removal and missing meta addition
   input_text = "rule test_rule {\n  events:\n    $e.metadata.event_type = \"USER_LOGIN\"   \n\n  outcome:\n    $risk_score = 0  \n}\n"
-  expected_text = "rule test_rule {\n  events:\n    $e.metadata.event_type = \"USER_LOGIN\"\n\n  outcome:\n    $risk_score = 5\n}\n"
+  expected_text = (
+      "rule test_rule {\n  meta:\n    author = \"Google Cloud"
+      " Security\"\n    description = \"Automatically imported rule\"\n   "
+      " severity = \"Low\"\n\n  events:\n    $e.metadata.event_type ="
+      " \"USER_LOGIN\"\n\n  outcome:\n    $risk_score = 5\n}\n"
+  )
   assert Rules.sanitize_rule_text(input_text) == expected_text
 
-  # Test risk_score = max(0)
+  # Test risk_score = max(0) and missing meta addition
   input_text2 = "rule test_rule2 {\n  outcome:\n    $risk_score = max(2)\n}\n"
-  expected_text2 = "rule test_rule2 {\n  outcome:\n    $risk_score = max(5)\n}\n"
+  expected_text2 = (
+      "rule test_rule2 {\n  meta:\n    author = \"Google Cloud"
+      " Security\"\n    description = \"Automatically imported rule\"\n   "
+      " severity = \"Low\"\n\n  outcome:\n    $risk_score = max(5)\n}\n"
+  )
   assert Rules.sanitize_rule_text(input_text2) == expected_text2
 
-  # Test risk_score that is already valid (>= 5) is untouched
+  # Test risk_score that is already valid (>= 5) is untouched (but meta is added if missing)
   input_text3 = "rule test_rule3 {\n  outcome:\n    $risk_score = 15\n}\n"
-  assert Rules.sanitize_rule_text(input_text3) == input_text3
+  expected_text3 = (
+      "rule test_rule3 {\n  meta:\n    author = \"Google Cloud"
+      " Security\"\n    description = \"Automatically imported rule\"\n   "
+      " severity = \"Low\"\n\n  outcome:\n    $risk_score = 15\n}\n"
+  )
+  assert Rules.sanitize_rule_text(input_text3) == expected_text3
+
+  # Test that complete meta is untouched
+  input_text4 = (
+      "rule test_rule4 {\n  meta:\n    author = \"My Author\"\n    description"
+      " = \"My Desc\"\n    severity = \"High\"\n  events:\n   "
+      " $e.metadata.event_type = \"USER_LOGIN\"\n}\n"
+  )
+  assert Rules.sanitize_rule_text(input_text4) == input_text4
+
+  # Test that incomplete meta gets missing fields appended
+  input_text5 = (
+      "rule test_rule5 {\n  meta:\n    author = \"My Author\"\n  events:\n   "
+      " $e.metadata.event_type = \"USER_LOGIN\"\n}\n"
+  )
+  expected_text5 = (
+      "rule test_rule5 {\n  meta:\n    author = \"My Author\"\n    description"
+      " = \"Automatically imported rule\"\n    severity = \"Low\"\n  events:\n"
+      "    $e.metadata.event_type = \"USER_LOGIN\"\n}\n"
+  )
+  assert Rules.sanitize_rule_text(input_text5) == expected_text5
