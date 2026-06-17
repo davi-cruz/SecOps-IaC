@@ -1,0 +1,41 @@
+rule demoverse_PROMPTFLUX_Composite_Thinking_Robot {
+  meta:
+    author = "josemarin@google.com"
+    description = "CRITICAL SEVERITY: Detects high-confidence, multi-stage infections of the PROMPTFLUX malware family. PROMPTFLUX is a highly sophisticated VBScript dropper (often masquerading as a 'ScreenRec' installer) that utilizes a generative AI 'Thinking Robot' module to evade static analysis. This composite rule correlates three distinct attack phases occurring on a single host within a 1-hour window: 1) Persistence established via wscript.exe writing obfuscated code to the Windows Startup folder. 2) Execution behaviors indicating payload staging in the Temp directory or spreading to mapped network/removable drives. 3) An active C2 heartbeat connecting to the Google Gemini API (generativelanguage.googleapis.com) to dynamically request and rewrite its own source code. Immediate host isolation is recommended."
+    tactics = "TA0002,TA0003,TA0008,TA0011"
+    techniques = "T1059.005,T1547.001,T1091,T1071.001"
+    severity = "CRITICAL"
+
+  events:
+    // 1. Ingest the Curated Rule Detection for the Startup Folder write
+    $startup_drop.detection.detection.rule_id = "ur_550fcfc7-dc17-4793-881b-cf4490245f72"
+    $hostname = $startup_drop.detection.collection_elements.references.event.principal.hostname
+
+    // 2. Ingest our Custom Multi-Event Producer Rule for execution behavior
+    $behavior_drop.detection.detection.rule_name = /Suspicious_Wscript_Dropper_Spreader/
+    $hostname = $behavior_drop.detection.collection_elements.references.event.principal.hostname
+
+    // 3. Raw Event: AI Command & Control (Gemini API Heartbeat)
+    $ai_api.metadata.event_type = "NETWORK_CONNECTION"
+    $ai_api.target.hostname = "generativelanguage.googleapis.com"
+    $ai_api.principal.process.file.full_path = /\\(wscript|cscript)\.exe$/ nocase
+    $ai_api.principal.hostname = $hostname
+
+  match:
+    // Groups the three stages together if they happen within 1 hour on the same host
+    $hostname over 1h
+
+  outcome:
+    $risk_score = max(95)
+
+    // Extract C2 and forensic details for the analyst view
+    $c2_endpoint = array_distinct($ai_api.target.hostname)
+
+    // Pull the specific file paths that triggered the producer rules
+    $startup_file_dropped = array_distinct($startup_drop.detection.collection_elements.references.event.target.file.full_path)
+    $dropped_or_copied_file = array_distinct($behavior_drop.detection.collection_elements.references.event.target.file.full_path)
+
+  condition:
+    // Triggers an alert ONLY if the host exhibits all three stages of the attack
+    $startup_drop and $behavior_drop and $ai_api
+}

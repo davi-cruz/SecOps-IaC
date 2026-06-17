@@ -1,0 +1,45 @@
+rule demoverse_Suspicious_Wscript_Dropper_Spreader {
+  meta:
+    author = "josemarin@google.com"
+    description = "Multi-event rule detecting wscript.exe executing and subsequently dropping an executable in the Temp folder or spreading VBScripts to network/removable drives."
+    severity = "MEDIUM"
+
+  events:
+    // Event 1: The Script Engine Execution
+    $exec.metadata.event_type = "PROCESS_LAUNCH"
+    $exec.target.process.file.full_path = /\\(wscript|cscript)\.exe$/ nocase
+    $hostname = $exec.principal.hostname
+
+    // Capture the PID so we can link it to the subsequent actions
+    $process_pid = $exec.target.process.pid
+
+    // Event 2: Suspicious Behavior tied to that exact script process
+    $action.principal.hostname = $hostname
+    $action.principal.process.pid = $process_pid
+
+    (
+      // Behavior A (Dropper): Creating an executable in the Temp directory
+      (
+        $action.metadata.event_type = "FILE_CREATION" and
+        $action.target.file.full_path = /\\Temp\\[^\\]+\.exe$/ nocase
+      )
+      or
+      // Behavior B (Spreader): Copying a VBScript to a network share (\\) or non-C: drive
+      // Note: Standard regex is used here to identify external drives and UNC paths.
+      (
+        $action.metadata.event_type = "FILE_COPY" and
+        $action.target.file.full_path = /^(\\\\|[d-zD-Z]:\\).*\.vbs$/ nocase
+      )
+    )
+
+  match:
+    $hostname over 5m
+
+  outcome:
+    $risk_score = max(50)
+    $action_type = array_distinct($action.metadata.event_type)
+    $target_file = array_distinct($action.target.file.full_path)
+
+  condition:
+    $exec and $action
+}
