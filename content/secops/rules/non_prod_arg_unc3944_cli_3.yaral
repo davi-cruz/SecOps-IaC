@@ -1,18 +1,7 @@
 rule non_prod_arg_unc3944_cli_3 {
-    internal_meta:
-    type = "customer_alert"
-    author = "Uppercase"
-    uc_author = "jpetropoulos"
-    internal_source = "mdnt_spear, rulegen"
+  meta:
     data_source = "EDR logs"
-    labels = "generator=rulegen,strategy=common_strings,project=augment_with_intel"
     platform = "Windows"
-    strategy = "Generated rule. Identify suspicious encoded powershell commands related to priority APTs sourced from Mgraph data. Iteratively review rules and update F1 query, rule gen strategy, and the rule template to tune the rules."
-    reference = "go/awi_unc3944"
-    slot_usage = "0.0011"
-    rule_id = "93e4234d-d456-4b8d-9353-ae35f84ff736"
-
-    customer_meta:
     description = "Detects the use of SSH to create a reverse tunnel as root, forwarding a local port (3389 for RDP) to a remote host. This is often used by attackers to bypass firewalls and gain unauthorized access to internal systems."
     rule_name = "UNC3944 SSH Reverse Tunnel Root"
     severity = "Low"

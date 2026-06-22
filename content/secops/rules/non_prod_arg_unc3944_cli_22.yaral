@@ -1,18 +1,6 @@
 rule non_prod_arg_unc3944_cli_22 {
-    internal_meta:
-    type = "customer_alert"
-    author = "Uppercase"
-    uc_author = "jpetropoulos"
-    internal_source = "mdnt_spear, rulegen"
-    data_source = "EDR logs"
-    labels = "generator=rulegen,strategy=common_strings,project=augment_with_intel"
+  meta:
     platform = "Windows"
-    strategy = "Generated rule. Identify suspicious encoded powershell commands related to priority APTs sourced from Mgraph data. Iteratively review rules and update F1 query, rule gen strategy, and the rule template to tune the rules."
-    reference = "go/awi_unc3944"
-    slot_usage = "0.0007"
-    rule_id = "9ef25611-dad8-4fc3-be64-d533ed9fdb59"
-
-    customer_meta:
     description = "Detects the execution of the nltest /dclist:user.global.local command. This command is used to enumerate domain controllers in a specific domain, which can be used by attackers for reconnaissance purposes."
     rule_name = "UNC3944 Nltest Dclist User Global Local"
     severity = "Low"
