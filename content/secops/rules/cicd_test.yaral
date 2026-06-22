@@ -8,8 +8,9 @@ rule cicd_test {
     priority = "Low"
 
   events:
-    $e.metadata.log_type = "CICD_CUSTOM"
+    $e.metadata.log_type = "AWS_CLOUDTRAIL"
     $e.metadata.event_type = "USER_LOGIN"
+    $e.principal.user.userid" = "dcruz"
 
   condition:
     $e
