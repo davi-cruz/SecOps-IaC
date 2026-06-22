@@ -1,0 +1,16 @@
+rule cicd_test {
+
+  meta:
+    author = "Davi Cruz"
+    description = "Test Rule for CI/CD pipeline"
+    type = "alert"
+    severity = "Low"
+    priority = "Low"
+
+  events:
+    $e.metadata.log_type = "CICD_CUSTOM"
+    $e.metadata.event_type = "USER_LOGIN"
+
+  condition:
+    $e
+}
