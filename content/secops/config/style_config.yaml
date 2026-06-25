@@ -1,0 +1,30 @@
+required_metadata:
+  - field: author
+    required: true
+    non_empty: true
+  - field: description
+    required: true
+    non_empty: true
+  - field: severity
+    required: true
+    non_empty: true
+    allowed_values:
+      - Info
+      - Low
+      - Medium
+      - High
+      - Critical
+  - field: priority
+    required: false
+    allowed_values:
+      - Info
+      - Low
+      - Medium
+      - High
+      - Critical
+  - field: mitre_attack_technique_id
+    required: false
+    regex: "^T\\d{4}(\\.\\d{3})?$"
+  - field: mitre_attack_tactic_id
+    required: false
+    regex: "^TA\\d{4}$"
