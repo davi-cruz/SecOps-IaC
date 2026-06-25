@@ -87,6 +87,17 @@ def main():
       action="store_true",
       help="Include archived rules in the stats",
   )
+  parser.add_argument(
+      "--sort",
+      choices=["count-desc", "count-asc", "key-asc", "key-desc"],
+      default="count-desc",
+      help=(
+          "Sorting option. 'count-desc': count descending, then key ascending (default). "
+          "'count-asc': count ascending, then key ascending. "
+          "'key-asc': key ascending only. "
+          "'key-desc': key descending only."
+      ),
+  )
 
   args = parser.parse_args()
 
@@ -100,12 +111,22 @@ def main():
     print("No metadata keys found or no rules processed.")
     return
 
+  items = list(stats.items())
+  if args.sort == "count-desc":
+    items.sort(key=lambda x: (-x[1], x[0]))
+  elif args.sort == "count-asc":
+    items.sort(key=lambda x: (x[1], x[0]))
+  elif args.sort == "key-asc":
+    items.sort(key=lambda x: x[0])
+  elif args.sort == "key-desc":
+    items.sort(key=lambda x: x[0], reverse=True)
+
   # Print results
   print(f"\nMetadata Tag Statistics (Total rules processed: {total_rules})")
   print(f"{'-'*50}")
   print(f"{'Metadata Key':<30} | {'Rule Count':<10}")
   print(f"{'-'*50}")
-  for key, count in stats.most_common():
+  for key, count in items:
     print(f"{key:<30} | {count:<10}")
   print(f"{'-'*50}\n")
 
