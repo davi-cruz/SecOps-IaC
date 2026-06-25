@@ -77,10 +77,12 @@ jobs:
           # Check if there are staged changes
           if ! git diff --cached --quiet; then
             git commit -m "latest content pulled from google secops api"
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
             git push origin main
           else
             echo "No changes to commit"
           fi
+
 
       - name: Show last git commit message
         run: git log -1 # For debugging
