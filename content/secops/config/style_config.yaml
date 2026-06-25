@@ -22,9 +22,7 @@ required_metadata:
       - Medium
       - High
       - Critical
-  - field: mitre_attack_technique_id
+  - field: technique
     required: false
-    regex: "^T\\d{4}(\\.\\d{3})?$"
-  - field: mitre_attack_tactic_id
-    required: false
-    regex: "^TA\\d{4}$"
+    regex: "^T\\d{4}(\\.\\d{3})?(,T\\d{4}(\\.\\d{3})?)*$"
+
