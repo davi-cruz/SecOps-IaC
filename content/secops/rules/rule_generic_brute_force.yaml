@@ -5,7 +5,7 @@ create_time: '2025-11-12T18:19:09.482047Z'
 enabled: false
 id: ru_bda864ce-8020-4595-81db-a3949cec5fac
 resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_bda864ce-8020-4595-81db-a3949cec5fac
-revision_create_time: '2026-06-09T15:20:33.983087Z'
-revision_id: v_1781018433_983087000
+revision_create_time: '2026-06-25T20:31:59.012607Z'
+revision_id: v_1782419519_012607000
 run_frequency: HOURLY
 type: MULTI_EVENT

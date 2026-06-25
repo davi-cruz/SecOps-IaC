@@ -5,7 +5,7 @@ create_time: '2025-04-04T15:23:05.421615Z'
 enabled: true
 id: ru_3e0f4436-403f-4b97-a75e-0da1a9638ae0
 resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_3e0f4436-403f-4b97-a75e-0da1a9638ae0
-revision_create_time: '2026-06-09T15:20:41.106111Z'
-revision_id: v_1781018441_106111000
+revision_create_time: '2026-06-25T20:31:55.398031Z'
+revision_id: v_1782419515_398031000
 run_frequency: DAILY
 type: MULTI_EVENT
