@@ -31,7 +31,6 @@ rule logins_from_terminated_employees {
     $risk_score = max(65)
     $mitre_attack_tactic = "Defense Evasion, Persistence, Privilege Escalation, Initial Access"
     $mitre_attack_technique = "Valid Accounts"
-    technique = "T1078"
     $mitre_attack_technique_id = "T1078"
     $event_count = count_distinct($login.metadata.id)
     $employee_last_login = max($login.target.user.termination_date.seconds)
