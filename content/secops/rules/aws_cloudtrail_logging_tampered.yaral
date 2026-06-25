@@ -3,10 +3,8 @@ rule aws_cloudtrail_logging_tampered {
   meta:
     author = "Google Cloud Security"
     description = "Detects when CloudTrail logging is updated, stopped or deleted."
-    mitre_attack_tactic = "Defense Evasion"
-    mitre_attack_technique = "Impair Defenses: Disable Cloud Logs"
-    mitre_attack_url = "https://attack.mitre.org/techniques/T1562/008/"
-    mitre_attack_version = "v13.1"
+    tactic = "TA0112"
+    technique = "T1685.002"
     type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"

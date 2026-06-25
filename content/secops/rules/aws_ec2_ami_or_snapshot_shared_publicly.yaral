@@ -6,6 +6,7 @@ rule aws_ec2_ami_or_snapshot_shared_publicly {
     mitre_attack_tactic = "Exfiltration"
     mitre_attack_technique = "Transfer Data to Cloud Account"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1537/"
+    technique = "T1537"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

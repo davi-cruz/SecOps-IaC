@@ -28,6 +28,7 @@ rule github_outgoing_organization_transfer_initiated {
     mitre_attack_tactic = "Exfiltration"
     mitre_attack_technique = "Transfer Data to Cloud Account"
     mitre_attack_url = "https://attack.mitre.org/versions/v14/techniques/T1537/"
+    technique = "T1537"
     mitre_attack_version = "v14"
     reference = "https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise"
 

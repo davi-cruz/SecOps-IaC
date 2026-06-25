@@ -6,6 +6,7 @@ rule aws_guardduty_malicious_or_suspicious_file_executed {
     mitre_attack_tactic = "Execution"
     mitre_attack_technique = "User Execution: Malicious File"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1204/002/"
+    technique = "T1204.002"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS GuardDuty"

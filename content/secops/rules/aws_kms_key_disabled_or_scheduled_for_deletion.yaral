@@ -6,6 +6,7 @@ rule aws_kms_key_disabled_or_scheduled_for_deletion {
     mitre_attack_tactic = "Impact"
     mitre_attack_technique = "Data Destruction"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1485/"
+    technique = "T1485"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

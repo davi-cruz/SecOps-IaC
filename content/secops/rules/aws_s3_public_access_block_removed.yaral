@@ -6,6 +6,7 @@ rule aws_s3_public_access_block_removed {
     mitre_attack_tactic = "Defense Evasion"
     mitre_attack_technique = "Impair Defenses"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1562/"
+    technique = "T1562"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

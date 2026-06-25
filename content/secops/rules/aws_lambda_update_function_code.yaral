@@ -6,6 +6,7 @@ rule aws_lambda_update_function_code {
     mitre_attack_tactic = "Execution"
     mitre_attack_technique = "Serverless Execution"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1648/"
+    technique = "T1648"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

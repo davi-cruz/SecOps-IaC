@@ -6,6 +6,7 @@ rule aws_ec2_user_data_modified {
     mitre_attack_tactic = "Privilege Escalation"
     mitre_attack_technique = "Boot or Logon Initialization Scripts"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1037/"
+    technique = "T1037"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

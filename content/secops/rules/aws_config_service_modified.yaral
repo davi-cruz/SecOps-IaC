@@ -6,15 +6,16 @@ rule aws_config_service_modified {
     mitre_attack_tactic = "Defense Evasion"
     mitre_attack_technique = "Impair Defenses: Disable Cloud Logs"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1562/008/"
+    technique = "T1562.008"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "High"
     priority = "High"
+    namespace = "LogStory"
 
   events:
-    $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"

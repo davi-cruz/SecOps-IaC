@@ -8,6 +8,7 @@ rule whoami_execution {
     mitre_attack_tactic = "Discovery"
     mitre_attack_technique = "System Owner/User Discovery"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1033/"
+    technique = "T1033"
     mitre_attack_version = "v13.1"
     platform = "Windows"
     severity = "Info"

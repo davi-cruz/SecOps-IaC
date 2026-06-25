@@ -6,6 +6,7 @@ rule aws_successful_api_from_tor_exit_node {
     mitre_attack_tactic = "Execution"
     mitre_attack_technique = "User Execution"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1204/"
+    technique = "T1204"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

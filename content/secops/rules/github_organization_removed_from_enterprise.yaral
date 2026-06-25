@@ -28,6 +28,7 @@ rule github_organization_removed_from_enterprise {
     mitre_attack_tactic = "Impact"
     mitre_attack_technique = "Data Destruction"
     mitre_attack_url = "https://attack.mitre.org/versions/v14/techniques/T1485/"
+    technique = "T1485"
     mitre_attack_version = "v14"
     reference = "https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise"
 

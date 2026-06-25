@@ -7,6 +7,7 @@ rule o365_ADPowerShell_app_login_subsequent_activity {
     mitre_attack_tactic = "Persistence"
     mitre_attack_technique = "Account Manipulation: Additional Cloud Credentials"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1098/001/"
+    technique = "T1098.001"
     mitre_attack_version = "v14.1"
     type = "Alert"
     platform = "azure"

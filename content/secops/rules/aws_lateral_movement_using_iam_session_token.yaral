@@ -6,6 +6,7 @@ rule aws_lateral_movement_using_iam_session_token {
     mitre_attack_tactic = "Lateral Movement"
     mitre_attack_technique = "Use Alternate Authentication Material"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1550/"
+    technique = "T1550"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

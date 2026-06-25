@@ -9,6 +9,7 @@ rule windows_event_log_cleared {
     mitre_attack_tactic = "Defense Evasion"
     mitre_attack_technique = "Indicator Removal: Clear Windows Event Logs"
     mitre_attack_url = "https://attack.mitre.org/versions/v13/techniques/T1070/001/"
+    technique = "T1070.001"
     mitre_attack_version = "v13.1"
     severity = "Medium"
     priority = "Medium"

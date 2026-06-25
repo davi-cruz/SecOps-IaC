@@ -6,6 +6,7 @@ rule aws_guardduty_black_hole_traffic_detected {
     mitre_attack_tactic = "Command and Control"
     mitre_attack_technique = "Application Layer Protocol"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1071/"
+    technique = "T1071"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS GuardDuty"

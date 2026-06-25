@@ -9,6 +9,7 @@ rule wmic_ntds_dit_T1003_003_cisa_report {
     mitre_attack_tactic = "Credential Access"
     mitre_attack_technique = "OS Credential Dumping: NTDS"
     mitre_attack_url = "https://attack.mitre.org/versions/v13/techniques/T1003/003/"
+    technique = "T1003.003"
     mitre_attack_version = "v13.1"
     reference = "https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF"
     severity = "High"

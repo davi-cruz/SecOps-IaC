@@ -6,6 +6,7 @@ rule aws_guardduty_crypto_currency_activity_detected {
     mitre_attack_tactic = "Impact"
     mitre_attack_technique = "Resource Hijacking"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1496/"
+    technique = "T1496"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS GuardDuty"

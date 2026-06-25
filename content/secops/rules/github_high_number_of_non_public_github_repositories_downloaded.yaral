@@ -28,6 +28,7 @@ rule github_high_number_of_non_public_github_repositories_downloaded {
     mitre_attack_tactic = "Collection"
     mitre_attack_technique = "Data from Information Repositories: Code Repositories"
     mitre_attack_url = "https://attack.mitre.org/versions/v14/techniques/T1213/003/"
+    technique = "T1213.003"
     mitre_attack_version = "v14"
     reference = "https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise"
 

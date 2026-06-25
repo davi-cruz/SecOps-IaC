@@ -28,6 +28,7 @@ rule github_personal_access_token_auto_approve_policy_modified {
     mitre_attack_tactic = "Defense Evasion"
     mitre_attack_technique = "Impair Defenses: Disable or Modify Tools"
     mitre_attack_url = "https://attack.mitre.org/versions/v14/techniques/T1562/001/"
+    technique = "T1562.001"
     mitre_attack_version = "v14"
     reference = "https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise"
 

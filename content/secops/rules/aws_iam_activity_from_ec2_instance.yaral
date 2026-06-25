@@ -6,6 +6,7 @@ rule aws_iam_activity_from_ec2_instance {
     mitre_attack_tactic = "Persistence"
     mitre_attack_technique = "Account Manipulation"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1098/"
+    technique = "T1098"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

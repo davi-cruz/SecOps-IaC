@@ -28,6 +28,7 @@ rule github_personal_access_token_created_from_tor_ip_address {
     mitre_attack_tactic = "Persistence, Privilege Escalation"
     mitre_attack_technique = "Account Manipulation: Additional Cloud Credentials"
     mitre_attack_url = "https://attack.mitre.org/versions/v14/techniques/T1098/001/"
+    technique = "T1098.001"
     mitre_attack_version = "v14"
     reference = "https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/audit-log-events-for-your-enterprise"
     tags = "tor"

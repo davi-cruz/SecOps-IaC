@@ -6,6 +6,7 @@ rule aws_successful_console_authentication_from_multiple_ips {
     mitre_attack_tactic = "Resource Development"
     mitre_attack_technique = "Compromise Accounts"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1586/"
+    technique = "T1586"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"

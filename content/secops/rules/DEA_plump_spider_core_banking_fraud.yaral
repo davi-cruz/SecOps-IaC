@@ -6,6 +6,9 @@ rule DEA_plump_spider_core_banking_fraud {
     severity = "Critical"
     mitre_attack_tactic = "Impact"
     mitre_attack_technique = "Financial Theft"
+    technique = "T1657"
+    mitre_attack_url = "https://attack.mitre.org/techniques/T1657/"
+
 
   events:
     $fraud.metadata.event_type = "STATUS_UPDATE"

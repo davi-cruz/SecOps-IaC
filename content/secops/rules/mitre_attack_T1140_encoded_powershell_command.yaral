@@ -6,6 +6,7 @@ rule mitre_attack_T1140_encoded_powershell_command {
     mitre_attack_tactic = "Defense Evasion"
     mitre_attack_technique = "Deobfuscate/Decode Files or Information"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1140/"
+    technique = "T1140"
     mitre_attack_version = "v13.1"
     type = "Hunt"
     platform = "Windows"

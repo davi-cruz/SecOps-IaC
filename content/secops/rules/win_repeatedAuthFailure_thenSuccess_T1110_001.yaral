@@ -11,6 +11,7 @@ rule win_repeatedAuthFailure_thenSuccess_T1110_001 {
     mitre_attack_tactic = "Credential Access"
     mitre_attack_technique = "Brute Force: Password Guessing"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1110/001/"
+    technique = "T1110.001"
     mitre_attack_version = "v13.1"
 
   events:

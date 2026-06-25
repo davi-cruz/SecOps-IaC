@@ -6,6 +6,7 @@ rule mitre_attack_T1021_002_windows_admin_share_with_user_entity {
     mitre_attack_tactic = "Lateral Movement"
     mitre_attack_technique = "Remote Services: SMB/Windows Admin Shares"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1021/002/"
+    technique = "T1021.002"
     mitre_attack_version = "v13.1"
     type = "Alert"
     tags = "user entity"

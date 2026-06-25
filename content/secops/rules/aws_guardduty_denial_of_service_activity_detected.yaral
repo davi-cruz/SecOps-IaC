@@ -6,6 +6,7 @@ rule aws_guardduty_denial_of_service_activity_detected {
     mitre_attack_tactic = "Impact"
     mitre_attack_technique = "Network Denial of Service"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1498/"
+    technique = "T1498"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS GuardDuty"

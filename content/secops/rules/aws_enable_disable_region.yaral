@@ -6,6 +6,7 @@ rule aws_enable_disable_region {
     mitre_attack_tactic = "Defense Evasion"
     mitre_attack_technique = "Unused/Unsupported Cloud Regions"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1535/"
+    technique = "T1535"
     mitre_attack_version = "v13.1"
     type = "Alert"
     data_source = "AWS CloudTrail"
