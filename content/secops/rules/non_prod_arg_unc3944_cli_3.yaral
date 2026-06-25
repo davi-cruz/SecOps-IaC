@@ -1,11 +1,11 @@
 rule non_prod_arg_unc3944_cli_3 {
   meta:
+    display_name = "UNC3944 SSH Reverse Tunnel Root"
+    tactic = "TA0002"
     data_source = "EDR logs"
     platform = "Windows"
     description = "Detects the use of SSH to create a reverse tunnel as root, forwarding a local port (3389 for RDP) to a remote host. This is often used by attackers to bypass firewalls and gain unauthorized access to internal systems."
-    rule_name = "UNC3944 SSH Reverse Tunnel Root"
     severity = "Low"
-    tactic = "TA0002"
     technique = "T1059"
     reference = "https://advantage.mandiant.com/actors/threat-actor--8824cd44-bc42-581b-8261-22425265609e"
     author = "Google Cloud Security"

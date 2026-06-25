@@ -3,9 +3,9 @@ rule win_short_term_account_use {
   meta:
     author = "Google Cloud Security"
     description = "Detects the creation, login, and deletion of a user account over a predefined timeframe"
-    type = "alert"
-    platform = "windows"
-    data_source = "microsoft windows events"
+    type = "Alert"
+    platform = "Windows"
+    data_source = "Microsoft Windows events"
     severity = "Medium"
     priority = "Medium"
 

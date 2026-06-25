@@ -2,10 +2,11 @@ rule demoverse_cryptocurrency_mining_yara {
 
   meta:
 
+
+    display_name = "Execution: Cryptocurrency Mining YARA Rule"
     author = "Jose Marin"
     description = "SCC: Malware Cryptomining activity detected in an internal Compute Instance"
     severity = "Medium"
-    rule_name = "Execution: Cryptocurrency Mining YARA Rule"
 
   events:
     //Finding from SCC

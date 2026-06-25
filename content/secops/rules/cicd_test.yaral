@@ -3,7 +3,7 @@ rule cicd_test {
   meta:
     author = "Davi Cruz"
     description = "Test Rule for CI/CD pipeline"
-    type = "alert"
+    type = "Alert"
     severity = "Low"
     priority = "Low"
 

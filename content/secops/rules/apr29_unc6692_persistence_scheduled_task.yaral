@@ -3,7 +3,7 @@ rule apr29_unc6692_persistence_scheduled_task {
   meta:
     author = "Gemini CLI"
     description = "Detects creation of scheduled tasks pointing to Temp directories, used by UNC6692 for persistence."
-    severity = "HIGH"
+    severity = "High"
 
   events:
     $e.metadata.event_type = "PROCESS_LAUNCH"

@@ -3,11 +3,11 @@ rule DEA_plump_spider_rat_hashes {
   meta:
     author = "Gemini CLI"
     description = "Detects the execution of remote access tools with MD5 hashes associated with Plump Spider."
-    severity = "CRITICAL"
-    priority = "HIGH"
+    severity = "Critical"
+    priority = "High"
     mitre_attack_tactic = "Command and Control"
     mitre_attack_technique = "Remote Access Software"
-    mitre_attack_id = "T1219"
+    technique = "T1219"
 
   events:
     $process.metadata.event_type = "PROCESS_LAUNCH"

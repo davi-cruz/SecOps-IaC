@@ -3,7 +3,7 @@ rule wmic_ntds_dit_T1003_003_cisa_report {
   meta:
     author = "Google Cloud Security"
     description = "Detects extraction of ntds.dit file using vssadmin.exe or ntdsutil.exe with wmic as identified in CISA Living of the Land pdf"
-    type = "alert"
+    type = "Alert"
     platform = "Windows"
     data_source = "microsoft sysmon, windows event logs"
     mitre_attack_tactic = "Credential Access"

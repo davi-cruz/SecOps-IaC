@@ -3,8 +3,8 @@ rule demoverse_suspicious_auth_unusual_interval_time2 {
     meta:
         author = "@cmmartin"
         description = "Changing something Generates a detection for authentication activity occuring between two locations in an unusual interval of time."
-        severity = "LOW"
-        priority = "LOW"
+        severity = "Low"
+        priority = "Low"
 
     events:
         $e1.metadata.log_type = "WORKSPACE_ACTIVITY"

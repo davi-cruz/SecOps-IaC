@@ -13,7 +13,7 @@ rule test_whoami {
     author = "analyst123"
     description = "8:00 AM local time"
     severity = "Medium"
-    connector = "Expedite"
+    data_source = "Expedite"
 
   events:
     $e.target.process.command_line = /whoami/ nocase

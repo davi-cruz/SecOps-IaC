@@ -3,7 +3,7 @@ rule recon_successful_logon_enumeration_powershell_T1033_cisa_report {
   meta:
     author = "Google Cloud Security"
     description = "Detects the use of powershell to enumerate successful logins on a specific host"
-    type = "hunt"
+    type = "Hunt"
     platform = "Windows"
     data_source = "microsoft sysmon"
     mitre_attack_tactic = "Discovery"

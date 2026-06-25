@@ -1,11 +1,11 @@
 rule non_prod_arg_unc3944_cli_13 {
   meta:
+    display_name = "UNC3944 Psexec Cmd Execution"
+    tactic = "TA0002"
     data_source = "EDR logs"
     platform = "Windows"
     description = "Detects the execution of cmd.exe via PsExec. This behavior is often associated with lateral movement and remote command execution by attackers."
-    rule_name = "UNC3944 Psexec Cmd Execution"
     severity = "Low"
-    tactic = "TA0002"
     technique = "T1059"
     reference = "https://advantage.mandiant.com/actors/threat-actor--8824cd44-bc42-581b-8261-22425265609e"
     author = "Google Cloud Security"

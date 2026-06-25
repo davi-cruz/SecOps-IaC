@@ -4,7 +4,7 @@ rule rule_generic_brute_force {
     author = "Kryptus"
     description = "Detecta eventos de brute force forma agnóstica a partir de eventos de falha seguidos de eventos de sucesso"
     severity = "Medium"
-    politica = "pol-iam-001-brute-force"
+    tags = "pol-iam-001-brute-force"
 
   events:
     $failed.metadata.event_type = "USER_LOGIN"

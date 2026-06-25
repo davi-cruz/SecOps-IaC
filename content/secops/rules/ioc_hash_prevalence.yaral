@@ -3,7 +3,7 @@ rule ioc_hash_prevalence {
   meta:
     author = "Google Cloud Security"
     description = "Detect process/file events that match hashes found in our MISP instance and have low rolling max prevalence"
-    type = "alert"
+    type = "Alert"
     tags = "prevalence, threat indicators"
     assumption = "Assumes MISP data has been ingested into entity graph; this rule can be modified to utilize other TI indicators"
     data_source = "microsoft sysmon"

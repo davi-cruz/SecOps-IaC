@@ -7,7 +7,7 @@ rule rw_mimikatz_T1003 {
     mitre_attack_technique = "OS Credential Dumping"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1003/"
     mitre_attack_version = "v13.1"
-    type = "alert"
+    type = "Alert"
     platform = "Windows"
     data_source = "microsoft sysmon, microsoft windows events"
     severity = "Critical"

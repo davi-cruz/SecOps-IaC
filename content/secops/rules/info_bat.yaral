@@ -4,8 +4,6 @@ rule info_bat {
     author = "IniTech Security"
     description = "Detects batch files which are created or executed."
     playbook = "https://tinyurl.com/0xb4t5"
-    version = "1.337"
-    created = "2022-04-20"
     severity = "Low"
     priority = "Low"
 

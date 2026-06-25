@@ -3,7 +3,7 @@ rule o365_entra_id_application_creation {
   meta:
     author = "Google Cloud Security"
     description = "Application creation is a legitimate activity but doesn't occur frequently. Alerts when a new application is created in Entra ID (formerly Azure AD)."
-    type = "alert"
+    type = "Alert"
     platform = "azure"
     data_source = "o365"
     severity = "Low"

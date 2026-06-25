@@ -3,7 +3,7 @@ rule port_proxy_forwarding_T1090_cisa_report {
   meta:
     author = "Google Cloud Security"
     description = "Detects port forwarding being enabled using netsh command and registry settings created or modified in support of portproxy v4tov4"
-    type = "hunt"
+    type = "Hunt"
     platform = "Windows"
     data_source = "microsoft sysmon, windows event log"
     mitre_attack_tactic = "Command and Control"

@@ -3,7 +3,7 @@ rule ioc_domain_C2 {
   meta:
     author = "Google Cloud Security"
     description = "Detect DNS events that indicate communication to a C2 domain in MISP"
-    type = "alert"
+    type = "Alert"
     tags = "threat indicators"
     assumption = "Assumes MISP data has been ingested into entity graph; this rule can be modified to utilize other TI indicators"
     data_source = "microsoft sysmon"

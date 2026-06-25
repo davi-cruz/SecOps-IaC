@@ -6,7 +6,7 @@ rule demoverse_mandiant_asm_confirmed_cve_alert
     author = "@swenzel"
     data_source = "Mandiant Attack Surface Management"
     description = "Alert matching on high confidence and confirmed CVEs from Attack Surface Management (ASM)"
-    severity = "HIGH"
+    severity = "High"
 
   events:
     // Create matching conditions for the event

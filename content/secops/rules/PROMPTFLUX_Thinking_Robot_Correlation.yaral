@@ -1,11 +1,11 @@
 rule PROMPTFLUX_Thinking_Robot_Correlation {
 
   meta:
+    tactic = "TA0001,TA0002,TA0011"
     author = "Senior Security Architect"
     description = "Detects PROMPTFLUX malware behavior: w3wp spawning wscript, connecting to Gemini API."
-    severity = "CRITICAL"
-    tactic = "TA0001,TA0002,TA0011"
-    techniques = "T1059.005, T1071.001, T1568"
+    severity = "Critical"
+    technique = "T1059.005,T1071.001,T1568"
 
   events:
 
@@ -54,7 +54,7 @@ rule PROMPTFLUX_Thinking_Robot_Correlation {
     $result = if($is_blocked > 0, "failed", "succeeded")
 
     // MITRE Context
-    $mitre_techniques = "T1059.005, T1071.001, T1568"
+    $mitre_technique = "T1059.005, T1071.001, T1568"
     $mitre_tactics = "Execution, Command and Control"
 
   condition:

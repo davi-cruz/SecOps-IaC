@@ -3,7 +3,7 @@ rule vt_relationships_file_executes_file {
   meta:
     author = "Google Cloud Security"
     description = "Alert on known File Hash executing known File Hash with VT Relationships."
-    type = "alert"
+    type = "Alert"
     tags = "vt"
     data_source = "microsoft sysmon"
     severity = "High"

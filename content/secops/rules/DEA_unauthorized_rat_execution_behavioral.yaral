@@ -3,11 +3,11 @@ rule DEA_unauthorized_rat_execution_behavioral {
   meta:
     author = "Gemini CLI"
     description = "Detects common RATs executed from user download directories, common in Plump Spider activity."
-    severity = "HIGH"
-    priority = "MEDIUM"
+    severity = "High"
+    priority = "Medium"
     mitre_attack_tactic = "Command and Control"
     mitre_attack_technique = "Remote Access Software"
-    mitre_attack_id = "T1219"
+    technique = "T1219"
 
   events:
     $process.metadata.event_type = "PROCESS_LAUNCH"

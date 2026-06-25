@@ -3,7 +3,7 @@ rule win_repeatedAuthFailure_thenSuccess_T1110_001_user_asset_entity {
   meta:
     author = "Google Cloud Security"
     description = "Detect Multiple Failed Login Attempts followed by Successful Login"
-    type = "alert"
+    type = "Alert"
     tags = "user entity, asset entity"
     assumption = "Assumes ingestion of Windows users and assets to entity graph to entity graph"
     data_source = "microsoft windows events"

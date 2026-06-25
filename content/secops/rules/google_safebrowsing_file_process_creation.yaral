@@ -3,7 +3,7 @@ rule google_safebrowsing_file_process_creation {
   meta:
     author = "Google Cloud Security"
     description = "Detection of process/file events that match Safe Browsing hashes, which are files deemed to be malicious"
-    type = "alert"
+    type = "Alert"
     tags = "safe browsing"
     data_source = "microsoft sysmon"
     severity = "Critical"

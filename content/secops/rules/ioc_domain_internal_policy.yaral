@@ -3,7 +3,7 @@ rule ioc_domain_internal_policy {
   meta:
     author = "Google Cloud Security"
     description = "Detect DNS events that communicate with gaming sites in MISP. These violate policy."
-    type = "alert"
+    type = "Alert"
     tags = "threat indicators"
     assumption = "Assumes MISP data has been ingested into entity graph; this rule can be modified to utilize other TI indicators"
     data_source = "microsoft sysmon"

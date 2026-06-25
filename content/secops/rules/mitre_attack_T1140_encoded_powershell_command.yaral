@@ -7,7 +7,7 @@ rule mitre_attack_T1140_encoded_powershell_command {
     mitre_attack_technique = "Deobfuscate/Decode Files or Information"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1140/"
     mitre_attack_version = "v13.1"
-    type = "hunt"
+    type = "Hunt"
     platform = "Windows"
     data_source = "microsoft sysmon, microsoft windows events"
     severity = "Info"

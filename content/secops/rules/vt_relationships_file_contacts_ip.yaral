@@ -3,7 +3,7 @@ rule vt_relationships_file_contacts_ip {
   meta:
     author = "Google Cloud Security"
     description = "Alert on known Hash contacting known IP with VT Relationships"
-    type = "alert"
+    type = "Alert"
     tags = "vt"
     data_source = "microsoft defender atp"
     severity = "High"

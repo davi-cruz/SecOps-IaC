@@ -3,7 +3,7 @@ rule suspicious_download_office {
   meta:
     author = "Google Cloud Security"
     description = "Office Application downloading an executable(.exe in URL) or a suspiciously large file(>100KB)"
-    type = "alert"
+    type = "Alert"
     data_source = "tanium, zscalar, crowdstrike"
     reference = "https://attack.mitre.org/software/S0160/"
     severity = "Critical"

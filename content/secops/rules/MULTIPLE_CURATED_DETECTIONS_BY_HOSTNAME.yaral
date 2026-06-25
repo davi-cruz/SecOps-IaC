@@ -3,9 +3,9 @@ rule MULTIPLE_CURATED_DETECTIONS_BY_HOSTNAME {
   meta:
     author = "@cmmartin"
     description = "Consumer Detection for multiple Curated Detections on the same Hostname."
-    severity = "MEDIUM"
-    priority = "MEDIUM"
-    alerting = "true"
+    severity = "Medium"
+    priority = "Medium"
+    type = "Alert"
 
   events:
     $d.detection.type = "GCTI_FINDING"

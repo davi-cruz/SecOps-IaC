@@ -3,7 +3,7 @@ rule ioc_sha256_hash_vt {
   meta:
     author = "Google Cloud Security"
     description = "Detect file/process events with watchlisted hashes from MISP that VT flagged as MS Office docx file types"
-    type = "alert"
+    type = "Alert"
     tags = "threat indicators, vt enrichment"
     assumption = "Assumes MISP data has been ingested into entity graph; this rule can be modified to utilize other TI indicators"
     data_source = "microsoft sysmon"

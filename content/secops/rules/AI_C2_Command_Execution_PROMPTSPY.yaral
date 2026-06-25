@@ -3,7 +3,7 @@ rule AI_C2_Command_Execution_PROMPTSPY {
   meta:
     author = "Gemini CLI"
     description = "Detects processes connecting to AI APIs (Gemini, OpenAI, Anthropic) and subsequently executing commands, characteristic of PROMPTSPY and AI-enabled autonomous malware."
-    severity = "CRITICAL"
+    severity = "Critical"
     reference = "https://cloud.google.com/blog/topics/threat-intelligence/ai-vulnerability-exploitation-initial-access"
 
   events:

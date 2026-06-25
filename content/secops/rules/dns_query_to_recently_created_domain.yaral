@@ -3,7 +3,7 @@ rule dns_query_to_recently_created_domain {
   meta:
     author = "Google Cloud Security"
     description = "DNS query to a recently created domain"
-    type = "alert"
+    type = "Alert"
     tags = "whois"
     data_source = "microsoft sysmon"
     severity = "Low"

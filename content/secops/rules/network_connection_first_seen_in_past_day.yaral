@@ -3,7 +3,7 @@ rule network_connection_first_seen_in_past_day {
   meta:
     author = "Google Cloud Security"
     description = "Detect network connection to an ip address that was only seen for the first time in the past 24 hours"
-    type = "alert"
+    type = "Alert"
     tags = "first last seen"
     data_source = "microsoft windows , gcp firewall, microsoft sysmon, crowdstrike, gcp scc, zeek"
     severity = "Low"

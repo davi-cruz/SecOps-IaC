@@ -12,7 +12,7 @@ rule gcp_ngfw_denied_external_connections {
     // Severity value, by convention, should be "Low", "Medium" or "High"
     author = "Google Cloud Networking & Security"
     description = "Network connections denied by Google Cloud NGFW"
-    type = "alert"
+    type = "Alert"
     severity = "High"
     priority = "High"
 

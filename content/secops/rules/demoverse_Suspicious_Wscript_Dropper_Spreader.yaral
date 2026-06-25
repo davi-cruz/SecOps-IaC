@@ -2,7 +2,7 @@ rule demoverse_Suspicious_Wscript_Dropper_Spreader {
   meta:
     author = "josemarin@google.com"
     description = "Multi-event rule detecting wscript.exe executing and subsequently dropping an executable in the Temp folder or spreading VBScripts to network/removable drives."
-    severity = "MEDIUM"
+    severity = "Medium"
 
   events:
     // Event 1: The Script Engine Execution

@@ -3,7 +3,7 @@ rule vt_relationships_file_contacts_domain {
   meta:
     author = "Google Cloud Security"
     description = "Alert on known Hash querying a known hostname with VT Relationships"
-    type = "alert"
+    type = "Alert"
     tags = "vt"
     data_source = "microsoft sysmon, crowdstrike"
     severity = "High"

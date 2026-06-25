@@ -7,7 +7,7 @@ rule mitre_attack_T1021_002_windows_admin_share_basic {
     mitre_attack_technique = "Remote Services: SMB/Windows Admin Shares"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1021/002/"
     mitre_attack_version = "v13.1"
-    type = "alert"
+    type = "Alert"
     platform = "Windows"
     data_source = "microsoft sysmon, microsoft windows events"
     severity = "Low"

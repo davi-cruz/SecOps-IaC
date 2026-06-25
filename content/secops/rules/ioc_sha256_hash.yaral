@@ -3,7 +3,7 @@ rule ioc_sha256_hash {
   meta:
     author = "Google Cloud Security"
     description = "Detect file/process events that match watchlisted hashes in MISP"
-    type = "alert"
+    type = "Alert"
     tags = "threat indicators"
     assumption = "Assumes MISP data has been ingested into entity graph; this rule can be modified to utilize other TI indicators"
     data_source = "microsoft sysmon"

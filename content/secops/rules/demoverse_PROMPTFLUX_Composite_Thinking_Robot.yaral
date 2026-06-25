@@ -1,10 +1,10 @@
 rule demoverse_PROMPTFLUX_Composite_Thinking_Robot {
   meta:
+    tactic = "TA0002,TA0003,TA0008,TA0011"
     author = "josemarin@google.com"
     description = "CRITICAL SEVERITY: Detects high-confidence, multi-stage infections of the PROMPTFLUX malware family. PROMPTFLUX is a highly sophisticated VBScript dropper (often masquerading as a 'ScreenRec' installer) that utilizes a generative AI 'Thinking Robot' module to evade static analysis. This composite rule correlates three distinct attack phases occurring on a single host within a 1-hour window: 1) Persistence established via wscript.exe writing obfuscated code to the Windows Startup folder. 2) Execution behaviors indicating payload staging in the Temp directory or spreading to mapped network/removable drives. 3) An active C2 heartbeat connecting to the Google Gemini API (generativelanguage.googleapis.com) to dynamically request and rewrite its own source code. Immediate host isolation is recommended."
-    tactics = "TA0002,TA0003,TA0008,TA0011"
-    techniques = "T1059.005,T1547.001,T1091,T1071.001"
-    severity = "CRITICAL"
+    technique = "T1059.005,T1547.001,T1091,T1071.001"
+    severity = "Critical"
 
   events:
     // 1. Ingest the Curated Rule Detection for the Startup Folder write
