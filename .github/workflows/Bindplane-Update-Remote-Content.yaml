@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: observIQ/bindplane-op-action@main
+      - uses: observIQ/bindplane-op-action@11c948bcc1ed009a408a45d6a9e01a24f2fda93e # main on Jun 25
         with:
           bindplane_remote_url: ${{ vars.BINDPLANE_REMOTE_URL }}
           bindplane_api_key: ${{ secrets.BINDPLANE_API_KEY }}
