@@ -5,7 +5,7 @@ create_time: '2024-07-30T20:20:49.779439Z'
 enabled: false
 id: ru_8f70594e-1ff7-41d2-bb03-ad1ebb3db58d
 resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_8f70594e-1ff7-41d2-bb03-ad1ebb3db58d
-revision_create_time: '2026-06-09T15:20:10.199503Z'
-revision_id: v_1781018410_199503000
+revision_create_time: '2026-06-25T21:07:19.037951Z'
+revision_id: v_1782421639_037951000
 run_frequency: LIVE
 type: MULTI_EVENT
