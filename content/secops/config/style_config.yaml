@@ -1,3 +1,34 @@
+forbidden_metadata:
+  - field: mitre_attach_url
+    message: "Use 'mitre_attack_url' instead (corrected typo)."
+  - field: mitre_attack_technique_id
+    message: "Use 'technique' instead (standard Chronicle Dashboard mapping)."
+  - field: mitre_attack_tactic_id
+    message: "Tactic IDs are automatically derived from technique IDs. Remove this field."
+  - field: rule_name
+    message: "Use 'display_name' instead (rule_name is redundant with the YARA-L rule header)."
+  - field: created
+    message: "Administrative tag. Rules are version-controlled via Git; remove creation dates."
+  - field: version
+    message: "Administrative tag. Rules are version-controlled via Git; remove version strings."
+  - field: yara_version
+    message: "Non-standard tag. Remove it."
+  - field: alerting
+    message: "Use 'type' (e.g., type = \"Alert\") instead."
+  - field: connector
+    message: "Use 'data_source' instead."
+  - field: assumptions
+    message: "Use 'assumption' instead (corrected plural typo)."
+  - field: log_source
+    message: "Use 'data_source' instead."
+  - field: politica
+    message: "Use 'tags' or 'reference' instead."
+  - field: techniques
+    message: "Use 'technique' instead (corrected plural typo)."
+  - field: mitre_attack_id
+    message: "Use 'technique' instead."
+
+
 required_metadata:
   - field: author
     required: true
@@ -25,4 +56,32 @@ required_metadata:
   - field: technique
     required: false
     regex: "^T\\d{4}(\\.\\d{3})?(,T\\d{4}(\\.\\d{3})?)*$"
+  - field: display_name
+    required: false
+    non_empty: true
+  - field: tactic
+    required: false
+    regex: "^(TA\\d{4}|[a-zA-Z\\s]+)(,(TA\\d{4}|[a-zA-Z\\s]+))*$"
+  - field: type
+    required: false
+    allowed_values:
+      - Alert
+      - Hunt
+      - Producer
+      - Policy Violation
+  - field: mitre_attack_analytic
+    required: false
+    regex: "^AN\\d{4}(,AN\\d{4})*$"
+  - field: mitre_attack_detection_strategy
+    required: false
+    regex: "^DET\\d{4}(,DET\\d{4})*$"
+  - field: mitre_attack_data_component
+    required: false
+    regex: "^DC\\d{4}(,DC\\d{4})*$"
+  - field: d3fend_technique
+    required: false
+    regex: "^D3-[A-Z]{3,6}(,D3-[A-Z]{3,6})*$"
+
+
+
 

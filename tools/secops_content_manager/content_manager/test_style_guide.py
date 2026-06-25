@@ -85,6 +85,7 @@ def extract_meta_value(rule_text: str, key: str) -> str | None:
     return None
 
 
+
 def get_outcome_section(rule_text: str) -> str | None:
     """Extract the content of the outcome section if it exists."""
     match = re.search(r'outcome:\s*(.*?)(?=\b(?:match|condition)\b|\})', rule_text, re.DOTALL | re.IGNORECASE)
@@ -198,6 +199,23 @@ class TestRuleStyle:
         )
 
     @pytest.mark.parametrize(
+        "forbidden_rule",
+        style_config.get("forbidden_metadata", []),
+        ids=lambda r: f"forbidden_{r['field']}"
+    )
+    def test_forbidden_metadata_fields(self, rule_content, forbidden_rule):
+        """Ensure forbidden or deprecated metadata fields are not used."""
+        field_name = forbidden_rule["field"]
+        message = forbidden_rule.get("message", "This field is deprecated.")
+        
+        value = extract_meta_value(rule_content, field_name)
+        assert value is None, (
+            f"[{rule_content.relative_path}] Forbidden metadata tag '{field_name}' found. "
+            f"Value: '{value}'. {message}"
+        )
+
+
+    @pytest.mark.parametrize(
         "metadata_rule",
         style_config.get("required_metadata", []),
         ids=lambda r: f"meta_{r['field']}"
@@ -221,10 +239,9 @@ class TestRuleStyle:
             if non_empty:
                 assert value != "", f"[{rule_content.relative_path}] Field '{field_name}' is defined but empty."
             if allowed_values:
-                allowed_values_lower = [v.lower() for v in allowed_values]
-                assert value.lower() in allowed_values_lower, (
-                    f"[{rule_content.relative_path}] Invalid value '{value}' for field '{field_name}'. "
-                    f"Must be one of {allowed_values}."
+                assert value in allowed_values, (
+                    f"[{rule_content.relative_path}] Invalid value '{value}' for field '{field_name}' (case-sensitive). "
+                    f"Must be exactly one of {allowed_values}."
                 )
             if regex_pattern:
                 assert re.match(regex_pattern, value), (

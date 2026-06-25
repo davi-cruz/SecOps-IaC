@@ -53,8 +53,16 @@ These fields provide context during triage and help analysts understand the scop
 ### `type`
 *   **Status**: Recommended
 *   **Description**: The type of detection rule.
-*   **Format**: Free text. Common values: `Alert`, `Hunting`, `Policy Violation`.
+*   **Allowed Values**: `Alert`, `Hunt`, `Producer`, `Policy Violation`
 *   **Example**: `type = "Alert"`
+
+
+### `display_name`
+*   **Status**: Optional (Recommended for Case Management)
+*   **Description**: A human-readable, non-snake_case name of the rule. Useful for display in case management (SOAR) and reporting.
+*   **Format**: Free text.
+*   **Example**: `display_name = "Access to Honeypot Secret"`
+*   *Note*: To pass this name to case management (SOAR), you should also define it as an outcome variable in the rule's `outcome:` section (e.g., `$display_name = "Access to Honeypot Secret"`).
 
 ---
 
@@ -67,6 +75,12 @@ Mapping rules to the MITRE ATT&CK framework helps visualize defense coverage in 
 *   **Description**: The MITRE ATT&CK Technique ID (including sub-techniques). This is the key recognized by the Google SecOps MITRE ATT&CK Dashboard to calculate coverage.
 *   **Format**: Comma-separated list of valid MITRE Technique IDs (T-codes and sub-techniques).
 *   **Example**: `technique = "T1548,T1134.001"`
+
+### `tactic`
+*   **Status**: Optional (Recommended for Composite Detections)
+*   **Description**: The MITRE ATT&CK Tactic ID or Name. While the MITRE Dashboard automatically derives tactics from technique IDs, this tag is required if you want to correlate detections by tactic in **Composite Detection Rules** (via `rule_labels["tactic"]`).
+*   **Format**: MITRE Tactic ID (e.g., `TA0002`) or Tactic Name (e.g., `Execution`).
+*   **Example**: `tactic = "TA0002"` or `tactic = "Execution"`
 
 ### `mitre_attack_technique`
 *   **Status**: Recommended
@@ -92,9 +106,39 @@ Mapping rules to the MITRE ATT&CK framework helps visualize defense coverage in 
 *   **Format**: Version string.
 *   **Example**: `mitre_attack_version = "v14"`
 
+### `mitre_attack_analytic`
+*   **Status**: Optional (MITRE ATT&CK v18+)
+*   **Description**: The platform-specific analytic ID (prefixed with `AN`). Represents the technical implementation details of a detection strategy.
+*   **Format**: Comma-separated list of MITRE CAR or ATT&CK analytic IDs.
+*   **Example**: `mitre_attack_analytic = "AN0001"`
+
+### `mitre_attack_detection_strategy`
+*   **Status**: Optional (MITRE ATT&CK v18+)
+*   **Description**: The high-level detection strategy ID (prefixed with `DET`). Groups multiple platform-specific analytics into cohesive methodologies.
+*   **Format**: Comma-separated list of MITRE detection strategy IDs.
+*   **Example**: `mitre_attack_detection_strategy = "DET0001"`
+
+### `mitre_attack_data_component`
+*   **Status**: Optional (MITRE ATT&CK v18+)
+*   **Description**: The specific data component ID (prefixed with `DC`) monitored by the rule to perform the detection. Maps directly to the official MITRE ATT&CK Data Sources.
+*   **Format**: Comma-separated list of MITRE data component IDs.
+*   **Example**: `mitre_attack_data_component = "DC0001"`
+
 ---
 
-## 4. Documentation & Incident Response
+## 4. MITRE D3FEND Mapping
+
+Mapping rules to the MITRE D3FEND framework helps describe the defensive technologies and analysis techniques applied by the detection rule.
+
+### `d3fend_technique`
+*   **Status**: Optional
+*   **Description**: The MITRE D3FEND Defensive Technique ID (prefixed with `D3-`).
+*   **Format**: Comma-separated list of valid D3FEND IDs (D3- prefix followed by the uppercase abbreviation of the technique).
+*   **Example**: `d3fend_technique = "D3-DNSTA"` or `d3fend_technique = "D3-DNSTA,D3-PSA"`
+
+---
+
+## 5. Documentation & Incident Response
 
 ### `reference`
 *   **Status**: Optional (Highly encouraged)
@@ -128,7 +172,7 @@ Mapping rules to the MITRE ATT&CK framework helps visualize defense coverage in 
 
 ---
 
-## 5. Deprecated & Erroneous Tags
+## 6. Deprecated & Erroneous Tags
 
 The following tags have been found in the repository but are **deprecated** or are **typos**. Do not use them in new rules, and replace them when updating existing rules:
 
@@ -137,13 +181,12 @@ The following tags have been found in the repository but are **deprecated** or a
 | `mitre_attach_url` | Use `mitre_attack_url` | Typo |
 | `mitre_attack_technique_id`| Use `technique` | Not recognized by the Google SecOps MITRE dashboard |
 | `mitre_attack_tactic_id` | Remove | Mapped automatically by the dashboard; not recognized by it |
-| `tactic` | Remove | Mapped automatically by the dashboard; not recognized by it |
 | `techniques` | Use `technique` | Typo/Plural variant |
 | `mitre_attack_id` | Use `technique` | Ambiguous; does not specify technique vs tactic |
 | `assumptions` | Use `assumption` | Typo/Plural variant |
 | `log_source` | Use `data_source` | Duplicate of `data_source` |
 | `politica` | Use `tags` or `reference` | Typo (Spanish/Portuguese for policy) or non-standard |
-| `rule_name` | Remove | Redundant (the rule name is defined in the YARA-L header) |
+| `rule_name` | Use `display_name` | Redundant with header, but `display_name` can be used for case management |
 | `created` | Remove | Version control (Git) tracks file creation history |
 | `version` | Remove | Version control (Git) tracks file revision history |
 | `yara_version` | Remove | Non-standard metadata tag |
@@ -152,7 +195,7 @@ The following tags have been found in the repository but are **deprecated** or a
 
 ---
 
-## 6. Linter Enforcement
+## 7. Linter Enforcement
 
 The YARA-L style linter (`test_style_guide.py`) checks rules against the configuration in `style_config.yaml`. 
 
