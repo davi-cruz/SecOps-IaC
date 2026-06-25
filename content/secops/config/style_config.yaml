@@ -81,6 +81,10 @@ required_metadata:
   - field: d3fend_technique
     required: false
     regex: "^D3-[A-Z]{3,6}(,D3-[A-Z]{3,6})*$"
+  - field: namespace
+    required: false
+    non_empty: true
+
 
 
 

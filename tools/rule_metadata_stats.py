@@ -38,6 +38,7 @@ FREE_TEXT_CONVENTION = {
     "mitre_attack_detection_strategy",
     "mitre_attack_data_component",
     "d3fend_technique",
+    "namespace",
 }
 
 # Tags where duplicate values indicate potential copy-paste quality issues

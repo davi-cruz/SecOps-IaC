@@ -64,6 +64,12 @@ These fields provide context during triage and help analysts understand the scop
 *   **Example**: `display_name = "Access to Honeypot Secret"`
 *   *Note*: To pass this name to case management (SOAR), you should also define it as an outcome variable in the rule's `outcome:` section (e.g., `$display_name = "Access to Honeypot Secret"`).
 
+### `namespace`
+*   **Status**: Optional (Use when rule targets a specific log namespace)
+*   **Description**: The specific Google SecOps (Chronicle) log namespace context this rule applies to.
+*   **Format**: Free text (usually alphanumeric, e.g. `LogStory`).
+*   **Example**: `namespace = "LogStory"`
+
 ---
 
 ## 3. MITRE ATT&CK Mapping

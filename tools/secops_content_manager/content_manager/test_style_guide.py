@@ -214,6 +214,33 @@ class TestRuleStyle:
             f"Value: '{value}'. {message}"
         )
 
+    def test_mitre_mapping_completeness(self, rule_content):
+        """Ensure that if any MITRE ATT&CK descriptive tags exist, 'technique' ID is also defined."""
+        mitre_tags = [
+            "mitre_attack_technique",
+            "mitre_attack_tactic",
+            "mitre_attack_url",
+            "mitre_attack_version",
+            "mitre_attack_analytic",
+            "mitre_attack_detection_strategy",
+            "mitre_attack_data_component"
+        ]
+        
+        has_any_mitre_tag = False
+        for tag in mitre_tags:
+            if extract_meta_value(rule_content, tag) is not None:
+                has_any_mitre_tag = True
+                break
+                
+        if has_any_mitre_tag:
+            technique = extract_meta_value(rule_content, "technique")
+            assert technique is not None, (
+                f"[{rule_content.relative_path}] Rule contains MITRE ATT&CK context tags "
+                f"but is missing the required 'technique' ID tag (e.g. technique = \"T1078\") "
+                f"which is necessary for the Google SecOps MITRE dashboard mapping."
+            )
+
+
 
     @pytest.mark.parametrize(
         "metadata_rule",
