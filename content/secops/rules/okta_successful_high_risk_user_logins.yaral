@@ -9,7 +9,7 @@ rule okta_successful_high_risk_user_logins {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1078/"
     technique = "T1078"
     mitre_attack_version = "v13.1"
-    type = "Hunt"
+type = "Hunt"
     false_positives = "This rule causes False Positives if the user is a net new user."
     data_source = "Okta"
     severity = "Medium"

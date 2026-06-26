@@ -8,7 +8,7 @@ rule aws_successful_console_authentication_from_multiple_ips {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1586/"
     technique = "T1586"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "Medium"

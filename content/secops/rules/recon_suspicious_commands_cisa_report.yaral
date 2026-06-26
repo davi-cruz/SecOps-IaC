@@ -3,7 +3,7 @@ rule recon_suspicious_commands_cisa_report {
   meta:
     author = "Google Cloud Security"
     description = "Detects suspicious commands as identified in CISA Living of the Land pdf. Alone they may be normal but in concert, they may be worth looking into"
-    type = "Hunt"
+type = "Hunt"
     platform = "Windows"
     data_source = "microsoft sysmon, microsft windows events"
     reference = "https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF"

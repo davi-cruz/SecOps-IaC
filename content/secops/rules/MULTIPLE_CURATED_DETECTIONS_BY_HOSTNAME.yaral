@@ -5,7 +5,7 @@ rule MULTIPLE_CURATED_DETECTIONS_BY_HOSTNAME {
     description = "Consumer Detection for multiple Curated Detections on the same Hostname."
     severity = "Medium"
     priority = "Medium"
-    type = "Alert"
+type = "Alert"
 
   events:
     $d.detection.type = "GCTI_FINDING"

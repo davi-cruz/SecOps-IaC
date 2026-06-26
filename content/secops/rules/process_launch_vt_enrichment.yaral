@@ -3,7 +3,7 @@ rule process_launch_vt_enrichment {
   meta:
     author = "Google Cloud Security"
     description = "Identify process creations that are tagged exploit in VT"
-    type = "Alert"
+type = "Alert"
     tags = "vt enrichment"
     data_source = "crowdstrike"
     severity = "High"

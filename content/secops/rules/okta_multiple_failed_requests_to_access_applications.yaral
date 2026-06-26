@@ -9,7 +9,7 @@ rule okta_multiple_failed_requests_to_access_applications {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1550/004/"
     technique = "T1550.004"
     mitre_attack_version = "v13.1"
-    type = "Hunt"
+type = "Hunt"
     data_source = "Okta"
     severity = "Medium"
     priority = "Medium"

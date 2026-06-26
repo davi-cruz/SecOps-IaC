@@ -5,7 +5,7 @@ rule aws_account_leaving_or_removed_from_organization {
     description = "Detect an AWS account attempting to leave or being removed from an AWS organization."
     technique = "T1685"
     tactic = "TA0112"
-    type = "Alert"
+type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "Low"

@@ -8,7 +8,7 @@ rule aws_guardduty_brute_force_activity_detected {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1110/"
     technique = "T1110"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     data_source = "AWS GuardDuty"
     platform = "AWS"
     severity = "High"

@@ -8,7 +8,7 @@ rule mitre_attack_T1053_005_windows_creation_of_scheduled_task {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1053/005/"
     technique = "T1053.005"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     platform = "Windows"
     data_source = "sentinelone"
     severity = "Info"

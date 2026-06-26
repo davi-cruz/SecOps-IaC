@@ -9,7 +9,7 @@ rule okta_mfa_brute_force_attack {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1110/"
     technique = "T1110"
     mitre_attack_version = "v13.1"
-    type = "Hunt"
+type = "Hunt"
     data_source = "Okta"
     severity = "Medium"
     priority = "Medium"

@@ -8,7 +8,7 @@ rule aws_successful_login_after_multiple_failed_attempts {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1078/"
     technique = "T1078"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "Medium"

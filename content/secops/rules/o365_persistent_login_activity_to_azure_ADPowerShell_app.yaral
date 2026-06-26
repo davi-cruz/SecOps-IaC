@@ -8,7 +8,7 @@ rule o365_persistent_login_activity_to_azure_ADPowerShell_app {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1021/007/"
     technique = "T1021.007"
     mitre_attack_version = "v14.1"
-    type = "Alert"
+type = "Alert"
     platform = "azure"
     data_source = "o365"
     severity = "Medium"

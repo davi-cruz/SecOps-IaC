@@ -20,7 +20,7 @@ rule github_repository_deploy_key_created_or_modified {
     author = "Google Cloud Security"
     description = "Detects when an SSH deploy key is added or modified in a GitHub repository. A compromised or unauthorized deploy key could allow malicious actors to push unauthorized changes into production environments, potentially bypassing code reviews and testing procedures. This could lead to the introduction of backdoors, malware, or the exfiltration of sensitive data."
     assumption = "Your GitHub enterprise audit log settings are configured to log the source IP address for events. Reference: https://docs.github.com/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/displaying-ip-addresses-in-the-audit-log-for-your-organization"
-    type = "Alert"
+type = "Alert"
     severity = "High"
     priority = "High"
     platform = "GitHub"

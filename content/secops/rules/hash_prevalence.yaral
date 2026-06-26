@@ -3,7 +3,7 @@ rule hash_prevalence {
   meta:
     author = "Google Cloud Security"
     description = "Correlate process events with hashes that have a low rolling max over the past 10 days"
-    type = "Alert"
+type = "Alert"
     tags = "prevalence"
     data_source = "crowdstrike, sentinelone, microsoft sysmon, microsoft defender atp"
     severity = "Low"

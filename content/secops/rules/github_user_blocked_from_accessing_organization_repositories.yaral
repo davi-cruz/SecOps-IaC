@@ -20,7 +20,7 @@ rule github_user_blocked_from_accessing_organization_repositories {
     author = "Google Cloud Security"
     description = "Detects when a user is blocked from accessing repositories within a GitHub organization."
     assumption = "Your GitHub enterprise audit log settings are configured to log the source IP address for events. Reference: https://docs.github.com/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/displaying-ip-addresses-in-the-audit-log-for-your-organization"
-    type = "Alert"
+type = "Alert"
     severity = "Low"
     priority = "Low"
     platform = "GitHub"

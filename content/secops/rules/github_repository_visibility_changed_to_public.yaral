@@ -20,7 +20,7 @@ rule github_repository_visibility_changed_to_public {
     author = "Google Cloud Security"
     description = "Detects when the visibility for a GitHub repository is changed to public."
     assumption = "Your GitHub enterprise audit log settings are configured to log the source IP address for events. Reference: https://docs.github.com/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/displaying-ip-addresses-in-the-audit-log-for-your-organization"
-    type = "Alert"
+type = "Alert"
     // Customize the severity and priority values depending on how normal this behavior is for your organization
     severity = "High"
     priority = "High"

@@ -9,7 +9,7 @@ rule okta_user_account_lockout {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1078/"
     technique = "T1078"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     data_source = "Okta"
     severity = "Medium"
     priority = "Medium"

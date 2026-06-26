@@ -3,7 +3,7 @@ rule windows_event_log_cleared {
   meta:
     author = "Google Cloud Security"
     description = "Detects the clearing of event logs within the Windows Event Viewer. "
-    type = "Alert"
+type = "Alert"
     data_source = "microsoft sysmon, microsoft windows events"
     platform = "Windows"
     mitre_attack_tactic = "Defense Evasion"

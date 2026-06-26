@@ -3,7 +3,7 @@ rule demoverse_user_download_executable_from_macro {
   meta:
     author = "Google Cloud Security"
     description = "Executable downloaded by Microsoft Excel by user with GCP entity relationship"
-    type = "Alert"
+type = "Alert"
     data_source = "zscaler nss, crowdstrike"
     tags = "user entity, resource entity"
     severity = "High"

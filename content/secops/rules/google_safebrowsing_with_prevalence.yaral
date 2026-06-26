@@ -3,7 +3,7 @@
   meta:
     author = "Google Cloud Security"
     description = "Detect process launch events that correlate to Safe Browsing hash data and have low prevalence"
-    type = "Alert"
+type = "Alert"
     tags = "safe browsing, prevalence"
     data_source = "microsoft sysmon"
     severity = "Critical"

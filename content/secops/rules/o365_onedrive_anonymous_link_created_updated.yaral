@@ -3,7 +3,7 @@ rule o365_onedrive_anonymous_link_created_updated {
   meta:
     author = "Google Cloud Security"
     description = "Anonymous links can be used to export files from OneDrive. While this isn't always a sign of malicious activity, some organizations do not support the creation of anonymous links because of the risk of data leakage. This rule detects the creation and modification of anonymous links in OneDrive."
-    type = "Hunt"
+type = "Hunt"
     platform = "azure"
     data_source = "o365"
     severity = "Medium"

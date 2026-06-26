@@ -3,7 +3,7 @@ rule impacket_wmiexec_cisa_report {
   meta:
     author = "Google Cloud Security"
     description = "Detects the artifacts generally associated with the use of wmiexec.py"
-    type = "Alert"
+type = "Alert"
     data_source = "microsoft sysmon, microsft windows events"
     mitre_attack_tactic = "Execution"
     mitre_attack_technique = "Windows Management Instrumentation"

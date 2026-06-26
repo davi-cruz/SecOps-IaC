@@ -4,7 +4,7 @@ rule whois_dns_query_to_typosquatting_domain {
     author = "Google Cloud Security"
     description = "Provides example usage of WHOIS data, detecting a DNS query for a domain that contains a specific string and is not registered with the defined domain registrar."
     // This rule must be customized to alert on DNS queries for possible typosquatting domains that contain your organization's domain name(s) that are not registered with your approved domain registrar.
-    type = "Hunt"
+type = "Hunt"
     tags = "whois"
     data_source = "microsoft sysmon"
     severity = "Low"

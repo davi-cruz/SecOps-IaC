@@ -3,7 +3,7 @@ rule ip_target_prevalence {
   meta:
     author = "Google Cloud Security"
     description = "Detect events that are communicating to IP addresses that have a low rolling max prevalence."
-    type = "Alert"
+type = "Alert"
     tags = "prevalence"
     data_source = "crowdstrike, gcp firewall, microsoft sysmon, gcp scc, microsoft defender atp, corelight zeek, microsoft windows events"
     severity = "Low"

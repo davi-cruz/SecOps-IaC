@@ -9,7 +9,7 @@ rule okta_user_rejected_multiple_push_notifications {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1110/"
     technique = "T1110"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     data_source = "Okta"
     severity = "Medium"
     priority = "Medium"

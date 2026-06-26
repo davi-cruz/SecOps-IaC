@@ -8,7 +8,7 @@ rule gcti_remote_access_tools {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1219/"
     technique = "T1219"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     tags = "rat"
     data_source = "crowdstrike, microsoft sysmon, microsoft defender atp"
     severity = "High"

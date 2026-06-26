@@ -8,7 +8,7 @@ rule aws_unusual_number_of_failed_authentications_from_the_same_ip {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1110/004/"
     technique = "T1110.004"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "Medium"

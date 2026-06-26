@@ -8,7 +8,7 @@ rule vt_relationships_file_contacts_tor_ip {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1090/003/"
     technique = "T1090.003"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     tags = "vt, tor"
     data_source = "microsoft defender atp"
     severity = "Critical"

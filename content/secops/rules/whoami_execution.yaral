@@ -3,7 +3,7 @@ rule whoami_execution {
   meta:
     author = "Google Cloud Security"
     description = "Detects the execution of whoami, which is often used by attackers after exploitation to establish what credentials they are logged in under"
-    type = "Hunt"
+type = "Hunt"
     data_source = "microsoft sysmon, microsft windows events"
     mitre_attack_tactic = "Discovery"
     mitre_attack_technique = "System Owner/User Discovery"

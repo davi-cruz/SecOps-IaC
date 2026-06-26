@@ -8,7 +8,7 @@ rule aws_security_group_open_to_world {
     mitre_attack_url = "https://attack.mitre.org/techniques/T1562/"
     technique = "T1562"
     mitre_attack_version = "v13.1"
-    type = "Alert"
+type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "High"

@@ -5,7 +5,7 @@ rule aws_cloudtrail_logging_tampered {
     description = "Detects when CloudTrail logging is updated, stopped or deleted."
     tactic = "TA0112"
     technique = "T1685.002"
-    type = "Alert"
+type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "High"

@@ -3,7 +3,7 @@ rule ioc_ip_target {
   meta:
     author = "Google Cloud Security"
     description = "Detect network events that indicate communication to a watchlisted IP address"
-    type = "Alert"
+type = "Alert"
     tags = "threat indicators"
     assumption = "Assumes MISP data has been ingested into entity graph; this rule can be modified to utilize other TI indicators"
     data_source = "microsoft windows events"

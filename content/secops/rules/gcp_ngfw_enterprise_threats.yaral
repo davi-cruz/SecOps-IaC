@@ -12,7 +12,7 @@ rule gcp_ngfw_enterprise_threats {
     // Severity value, by convention, should be "Low", "Medium" or "High"
     author = "Google Cloud Networking & Security"
     description = "Network threats detected by Google Cloud NGFW Enterprise"
-    type = "Alert"
+type = "Alert"
     severity = "Medium"
     priority = "Medium"
 

@@ -3,7 +3,7 @@ rule suspicious_asn {
   meta:
     author = "Google Cloud Security"
     description = "Identify network traffic based on a specific ASN"
-    type = "Alert"
+type = "Alert"
     tags = "geoip enrichment"
     data_source = "microsoft windows events"
     severity = "Low"

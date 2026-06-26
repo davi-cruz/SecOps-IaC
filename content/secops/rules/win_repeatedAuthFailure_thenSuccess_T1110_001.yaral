@@ -3,7 +3,7 @@ rule win_repeatedAuthFailure_thenSuccess_T1110_001 {
   meta:
     author = "Google Cloud Security"
     description = "Detect Multiple Failed Login Attempts followed by Successful Login"
-    type = "Alert"
+type = "Alert"
     data_source = "microsoft windows events"
     platform = "Windows"
     severity = "Medium"
