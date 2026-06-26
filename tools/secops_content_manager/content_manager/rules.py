@@ -347,7 +347,7 @@ class Rules:
 
   @classmethod
   def sanitize_meta_section(cls, meta_content: str) -> str:
-    """Sanitize the meta section content by appending missing required fields."""
+    """Sanitize the meta section content by appending missing required fields and enforcing style guide standards."""
     def has_active_key(content, key):
       pattern = rf'^[ \t]*(?!\/\/)[ \t]*{key}[ \t]*='
       return re.search(pattern, content, re.MULTILINE | re.IGNORECASE) is not None
@@ -357,6 +357,51 @@ class Rules:
     if not cleaned_content.strip():
       return "\n    author = \"Google Cloud Security\"\n    description = \"Automatically imported rule\"\n    severity = \"Low\"\n"
 
+    # 1. Clean up deprecated metadata key names
+    key_replacements = [
+        (r'^[ \t]*(?!\/\/)[ \t]*mitre_attach_url[ \t]*=', '    mitre_attack_url ='),
+        (r'^[ \t]*(?!\/\/)[ \t]*assumptions[ \t]*=', '    assumption ='),
+        (r'^[ \t]*(?!\/\/)[ \t]*techniques[ \t]*=', '    technique ='),
+        (r'^[ \t]*(?!\/\/)[ \t]*mitre_attack_id[ \t]*=', '    technique ='),
+        (r'^[ \t]*(?!\/\/)[ \t]*log_source[ \t]*=', '    data_source ='),
+    ]
+    for pattern, replacement in key_replacements:
+      cleaned_content = re.sub(pattern, replacement, cleaned_content, flags=re.MULTILINE | re.IGNORECASE)
+
+    # 2. Standardize 'type' metadata tag values to TitleCase
+    type_map = {
+        "alert": "Alert",
+        "hunt": "Hunt",
+        "producer": "Producer",
+        "policy violation": "Policy Violation"
+    }
+    def type_sub(match):
+      val_lower = match.group(1).lower()
+      new_val = type_map.get(val_lower, match.group(1))
+      return f'type = "{new_val}"'
+
+    cleaned_content = re.sub(
+        r'^[ \t]*(?!\/\/)[ \t]*type[ \t]*=[ \t]*["\']([^"\']+)["\']',
+        type_sub,
+        cleaned_content,
+        flags=re.MULTILINE | re.IGNORECASE
+    )
+
+    # 3. Derive missing 'technique' if MITRE tags exist and technique is missing
+    mitre_tags = ["mitre_attack_technique", "mitre_attack_tactic", "mitre_attack_url", "mitre_attack_version"]
+    has_mitre = any(has_active_key(cleaned_content, tag) for tag in mitre_tags)
+    if has_mitre and not has_active_key(cleaned_content, "technique"):
+      url_match = re.search(r'mitre_attack_url\s*=\s*["\']([^"\']+)["\']', cleaned_content, re.IGNORECASE)
+      if url_match:
+        url = url_match.group(1)
+        t_match = re.search(r"techniques/(T\d{4})(?:/(\d{3}))?", url)
+        if t_match:
+          t_code = t_match.group(1)
+          sub_code = t_match.group(2)
+          derived = f"{t_code}.{sub_code}" if sub_code else t_code
+          cleaned_content += f'\n    technique = "{derived}"'
+
+    # 4. Ensure required keys exist
     if not has_active_key(cleaned_content, "author"):
       cleaned_content += "\n    author = \"Google Cloud Security\""
 
