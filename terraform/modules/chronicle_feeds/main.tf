@@ -405,4 +405,8 @@ resource "google_chronicle_feed" "feeds" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [details]
+  }
 }

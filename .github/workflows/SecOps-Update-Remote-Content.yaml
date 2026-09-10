@@ -60,6 +60,12 @@ jobs:
           cd terraform
           terraform init -backend-config="bucket=${TERRAFORM_STATE_BUCKET}"
 
+      - name: Reconcile Terraform State
+        run: |
+          cd terraform
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule.rules["archived/github_repository_archived_or_deleted"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/github_repository_archived_or_deleted"]' 2>/dev/null || true
+
       - name: Terraform Apply
         run: |
           cd terraform

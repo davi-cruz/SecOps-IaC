@@ -24,10 +24,15 @@ locals {
   }
 
   all_rules = merge(local.active_rules, local.archived_rules)
+
+  all_rule_names = merge(
+    { for k, v in google_chronicle_rule.rules : k => v.name },
+    { for k, v in google_chronicle_rule.archived_rules : k => v.name }
+  )
 }
 
 resource "google_chronicle_rule" "rules" {
-  for_each = local.all_rules
+  for_each = local.active_rules
 
   project         = var.project_id
   location        = var.chronicle_location
@@ -37,6 +42,46 @@ resource "google_chronicle_rule" "rules" {
   text = each.value.text
 }
 
+resource "google_chronicle_rule" "archived_rules" {
+  for_each = local.archived_rules
+
+  project         = var.project_id
+  location        = var.chronicle_location
+  instance        = var.chronicle_instance_id
+  deletion_policy = var.deletion_policy
+
+  text = each.value.text
+
+  lifecycle {
+    ignore_changes = [text]
+  }
+}
+
+moved {
+  from = google_chronicle_rule.rules["archived/cloud_honeypot_secret_access_archived_37840bc"]
+  to   = google_chronicle_rule.archived_rules["archived/cloud_honeypot_secret_access_archived_37840bc"]
+}
+
+moved {
+  from = google_chronicle_rule.rules["archived/prt_use_case_1_archived_37840bc"]
+  to   = google_chronicle_rule.archived_rules["archived/prt_use_case_1_archived_37840bc"]
+}
+
+moved {
+  from = google_chronicle_rule.rules["archived/rule_1727979376900_archived_37840bc"]
+  to   = google_chronicle_rule.archived_rules["archived/rule_1727979376900_archived_37840bc"]
+}
+
+moved {
+  from = google_chronicle_rule.rules["archived/rule_1750794727496_archived_37840bc"]
+  to   = google_chronicle_rule.archived_rules["archived/rule_1750794727496_archived_37840bc"]
+}
+
+moved {
+  from = google_chronicle_rule.rules["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]
+  to   = google_chronicle_rule.archived_rules["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]
+}
+
 resource "google_chronicle_rule_deployment" "deployments" {
   for_each = local.all_rules
 
@@ -44,7 +89,7 @@ resource "google_chronicle_rule_deployment" "deployments" {
   location = var.chronicle_location
   instance = var.chronicle_instance_id
 
-  rule = element(split("/", google_chronicle_rule.rules[each.key].name), length(split("/", google_chronicle_rule.rules[each.key].name)) - 1)
+  rule = element(split("/", local.all_rule_names[each.key]), length(split("/", local.all_rule_names[each.key])) - 1)
 
   enabled       = lookup(each.value.config, "enabled", false)
   alerting      = lookup(each.value.config, "alerting", false)

@@ -1965,7 +1965,7 @@ import {
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_28ae5564-1e56-4282-b93e-df1bfbccda8d/deployment"
 }
 import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/cloud_honeypot_secret_access_archived_37840bc"]
+  to = module.chronicle_rules.google_chronicle_rule.archived_rules["archived/cloud_honeypot_secret_access_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_118b1fd8-75ae-4bed-b903-89a5224678a4"
 }
 
@@ -1974,16 +1974,7 @@ import {
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_118b1fd8-75ae-4bed-b903-89a5224678a4/deployment"
 }
 import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/github_repository_archived_or_deleted"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_419640fb-7142-4485-8495-f94514e0fb31"
-}
-
-import {
-  to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/github_repository_archived_or_deleted"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_419640fb-7142-4485-8495-f94514e0fb31/deployment"
-}
-import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/prt_use_case_1_archived_37840bc"]
+  to = module.chronicle_rules.google_chronicle_rule.archived_rules["archived/prt_use_case_1_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a"
 }
 
@@ -1992,7 +1983,7 @@ import {
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a/deployment"
 }
 import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/rule_1727979376900_archived_37840bc"]
+  to = module.chronicle_rules.google_chronicle_rule.archived_rules["archived/rule_1727979376900_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_984c5ee1-a5c2-4ecb-b7d4-0302e1c74607"
 }
 
@@ -2001,7 +1992,7 @@ import {
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_984c5ee1-a5c2-4ecb-b7d4-0302e1c74607/deployment"
 }
 import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/rule_1750794727496_archived_37840bc"]
+  to = module.chronicle_rules.google_chronicle_rule.archived_rules["archived/rule_1750794727496_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_2e31e47d-fd24-498f-90f9-936464d8058c"
 }
 
@@ -2010,7 +2001,7 @@ import {
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_2e31e47d-fd24-498f-90f9-936464d8058c/deployment"
 }
 import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]
+  to = module.chronicle_rules.google_chronicle_rule.archived_rules["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_101df42b-37f9-4e2a-b151-8f9e44ccb7c0"
 }
 
