@@ -19,10 +19,16 @@ variable "feeds_config_path" {
   description = "Path to the declarative feeds.yaml file."
 }
 
-variable "azure_credentials_secret_name" {
+variable "office365_credentials_secret_name" {
   type        = string
-  description = "Name of the secret in Secret Manager containing Azure/M365 JSON credentials."
-  default     = "secops-feed-azure-credentials"
+  description = "Name of the secret in Secret Manager containing Office 365 JSON credentials."
+  default     = "secops-feed-office365-credentials"
+}
+
+variable "entra_credentials_secret_name" {
+  type        = string
+  description = "Name of the secret in Secret Manager containing Microsoft Entra ID JSON credentials."
+  default     = "secops-feed-entra-credentials"
 }
 
 variable "gws_davicruz_customer_id" {

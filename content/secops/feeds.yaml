@@ -73,7 +73,8 @@ workspace_orgs:
 
 microsoft_tenants:
   davicruz:
-    secret_manager_name: "secops-feed-azure-credentials"
+    office_365_secret_name: "secops-feed-office365-credentials"
+    entra_id_secret_name: "secops-feed-entra-credentials"
     office_365_feeds:
       - name: "exchange"
         display_name: "DaviCruz Office Audit.Exchange"

@@ -1,13 +1,25 @@
-data "google_secret_manager_secret_version" "azure_credentials" {
-  count   = var.azure_credentials_secret_name != "" ? 1 : 0
+data "google_secret_manager_secret_version" "office365_credentials" {
+  count   = var.office365_credentials_secret_name != "" ? 1 : 0
   project = var.project_id
-  secret  = var.azure_credentials_secret_name
+  secret  = var.office365_credentials_secret_name
+}
+
+data "google_secret_manager_secret_version" "entra_credentials" {
+  count   = var.entra_credentials_secret_name != "" ? 1 : 0
+  project = var.project_id
+  secret  = var.entra_credentials_secret_name
 }
 
 locals {
   feeds_raw = yamldecode(file(var.feeds_config_path))
 
-  azure_creds = length(data.google_secret_manager_secret_version.azure_credentials) > 0 ? jsondecode(data.google_secret_manager_secret_version.azure_credentials[0].secret_data) : {
+  office365_creds = length(data.google_secret_manager_secret_version.office365_credentials) > 0 ? jsondecode(data.google_secret_manager_secret_version.office365_credentials[0].secret_data) : {
+    tenant_id     = "00000000-0000-0000-0000-000000000000"
+    client_id     = "00000000-0000-0000-0000-000000000000"
+    client_secret = "dummy-secret"
+  }
+
+  entra_creds = length(data.google_secret_manager_secret_version.entra_credentials) > 0 ? jsondecode(data.google_secret_manager_secret_version.entra_credentials[0].secret_data) : {
     tenant_id     = "00000000-0000-0000-0000-000000000000"
     client_id     = "00000000-0000-0000-0000-000000000000"
     client_secret = "dummy-secret"
@@ -145,11 +157,11 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "office365_settings" {
       for_each = each.value.feed_category == "OFFICE_365" ? [1] : []
       content {
-        tenant_id    = local.azure_creds.tenant_id
+        tenant_id    = local.office365_creds.tenant_id
         content_type = each.value.content_type
         authentication {
-          client_id     = local.azure_creds.client_id
-          client_secret = local.azure_creds.client_secret
+          client_id     = local.office365_creds.client_id
+          client_secret = local.office365_creds.client_secret
         }
       }
     }
@@ -158,10 +170,10 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "azure_ad_settings" {
       for_each = each.value.feed_category == "AZURE_AD" ? [1] : []
       content {
-        tenant_id = local.azure_creds.tenant_id
+        tenant_id = local.entra_creds.tenant_id
         authentication {
-          client_id     = local.azure_creds.client_id
-          client_secret = local.azure_creds.client_secret
+          client_id     = local.entra_creds.client_id
+          client_secret = local.entra_creds.client_secret
         }
       }
     }
@@ -170,10 +182,10 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "azure_ad_audit_settings" {
       for_each = each.value.feed_category == "AZURE_AD_AUDIT" ? [1] : []
       content {
-        tenant_id = local.azure_creds.tenant_id
+        tenant_id = local.entra_creds.tenant_id
         authentication {
-          client_id     = local.azure_creds.client_id
-          client_secret = local.azure_creds.client_secret
+          client_id     = local.entra_creds.client_id
+          client_secret = local.entra_creds.client_secret
         }
       }
     }
@@ -182,14 +194,14 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "azure_ad_context_settings" {
       for_each = each.value.feed_category == "AZURE_AD_CONTEXT" ? [1] : []
       content {
-        tenant_id        = local.azure_creds.tenant_id
+        tenant_id        = local.entra_creds.tenant_id
         hostname         = "graph.microsoft.com/v1.0"
         auth_endpoint    = "login.microsoftonline.com"
         retrieve_devices = each.value.retrieve_devices
         retrieve_groups  = each.value.retrieve_groups
         authentication {
-          client_id     = local.azure_creds.client_id
-          client_secret = local.azure_creds.client_secret
+          client_id     = local.entra_creds.client_id
+          client_secret = local.entra_creds.client_secret
         }
       }
     }
@@ -198,11 +210,11 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "microsoft_graph_alert_settings" {
       for_each = each.value.feed_category == "MICROSOFT_GRAPH_ALERT" ? [1] : []
       content {
-        tenant_id = local.azure_creds.tenant_id
+        tenant_id = local.entra_creds.tenant_id
         hostname  = each.value.hostname
         authentication {
-          client_id     = local.azure_creds.client_id
-          client_secret = local.azure_creds.client_secret
+          client_id     = local.entra_creds.client_id
+          client_secret = local.entra_creds.client_secret
         }
       }
     }

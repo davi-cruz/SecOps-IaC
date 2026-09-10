@@ -14,10 +14,16 @@ variable "chronicle_instance_id" {
   description = "Google SecOps Chronicle instance identifier (UUID format)."
 }
 
-variable "azure_credentials_secret_name" {
+variable "office365_credentials_secret_name" {
   type        = string
-  description = "Name of the secret in GCP Secret Manager holding the Microsoft/Azure JSON credentials (tenant_id, client_id, client_secret)."
-  default     = "secops-feed-azure-credentials"
+  description = "Name of the secret in GCP Secret Manager holding Office 365 JSON credentials (tenant_id, client_id, client_secret)."
+  default     = "secops-feed-office365-credentials"
+}
+
+variable "entra_credentials_secret_name" {
+  type        = string
+  description = "Name of the secret in GCP Secret Manager holding Microsoft Entra ID JSON credentials (tenant_id, client_id, client_secret)."
+  default     = "secops-feed-entra-credentials"
 }
 
 variable "gws_davicruz_customer_id" {

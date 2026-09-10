@@ -8,9 +8,10 @@ module "chronicle_feeds" {
   chronicle_instance_id = var.chronicle_instance_id
   feeds_config_path     = "${path.root}/../content/secops/feeds.yaml"
 
-  azure_credentials_secret_name = var.azure_credentials_secret_name
-  gws_davicruz_customer_id      = var.gws_davicruz_customer_id
-  gws_driveforjob_customer_id   = var.gws_driveforjob_customer_id
+  office365_credentials_secret_name = var.office365_credentials_secret_name
+  entra_credentials_secret_name     = var.entra_credentials_secret_name
+  gws_davicruz_customer_id          = var.gws_davicruz_customer_id
+  gws_driveforjob_customer_id       = var.gws_driveforjob_customer_id
 }
 
 module "chronicle_rules" {

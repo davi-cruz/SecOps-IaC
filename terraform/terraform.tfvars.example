@@ -6,14 +6,24 @@ project_id            = "my-secops-project-id"
 chronicle_location    = "us"
 chronicle_instance_id = "00000000-0000-0000-0000-000000000000"
 
-# GCP Secret Manager secret name containing Microsoft credentials JSON
-# Secret payload format:
+# GCP Secret Manager secret names containing Microsoft credentials JSON payloads:
+# 1. Office 365 Feeds App Registration (Exchange, DLP, SharePoint, General)
+office365_credentials_secret_name = "secops-feed-office365-credentials"
+# Payload format:
 # {
-#   "tenant_id": "00000000-0000-0000-0000-000000000000",
-#   "client_id": "00000000-0000-0000-0000-000000000000",
-#   "client_secret": "my-client-secret-value"
+#   "tenant_id": "5f843304-3876-4175-9344-1cb083a3534f",
+#   "client_id": "<OFFICE365_APP_CLIENT_ID>",
+#   "client_secret": "<OFFICE365_APP_CLIENT_SECRET>"
 # }
-azure_credentials_secret_name = "secops-feed-azure-credentials"
+
+# 2. Entra ID Feeds App Registration (Sign-in, Audit, Context, MSGraph Alerts)
+entra_credentials_secret_name = "secops-feed-entra-credentials"
+# Payload format:
+# {
+#   "tenant_id": "5f843304-3876-4175-9344-1cb083a3534f",
+#   "client_id": "<ENTRA_APP_CLIENT_ID>",
+#   "client_secret": "<ENTRA_APP_CLIENT_SECRET>"
+# }
 
 # Google Workspace Customer IDs (obtained from Google Admin Console)
 gws_davicruz_customer_id    = "C01234567"
