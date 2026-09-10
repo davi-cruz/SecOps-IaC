@@ -194,7 +194,7 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "workspace_chrome_os_settings" {
       for_each = each.value.log_type == "WORKSPACE_CHROMEOS" ? [1] : []
       content {
-        workspace_customer_id = each.value.customer_id
+        workspace_customer_id = startswith(each.value.customer_id, "C") ? each.value.customer_id : "C${each.value.customer_id}"
         dynamic "authentication" {
           for_each = each.value.private_key != "" ? [1] : []
           content {
@@ -215,7 +215,7 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "workspace_alerts_settings" {
       for_each = each.value.log_type == "WORKSPACE_ALERTS" ? [1] : []
       content {
-        workspace_customer_id = each.value.customer_id
+        workspace_customer_id = trimprefix(each.value.customer_id, "C")
         dynamic "authentication" {
           for_each = each.value.private_key != "" ? [1] : []
           content {
@@ -236,7 +236,7 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "workspace_mobile_settings" {
       for_each = each.value.log_type == "WORKSPACE_MOBILE" ? [1] : []
       content {
-        workspace_customer_id = each.value.customer_id
+        workspace_customer_id = startswith(each.value.customer_id, "C") ? each.value.customer_id : "C${each.value.customer_id}"
         dynamic "authentication" {
           for_each = each.value.private_key != "" ? [1] : []
           content {
@@ -257,7 +257,7 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "workspace_privileges_settings" {
       for_each = each.value.log_type == "WORKSPACE_PRIVILEGES" ? [1] : []
       content {
-        workspace_customer_id = each.value.customer_id
+        workspace_customer_id = startswith(each.value.customer_id, "C") ? each.value.customer_id : "C${each.value.customer_id}"
         dynamic "authentication" {
           for_each = each.value.private_key != "" ? [1] : []
           content {
@@ -278,7 +278,7 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "workspace_users_settings" {
       for_each = each.value.log_type == "WORKSPACE_USERS" ? [1] : []
       content {
-        workspace_customer_id = each.value.customer_id
+        workspace_customer_id = startswith(each.value.customer_id, "C") ? each.value.customer_id : "C${each.value.customer_id}"
         dynamic "authentication" {
           for_each = each.value.private_key != "" ? [1] : []
           content {
@@ -299,7 +299,7 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "workspace_groups_settings" {
       for_each = each.value.log_type == "WORKSPACE_GROUPS" ? [1] : []
       content {
-        workspace_customer_id = each.value.customer_id
+        workspace_customer_id = startswith(each.value.customer_id, "C") ? each.value.customer_id : "C${each.value.customer_id}"
         dynamic "authentication" {
           for_each = each.value.private_key != "" ? [1] : []
           content {
@@ -320,7 +320,7 @@ resource "google_chronicle_feed" "feeds" {
     dynamic "workspace_activity_settings" {
       for_each = each.value.log_type == "WORKSPACE_ACTIVITY" ? [1] : []
       content {
-        workspace_customer_id = each.value.customer_id
+        workspace_customer_id = startswith(each.value.customer_id, "C") ? each.value.customer_id : "C${each.value.customer_id}"
         applications          = each.value.applications
         dynamic "authentication" {
           for_each = each.value.private_key != "" ? [1] : []
