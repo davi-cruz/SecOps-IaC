@@ -48,24 +48,6 @@ jobs:
           create_credentials_file: true
           cleanup_credentials: true
 
-      - name: Diagnose GCP Identity & Secret Access
-        env:
-          GOOGLE_CLOUD_PROJECT_ID: ${{ vars.GOOGLE_CLOUD_PROJECT_ID }}
-        run: |
-          echo "=== Active GCP Account ==="
-          gcloud auth list
-          echo "=== Secrets in project ${GOOGLE_CLOUD_PROJECT_ID} ==="
-          gcloud secrets list --project="${GOOGLE_CLOUD_PROJECT_ID}" || true
-          echo "=== Testing access to individual secrets ==="
-          for s in secops-feed-office365-credentials secops-feed-entra-credentials secops-feed-gws-sa-key secops-feed-gws-davicruz-config secops-feed-gws-driveforjob-config; do
-            echo -n "Checking $s: "
-            if gcloud secrets versions access latest --secret="$s" --project="${GOOGLE_CLOUD_PROJECT_ID}" > /dev/null 2>&1; then
-              echo "SUCCESS"
-            else
-              echo "FAILED (not accessible or does not exist)"
-            fi
-          done
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
