@@ -1,88 +1,80 @@
-# Pull the latest version of all rules and reference lists from Google SecOps and commit them to the GitHub repo.
+# Nightly Scheduled Drift Detection:
+# 1. Queries Chronicle API for newly created or modified rules in the web console.
+# 2. Reconciles local YARA-L and YAML files.
+# 3. Automatically generates declarative import blocks in 'terraform/drift_imports.tf'.
+# 4. Opens a Pull Request for Human-in-the-Loop (HITL) review.
 
-name: SecOps - Pull Latest Content
+name: SecOps - Drift Detection & PR
 
 on:
   schedule:
-    # Run daily at 23:05 UTC time
-    - cron: "5 23 * * *"
+    # Run daily at 23:00 UTC
+    - cron: "0 23 * * *"
 
-  # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
 jobs:
-  pull-latest-content:
+  detect-drift:
+    name: Scan Console Drift
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      id-token: write
-
     env:
-      LOGGING_LEVEL: ${{ vars.LOGGING_LEVEL }}
       GOOGLE_SECOPS_API_BASE_URL: ${{ vars.GOOGLE_SECOPS_API_BASE_URL }}
       GOOGLE_SECOPS_API_UPLOAD_BASE_URL: ${{ vars.GOOGLE_SECOPS_API_UPLOAD_BASE_URL }}
       GOOGLE_SECOPS_INSTANCE: ${{ vars.GOOGLE_SECOPS_INSTANCE }}
       AUTHORIZATION_SCOPES: ${{ vars.AUTHORIZATION_SCOPES }}
 
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Checkout Code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          persist-credentials: false
-      - run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+      - name: Authenticate to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
         with:
           project_id: ${{ vars.GOOGLE_CLOUD_PROJECT_ID }}
-          workload_identity_provider: ${{ vars.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER}}
-          access_token_lifetime: 180s
-          # export_environment_variables: true
+          workload_identity_provider: ${{ vars.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
           create_credentials_file: true
           cleanup_credentials: true
 
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip" # Caching pip dependencies
+          cache: "pip"
 
-      - name: Install Python project dependencies
+      - name: Install Python Dependencies
         run: pip install -r requirements_dev.txt
 
-      # - name: Check Python code formatting with black
-      #   run: python -m black google_secops_api content_manager --line-length 120 --check
+      - name: Detect Drift & Generate Import Blocks
+        run: python -m tools.drift_detector
 
-      - name: Run tests using pytest
-        run: python -m pytest -v
-
-      - name: Pull latest version of all rules from Google SecOps
-        run: python -m tools.secops_content_manager.content_manager rules get
-
-      - name: Pull latest version of all data tables from Google SecOps
-        run: python -m tools.secops_content_manager.content_manager data-tables get
-
-      - name: Pull latest version of all reference lists from Google SecOps
-        run: python -m tools.secops_content_manager.content_manager reference-lists get
-
-      - name: Add files to git staging area
-        run: git add content/secops/
-
-      - name: Run git status command
-        run: git status # For debugging
-
-      - name: Commit pending changes
-        run: |
-          # Check if there are staged changes
-          if ! git diff --cached --quiet; then
-            git commit -m "latest content pulled from google secops api"
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-            git push origin main
-          else
-            echo "No changes to commit"
-          fi
-
-
-      - name: Show last git commit message
-        run: git log -1 # For debugging
+      - name: Create Drift Reconciliation Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "fix(secops): reconcile remote console changes with git"
+          title: "fix(secops): automated drift reconciliation from web console"
+          body: |
+            ## Automated Drift Detection Report
+            
+            The scheduled drift detection pipeline identified updates or newly created rules in the Google SecOps web console.
+            
+            ### Included in this PR:
+            * Synced YARA-L logic and metadata in `content/secops/rules/`.
+            * Declarative `import` blocks in `terraform/drift_imports.tf` for any newly discovered rules.
+            
+            ### Next Steps:
+            1. Review the rule diffs and ensure adherence to detection engineering standards.
+            2. Verify that automated PR checks (Pytest, YARA-L API verification, and `terraform plan`) pass.
+            3. Approve and merge to `main` to bind the new rules into Terraform state.
+          branch: drift/secops-reconciliation
+          delete-branch: true
+          labels: |
+            drift-detection
+            automated-pr

@@ -1,106 +1,62 @@
-# Update rules and reference lists in Google SecOps based on local rule files.
+# CI/CD Deployment Pipeline for Google Security Operations (Terraform Apply)
+# Executes on push to main to deploy feeds, rules, and reference lists.
+# Protected via GitHub 'production' Environment.
 
-name: SecOps - Update Remote Content
+name: SecOps - Deploy Content (Terraform)
 
 on:
   push:
     branches:
-      - "main"
+      - main
     paths:
       - "content/secops/**"
+      - "terraform/**"
+      - ".github/workflows/SecOps-Update-Remote-Content.yaml"
 
-  # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions:
-  contents: write
-  # 'id-token: write' is required to allow GitHub's OIDC provider to create a JSON Web Token for every run
+  contents: read
   id-token: write
 
 jobs:
-  update-remote-content:
+  deploy:
+    name: Terraform Apply
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-      id-token: write
+    environment: production
 
     env:
-      LOGGING_LEVEL: ${{ vars.LOGGING_LEVEL }}
-      GOOGLE_SECOPS_API_BASE_URL: ${{ vars.GOOGLE_SECOPS_API_BASE_URL }}
-      GOOGLE_SECOPS_API_UPLOAD_BASE_URL: ${{ vars.GOOGLE_SECOPS_API_UPLOAD_BASE_URL }}
-      GOOGLE_SECOPS_INSTANCE: ${{ vars.GOOGLE_SECOPS_INSTANCE }}
-      AUTHORIZATION_SCOPES: ${{ vars.AUTHORIZATION_SCOPES }}
+      TF_VAR_project_id: ${{ vars.GOOGLE_CLOUD_PROJECT_ID }}
+      TF_VAR_chronicle_location: ${{ vars.GOOGLE_SECOPS_LOCATION || 'us' }}
+      TF_VAR_chronicle_instance_id: ${{ vars.GOOGLE_SECOPS_INSTANCE_UUID }}
+      TF_VAR_gws_davicruz_customer_id: ${{ vars.GWS_DAVICRUZ_CUSTOMER_ID }}
+      TF_VAR_gws_driveforjob_customer_id: ${{ vars.GWS_DRIVEFORJOB_CUSTOMER_ID }}
 
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Checkout Code
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           persist-credentials: false
-      - run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+      - name: Authenticate to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
         with:
           project_id: ${{ vars.GOOGLE_CLOUD_PROJECT_ID }}
-          workload_identity_provider: ${{ vars.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER}}
-          access_token_lifetime: 180s
-          # export_environment_variables: true
+          workload_identity_provider: ${{ vars.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
           create_credentials_file: true
           cleanup_credentials: true
 
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
-          python-version: "3.12"
-          cache: "pip" # Caching pip dependencies
+          terraform_version: "1.9.0"
 
-      - name: Install Python project dependencies
-        run: pip install -r requirements_dev.txt
-
-      # - name: Check Python code formatting with black
-      #   run: python -m black secops_content/google_secops_api secops_content/content_manager --line-length 120 --check
-
-      - name: Run tests using pytest
-        run: python -m pytest -v
-
-      - name: Update reference lists in Google SecOps
-        run: python -m tools.secops_content_manager.content_manager reference-lists update
-
-      - name: Update data tables in Google SecOps
-        run: python -m tools.secops_content_manager.content_manager data-tables update
-
-      - name: Clean up Archive folder
-        run: python -m tools.secops_content_manager.archive_rules --cleanup
-
-      - name: Pre-process archived rules (Rename with Commit ID)
-        run: python -m tools.secops_content_manager.archive_rules --pre
-
-      - name: Update rules in Google SecOps
-        run: python -m tools.secops_content_manager.content_manager rules update
-
-      - name: Post-process archived rules (Move to Archive folder)
-        run: python -m tools.secops_content_manager.archive_rules --post
-
-      # After any changes are made to rules and reference lists in Google SecOps, the latest rules and reference lists are retrieved to update the branch with the latest data (revision_id, revision_create_time, etc).
-
-      - name: Add files to git staging area
-        run: git add content/secops/
-
-      - name: Run git status command
-        run: git status # For debugging
-
-      - name: Commit pending changes
+      - name: Terraform Init
         run: |
-          # Check if there are staged changes
-          if ! git diff --cached --quiet; then
-            git commit -m "latest content pulled from google secops api"
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-            git push origin main
-          else
-            echo "No changes to commit"
-          fi
+          cd terraform
+          terraform init -backend-config="bucket=${{ vars.TERRAFORM_STATE_BUCKET }}"
 
-
-      - name: Show last git commit message
-        run: git log -1 # For debugging
+      - name: Terraform Apply
+        run: |
+          cd terraform
+          terraform apply -auto-approve -parallelism=15

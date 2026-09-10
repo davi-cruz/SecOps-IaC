@@ -1,0 +1,20 @@
+# Example terraform.tfvars configuration for public demonstration
+# Copy this file to terraform.tfvars and fill in your actual environment details.
+# terraform.tfvars is gitignored to keep identifiable IDs and tenant information private.
+
+project_id            = "my-secops-project-id"
+chronicle_location    = "us"
+chronicle_instance_id = "00000000-0000-0000-0000-000000000000"
+
+# GCP Secret Manager secret name containing Microsoft credentials JSON
+# Secret payload format:
+# {
+#   "tenant_id": "00000000-0000-0000-0000-000000000000",
+#   "client_id": "00000000-0000-0000-0000-000000000000",
+#   "client_secret": "my-client-secret-value"
+# }
+azure_credentials_secret_name = "secops-feed-azure-credentials"
+
+# Google Workspace Customer IDs (obtained from Google Admin Console)
+gws_davicruz_customer_id    = "C01234567"
+gws_driveforjob_customer_id = "C07654321"

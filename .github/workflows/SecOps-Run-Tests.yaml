@@ -1,61 +1,84 @@
-# Run unit tests and verify YARA-L rules using Google SecOps' API.
+# CI/CD Pull Request Quality Gate:
+# 1. Run Python unit tests and metadata style guide verification.
+# 2. Verify all YARA-L detection rules against Google SecOps API (verify_rule).
+# 3. Validate Terraform configuration and execute speculative 'terraform plan'.
 
-name: SecOps - Run Tests
+name: SecOps - PR Verification
 
 on:
-  push:
-    branches-ignore:
-      - main
   pull_request:
-    branches-ignore:
+    branches:
       - main
+    paths:
+      - "content/secops/**"
+      - "terraform/**"
+      - ".github/workflows/SecOps-Run-Tests.yaml"
 
-  # workflow_dispatch allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
 jobs:
-  run-unit-tests:
+  validate-and-plan:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      id-token: write
-
     env:
-      LOGGING_LEVEL: ${{ vars.LOGGING_LEVEL }}
       GOOGLE_SECOPS_API_BASE_URL: ${{ vars.GOOGLE_SECOPS_API_BASE_URL }}
       GOOGLE_SECOPS_API_UPLOAD_BASE_URL: ${{ vars.GOOGLE_SECOPS_API_UPLOAD_BASE_URL }}
       GOOGLE_SECOPS_INSTANCE: ${{ vars.GOOGLE_SECOPS_INSTANCE }}
       AUTHORIZATION_SCOPES: ${{ vars.AUTHORIZATION_SCOPES }}
+      TF_VAR_project_id: ${{ vars.GOOGLE_CLOUD_PROJECT_ID }}
+      TF_VAR_chronicle_location: ${{ vars.GOOGLE_SECOPS_LOCATION || 'us' }}
+      TF_VAR_chronicle_instance_id: ${{ vars.GOOGLE_SECOPS_INSTANCE_UUID }}
+      TF_VAR_gws_davicruz_customer_id: ${{ vars.GWS_DAVICRUZ_CUSTOMER_ID }}
+      TF_VAR_gws_driveforjob_customer_id: ${{ vars.GWS_DRIVEFORJOB_CUSTOMER_ID }}
 
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Checkout Code
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+      - name: Authenticate to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
         with:
           project_id: ${{ vars.GOOGLE_CLOUD_PROJECT_ID }}
-          workload_identity_provider: ${{ vars.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER}}
-          access_token_lifetime: 180s
-          # export_environment_variables: true
+          workload_identity_provider: ${{ vars.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
           create_credentials_file: true
           cleanup_credentials: true
 
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip" # Caching pip dependencies
+          cache: "pip"
 
-      - name: Install Python project dependencies
+      - name: Install Python Dependencies
         run: pip install -r requirements_dev.txt
 
-      # - name: Check Python code formatting with black
-      #   run: python -m black secops_content/google_secops_api secops_content/content_manager --line-length 120 --check
-
-      - name: Run tests using pytest
+      - name: Run Metadata & Style Guide Tests
         run: python -m pytest -v
 
-      - name: Verify YARA-L rules
-        # Verify that all rules are valid YARA-L 2.0 rules via Google SecOps' API
+      - name: Verify YARA-L Rules via Chronicle API
         run: python -m tools.secops_content_manager.content_manager rules verify-all
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.0"
+
+      - name: Terraform Format & Validate
+        run: |
+          cd terraform
+          terraform fmt -check
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform Plan (Speculative)
+        run: |
+          cd terraform
+          terraform init -backend-config="bucket=${{ vars.TERRAFORM_STATE_BUCKET }}"
+          terraform plan -no-color -parallelism=15

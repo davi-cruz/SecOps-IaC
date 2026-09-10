@@ -1,11 +1,4 @@
-alerting: true
-archive_time: null
-archived: false
-create_time: '2024-07-30T20:21:12.517327Z'
 enabled: true
-id: ru_7d1ac4ee-76a6-4418-9261-da06060995f8
-resource_name: projects/117670667466/locations/us/instances/14017248-91b1-4217-9e51-8c3aa4cba640/rules/ru_7d1ac4ee-76a6-4418-9261-da06060995f8
-revision_create_time: '2026-06-25T20:39:31.457839Z'
-revision_id: v_1782419971_457839000
+alerting: true
 run_frequency: LIVE
-type: SINGLE_EVENT
+archived: false
