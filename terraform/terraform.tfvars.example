@@ -25,28 +25,27 @@ entra_credentials_secret_name = "secops-feed-entra-credentials"
 #   "client_secret": "<ENTRA_APP_CLIENT_SECRET>"
 # }
 
-# GCP Secret Manager secret names containing Google Workspace Domain-Wide Delegation (DWD) credentials:
-# 3. Google Workspace DaviCruz Organization
-gws_davicruz_credentials_secret_name = "secops-feed-gws-davicruz-credentials"
-# Payload format in Secret Manager:
-# {
-#   "customer_id": "C02ezqre0",
-#   "admin_email": "admin@davicruz.com",
-#   "service_account_email": "secops-gws-feed@my-secops-project.iam.gserviceaccount.com",
-#   "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
-# }
+# -----------------------------------------------------------------------------
+# Google Workspace Ingestion Credentials (Decoupled Architecture)
+# -----------------------------------------------------------------------------
+# 3. Raw GCP Service Account JSON Key Secret (Domain-Wide Delegation)
+# Upload your downloaded GCP Service Account JSON key directly to Secret Manager without editing!
+# Terraform automatically parses:
+#   - client_email  -> JWT claim issuer
+#   - private_key   -> RSA private key
+#   - token_uri     -> OAuth token endpoint
+gws_sa_credentials_secret_name = "secops-feed-gws-sa-key"
 
-# 4. Google Workspace DriveForJob Organization
-gws_driveforjob_credentials_secret_name = "secops-feed-gws-driveforjob-credentials"
-# Payload format in Secret Manager:
-# {
-#   "customer_id": "C047opyev",
-#   "admin_email": "admin@driveforjob.com",
-#   "service_account_email": "secops-gws-feed@my-secops-project.iam.gserviceaccount.com",
-#   "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
-# }
+# 4. Workspace Organization Configuration:
+# Option A: In GCP Secret Manager (hides admin email and customer ID from Git/CI logs)
+# Secret payload format: { "customer_id": "C02ezqre0", "admin_email": "admin@davicruz.com" }
+gws_davicruz_config_secret_name   = "secops-feed-gws-davicruz-config"
+gws_driveforjob_config_secret_name = "secops-feed-gws-driveforjob-config"
 
-# Fallback Google Workspace Customer IDs (if not embedded inside the secrets above):
+# Option B: Pass directly via Terraform variables / GitHub Actions environment variables:
 gws_davicruz_customer_id    = "C01234567"
+gws_davicruz_admin_email    = "admin@davicruz.com"
 gws_driveforjob_customer_id = "C07654321"
+gws_driveforjob_admin_email = "admin@driveforjob.com"
+
 

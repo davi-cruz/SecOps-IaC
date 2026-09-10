@@ -10,13 +10,46 @@ data "google_secret_manager_secret_version" "entra_credentials" {
   secret  = var.entra_credentials_secret_name
 }
 
-data "google_secret_manager_secret_version" "gws_davicruz_credentials" {
+# 1. GWS Service Account Raw JSON Key Secrets
+data "google_secret_manager_secret_version" "gws_shared_sa_key" {
+  count   = var.gws_sa_credentials_secret_name != "" ? 1 : 0
+  project = var.project_id
+  secret  = var.gws_sa_credentials_secret_name
+}
+
+data "google_secret_manager_secret_version" "gws_davicruz_sa_key" {
+  count   = var.gws_davicruz_sa_credentials_secret_name != "" ? 1 : 0
+  project = var.project_id
+  secret  = var.gws_davicruz_sa_credentials_secret_name
+}
+
+data "google_secret_manager_secret_version" "gws_driveforjob_sa_key" {
+  count   = var.gws_driveforjob_sa_credentials_secret_name != "" ? 1 : 0
+  project = var.project_id
+  secret  = var.gws_driveforjob_sa_credentials_secret_name
+}
+
+# 2. GWS Org Config Secrets (admin_email, customer_id)
+data "google_secret_manager_secret_version" "gws_davicruz_config" {
+  count   = var.gws_davicruz_config_secret_name != "" ? 1 : 0
+  project = var.project_id
+  secret  = var.gws_davicruz_config_secret_name
+}
+
+data "google_secret_manager_secret_version" "gws_driveforjob_config" {
+  count   = var.gws_driveforjob_config_secret_name != "" ? 1 : 0
+  project = var.project_id
+  secret  = var.gws_driveforjob_config_secret_name
+}
+
+# 3. Optional Legacy Bundled Secrets
+data "google_secret_manager_secret_version" "gws_davicruz_legacy" {
   count   = var.gws_davicruz_credentials_secret_name != "" ? 1 : 0
   project = var.project_id
   secret  = var.gws_davicruz_credentials_secret_name
 }
 
-data "google_secret_manager_secret_version" "gws_driveforjob_credentials" {
+data "google_secret_manager_secret_version" "gws_driveforjob_legacy" {
   count   = var.gws_driveforjob_credentials_secret_name != "" ? 1 : 0
   project = var.project_id
   secret  = var.gws_driveforjob_credentials_secret_name
@@ -37,18 +70,33 @@ locals {
     client_secret = "dummy-secret"
   }
 
-  gws_davicruz_creds = length(data.google_secret_manager_secret_version.gws_davicruz_credentials) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_davicruz_credentials[0].secret_data) : {
-    customer_id           = var.gws_davicruz_customer_id
-    admin_email           = ""
-    service_account_email = ""
-    private_key           = ""
+  # Service Account JSON decodes
+  gws_shared_sa      = length(data.google_secret_manager_secret_version.gws_shared_sa_key) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_shared_sa_key[0].secret_data) : {}
+  gws_davicruz_sa    = length(data.google_secret_manager_secret_version.gws_davicruz_sa_key) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_davicruz_sa_key[0].secret_data) : local.gws_shared_sa
+  gws_driveforjob_sa = length(data.google_secret_manager_secret_version.gws_driveforjob_sa_key) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_driveforjob_sa_key[0].secret_data) : local.gws_shared_sa
+
+  # Org Config JSON decodes
+  gws_davicruz_cfg    = length(data.google_secret_manager_secret_version.gws_davicruz_config) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_davicruz_config[0].secret_data) : {}
+  gws_driveforjob_cfg = length(data.google_secret_manager_secret_version.gws_driveforjob_config) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_driveforjob_config[0].secret_data) : {}
+
+  # Legacy bundled decodes
+  gws_davicruz_legacy_data    = length(data.google_secret_manager_secret_version.gws_davicruz_legacy) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_davicruz_legacy[0].secret_data) : {}
+  gws_driveforjob_legacy_data = length(data.google_secret_manager_secret_version.gws_driveforjob_legacy) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_driveforjob_legacy[0].secret_data) : {}
+
+  # Resolved DaviCruz credentials
+  gws_davicruz_creds = {
+    customer_id           = coalesce(lookup(local.gws_davicruz_legacy_data, "customer_id", null), lookup(local.gws_davicruz_cfg, "customer_id", null), var.gws_davicruz_customer_id, "")
+    admin_email           = coalesce(lookup(local.gws_davicruz_legacy_data, "admin_email", null), lookup(local.gws_davicruz_cfg, "admin_email", null), var.gws_davicruz_admin_email, "")
+    service_account_email = coalesce(lookup(local.gws_davicruz_legacy_data, "service_account_email", null), lookup(local.gws_davicruz_sa, "client_email", null), lookup(local.gws_davicruz_sa, "service_account_email", null), "")
+    private_key           = coalesce(lookup(local.gws_davicruz_legacy_data, "private_key", null), lookup(local.gws_davicruz_sa, "private_key", null), "")
   }
 
-  gws_driveforjob_creds = length(data.google_secret_manager_secret_version.gws_driveforjob_credentials) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_driveforjob_credentials[0].secret_data) : {
-    customer_id           = var.gws_driveforjob_customer_id
-    admin_email           = ""
-    service_account_email = ""
-    private_key           = ""
+  # Resolved DriveForJob credentials
+  gws_driveforjob_creds = {
+    customer_id           = coalesce(lookup(local.gws_driveforjob_legacy_data, "customer_id", null), lookup(local.gws_driveforjob_cfg, "customer_id", null), var.gws_driveforjob_customer_id, "")
+    admin_email           = coalesce(lookup(local.gws_driveforjob_legacy_data, "admin_email", null), lookup(local.gws_driveforjob_cfg, "admin_email", null), var.gws_driveforjob_admin_email, "")
+    service_account_email = coalesce(lookup(local.gws_driveforjob_legacy_data, "service_account_email", null), lookup(local.gws_driveforjob_sa, "client_email", null), lookup(local.gws_driveforjob_sa, "service_account_email", null), "")
+    private_key           = coalesce(lookup(local.gws_driveforjob_legacy_data, "private_key", null), lookup(local.gws_driveforjob_sa, "private_key", null), "")
   }
 
   gws_creds_map = {

@@ -10,10 +10,17 @@ module "chronicle_feeds" {
 
   office365_credentials_secret_name      = var.office365_credentials_secret_name
   entra_credentials_secret_name          = var.entra_credentials_secret_name
+  gws_sa_credentials_secret_name         = var.gws_sa_credentials_secret_name
+  gws_davicruz_sa_credentials_secret_name = var.gws_davicruz_sa_credentials_secret_name
+  gws_driveforjob_sa_credentials_secret_name = var.gws_driveforjob_sa_credentials_secret_name
+  gws_davicruz_config_secret_name        = var.gws_davicruz_config_secret_name
+  gws_driveforjob_config_secret_name     = var.gws_driveforjob_config_secret_name
   gws_davicruz_credentials_secret_name   = var.gws_davicruz_credentials_secret_name
   gws_driveforjob_credentials_secret_name = var.gws_driveforjob_credentials_secret_name
   gws_davicruz_customer_id               = var.gws_davicruz_customer_id
+  gws_davicruz_admin_email               = var.gws_davicruz_admin_email
   gws_driveforjob_customer_id            = var.gws_driveforjob_customer_id
+  gws_driveforjob_admin_email            = var.gws_driveforjob_admin_email
 }
 
 module "chronicle_rules" {
