@@ -30,7 +30,9 @@ jobs:
       TF_VAR_chronicle_location: ${{ vars.GOOGLE_SECOPS_LOCATION || 'us' }}
       TF_VAR_chronicle_instance_id: ${{ vars.GOOGLE_SECOPS_INSTANCE_UUID }}
       TF_VAR_gws_davicruz_customer_id: ${{ vars.GWS_DAVICRUZ_CUSTOMER_ID }}
+      TF_VAR_gws_davicruz_admin_email: ${{ vars.GWS_DAVICRUZ_ADMIN_EMAIL }}
       TF_VAR_gws_driveforjob_customer_id: ${{ vars.GWS_DRIVEFORJOB_CUSTOMER_ID }}
+      TF_VAR_gws_driveforjob_admin_email: ${{ vars.GWS_DRIVEFORJOB_ADMIN_EMAIL }}
 
     steps:
       - name: Checkout Code
