@@ -55,10 +55,10 @@ jobs:
 
       - name: Terraform Init
         env:
-          STATE_BUCKET: ${{ vars.TERRAFORM_STATE_BUCKET }}
+          TERRAFORM_STATE_BUCKET: ${{ vars.TERRAFORM_STATE_BUCKET }}
         run: |
           cd terraform
-          terraform init -backend-config="bucket=${STATE_BUCKET}"
+          terraform init -backend-config="bucket=${TERRAFORM_STATE_BUCKET}"
 
       - name: Terraform Apply
         run: |

@@ -81,8 +81,8 @@ jobs:
 
       - name: Terraform Plan (Speculative)
         env:
-          STATE_BUCKET: ${{ vars.TERRAFORM_STATE_BUCKET }}
+          TERRAFORM_STATE_BUCKET: ${{ vars.TERRAFORM_STATE_BUCKET }}
         run: |
           cd terraform
-          terraform init -backend-config="bucket=${STATE_BUCKET}"
+          terraform init -backend-config="bucket=${TERRAFORM_STATE_BUCKET}"
           terraform plan -no-color -parallelism=15
