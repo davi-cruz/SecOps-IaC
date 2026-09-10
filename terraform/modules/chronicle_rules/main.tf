@@ -49,5 +49,5 @@ resource "google_chronicle_rule_deployment" "deployments" {
   enabled       = lookup(each.value.config, "enabled", false)
   alerting      = lookup(each.value.config, "alerting", false)
   run_frequency = lookup(each.value.config, "run_frequency", "LIVE")
-  archive_state = lookup(each.value.config, "archived", false) ? "ARCHIVED" : "LIVE"
+  archived      = lookup(each.value.config, "archived", false)
 }
