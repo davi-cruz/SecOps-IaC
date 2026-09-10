@@ -1973,14 +1973,10 @@ import {
   to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/cloud_honeypot_secret_access_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_118b1fd8-75ae-4bed-b903-89a5224678a4/deployment"
 }
-import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/cloud_honeypot_secret_access_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_118b1fd8-75ae-4bed-b903-89a5224678a4"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_118b1fd8-75ae-4bed-b903-89a5224678a4"
 }
 
-import {
-  to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/cloud_honeypot_secret_access_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_118b1fd8-75ae-4bed-b903-89a5224678a4/deployment"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_118b1fd8-75ae-4bed-b903-89a5224678a4/deployment"
 }
 import {
   to = module.chronicle_rules.google_chronicle_rule.rules["archived/github_repository_archived_or_deleted"]
@@ -2000,14 +1996,10 @@ import {
   to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/prt_use_case_1_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a/deployment"
 }
-import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/prt_use_case_1_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a"
 }
 
-import {
-  to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/prt_use_case_1_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a/deployment"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_76b497a9-85ba-4b6f-94c2-7026ef467b9a/deployment"
 }
 import {
   to = module.chronicle_rules.google_chronicle_rule.rules["archived/rule_1727979376900_archived_37840bc"]
@@ -2018,14 +2010,10 @@ import {
   to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/rule_1727979376900_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_984c5ee1-a5c2-4ecb-b7d4-0302e1c74607/deployment"
 }
-import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/rule_1727979376900_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_984c5ee1-a5c2-4ecb-b7d4-0302e1c74607"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_984c5ee1-a5c2-4ecb-b7d4-0302e1c74607"
 }
 
-import {
-  to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/rule_1727979376900_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_984c5ee1-a5c2-4ecb-b7d4-0302e1c74607/deployment"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_984c5ee1-a5c2-4ecb-b7d4-0302e1c74607/deployment"
 }
 import {
   to = module.chronicle_rules.google_chronicle_rule.rules["archived/rule_1750794727496_archived_37840bc"]
@@ -2036,14 +2024,10 @@ import {
   to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/rule_1750794727496_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_2e31e47d-fd24-498f-90f9-936464d8058c/deployment"
 }
-import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/rule_1750794727496_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_2e31e47d-fd24-498f-90f9-936464d8058c"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_2e31e47d-fd24-498f-90f9-936464d8058c"
 }
 
-import {
-  to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/rule_1750794727496_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_2e31e47d-fd24-498f-90f9-936464d8058c/deployment"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_2e31e47d-fd24-498f-90f9-936464d8058c/deployment"
 }
 import {
   to = module.chronicle_rules.google_chronicle_rule.rules["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]
@@ -2054,12 +2038,8 @@ import {
   to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_101df42b-37f9-4e2a-b151-8f9e44ccb7c0/deployment"
 }
-import {
-  to = module.chronicle_rules.google_chronicle_rule.rules["archived/suspicious_auth_unusual_interval_time_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_101df42b-37f9-4e2a-b151-8f9e44ccb7c0"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_101df42b-37f9-4e2a-b151-8f9e44ccb7c0"
 }
 
-import {
-  to = module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/suspicious_auth_unusual_interval_time_archived_df93f07"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_101df42b-37f9-4e2a-b151-8f9e44ccb7c0/deployment"
+/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/rules/ru_101df42b-37f9-4e2a-b151-8f9e44ccb7c0/deployment"
 }
