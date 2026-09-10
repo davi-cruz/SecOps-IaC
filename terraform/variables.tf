@@ -37,3 +37,16 @@ variable "gws_driveforjob_customer_id" {
   description = "Google Workspace Customer ID for the DriveForJob organization."
   default     = ""
 }
+
+variable "gws_davicruz_credentials_secret_name" {
+  type        = string
+  description = "Name of the secret in GCP Secret Manager holding Google Workspace DaviCruz credentials (customer_id, admin_email, service_account_email, private_key)."
+  default     = "secops-feed-gws-davicruz-credentials"
+}
+
+variable "gws_driveforjob_credentials_secret_name" {
+  type        = string
+  description = "Name of the secret in GCP Secret Manager holding Google Workspace DriveForJob credentials (customer_id, admin_email, service_account_email, private_key)."
+  default     = "secops-feed-gws-driveforjob-credentials"
+}
+

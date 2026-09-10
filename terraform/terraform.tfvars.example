@@ -9,7 +9,7 @@ chronicle_instance_id = "00000000-0000-0000-0000-000000000000"
 # GCP Secret Manager secret names containing Microsoft credentials JSON payloads:
 # 1. Office 365 Feeds App Registration (Exchange, DLP, SharePoint, General)
 office365_credentials_secret_name = "secops-feed-office365-credentials"
-# Payload format:
+# Payload format in Secret Manager:
 # {
 #   "tenant_id": "5f843304-3876-4175-9344-1cb083a3534f",
 #   "client_id": "<OFFICE365_APP_CLIENT_ID>",
@@ -18,13 +18,35 @@ office365_credentials_secret_name = "secops-feed-office365-credentials"
 
 # 2. Entra ID Feeds App Registration (Sign-in, Audit, Context, MSGraph Alerts)
 entra_credentials_secret_name = "secops-feed-entra-credentials"
-# Payload format:
+# Payload format in Secret Manager:
 # {
 #   "tenant_id": "5f843304-3876-4175-9344-1cb083a3534f",
 #   "client_id": "<ENTRA_APP_CLIENT_ID>",
 #   "client_secret": "<ENTRA_APP_CLIENT_SECRET>"
 # }
 
-# Google Workspace Customer IDs (obtained from Google Admin Console)
+# GCP Secret Manager secret names containing Google Workspace Domain-Wide Delegation (DWD) credentials:
+# 3. Google Workspace DaviCruz Organization
+gws_davicruz_credentials_secret_name = "secops-feed-gws-davicruz-credentials"
+# Payload format in Secret Manager:
+# {
+#   "customer_id": "C02ezqre0",
+#   "admin_email": "admin@davicruz.com",
+#   "service_account_email": "secops-gws-feed@my-secops-project.iam.gserviceaccount.com",
+#   "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+# }
+
+# 4. Google Workspace DriveForJob Organization
+gws_driveforjob_credentials_secret_name = "secops-feed-gws-driveforjob-credentials"
+# Payload format in Secret Manager:
+# {
+#   "customer_id": "C047opyev",
+#   "admin_email": "admin@driveforjob.com",
+#   "service_account_email": "secops-gws-feed@my-secops-project.iam.gserviceaccount.com",
+#   "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+# }
+
+# Fallback Google Workspace Customer IDs (if not embedded inside the secrets above):
 gws_davicruz_customer_id    = "C01234567"
 gws_driveforjob_customer_id = "C07654321"
+

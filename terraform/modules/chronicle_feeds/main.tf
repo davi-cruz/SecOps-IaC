@@ -10,6 +10,18 @@ data "google_secret_manager_secret_version" "entra_credentials" {
   secret  = var.entra_credentials_secret_name
 }
 
+data "google_secret_manager_secret_version" "gws_davicruz_credentials" {
+  count   = var.gws_davicruz_credentials_secret_name != "" ? 1 : 0
+  project = var.project_id
+  secret  = var.gws_davicruz_credentials_secret_name
+}
+
+data "google_secret_manager_secret_version" "gws_driveforjob_credentials" {
+  count   = var.gws_driveforjob_credentials_secret_name != "" ? 1 : 0
+  project = var.project_id
+  secret  = var.gws_driveforjob_credentials_secret_name
+}
+
 locals {
   feeds_raw = yamldecode(file(var.feeds_config_path))
 
@@ -25,6 +37,25 @@ locals {
     client_secret = "dummy-secret"
   }
 
+  gws_davicruz_creds = length(data.google_secret_manager_secret_version.gws_davicruz_credentials) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_davicruz_credentials[0].secret_data) : {
+    customer_id           = var.gws_davicruz_customer_id
+    admin_email           = ""
+    service_account_email = ""
+    private_key           = ""
+  }
+
+  gws_driveforjob_creds = length(data.google_secret_manager_secret_version.gws_driveforjob_credentials) > 0 ? jsondecode(data.google_secret_manager_secret_version.gws_driveforjob_credentials[0].secret_data) : {
+    customer_id           = var.gws_driveforjob_customer_id
+    admin_email           = ""
+    service_account_email = ""
+    private_key           = ""
+  }
+
+  gws_creds_map = {
+    "davicruz"    = local.gws_davicruz_creds
+    "driveforjob" = local.gws_driveforjob_creds
+  }
+
   customer_id_map = {
     "gws_davicruz_customer_id"    = var.gws_davicruz_customer_id
     "gws_driveforjob_customer_id" = var.gws_driveforjob_customer_id
@@ -35,16 +66,19 @@ locals {
     for org_key, org in lookup(local.feeds_raw, "workspace_orgs", {}) : {
       for feed in org.feeds :
       "${org_key}_gws_${feed.name}" => {
-        display_name     = feed.display_name
-        log_type         = feed.log_type
-        feed_source_type = feed.feed_source_type
-        feed_category    = "WORKSPACE"
-        customer_id      = lookup(local.customer_id_map, org.customer_id_var, "")
-        applications     = lookup(feed, "applications", null)
-        content_type     = null
-        retrieve_devices = null
-        retrieve_groups  = null
-        hostname         = null
+        display_name          = feed.display_name
+        log_type              = feed.log_type
+        feed_source_type      = feed.feed_source_type
+        feed_category         = "WORKSPACE"
+        customer_id           = coalesce(lookup(lookup(local.gws_creds_map, org_key, {}), "customer_id", ""), lookup(local.customer_id_map, org.customer_id_var, ""), "unknown")
+        admin_email           = lookup(lookup(local.gws_creds_map, org_key, {}), "admin_email", "")
+        service_account_email = lookup(lookup(local.gws_creds_map, org_key, {}), "service_account_email", "")
+        private_key           = lookup(lookup(local.gws_creds_map, org_key, {}), "private_key", "")
+        applications          = lookup(feed, "applications", null)
+        content_type          = null
+        retrieve_devices      = null
+        retrieve_groups       = null
+        hostname              = null
       }
     }
   ]...)
@@ -54,16 +88,19 @@ locals {
     for tenant_key, tenant in lookup(local.feeds_raw, "microsoft_tenants", {}) : {
       for feed in lookup(tenant, "office_365_feeds", []) :
       "${tenant_key}_office_${feed.name}" => {
-        display_name     = feed.display_name
-        log_type         = "OFFICE_365"
-        feed_source_type = "API"
-        feed_category    = "OFFICE_365"
-        customer_id      = null
-        applications     = null
-        content_type     = feed.content_type
-        retrieve_devices = null
-        retrieve_groups  = null
-        hostname         = null
+        display_name          = feed.display_name
+        log_type              = "OFFICE_365"
+        feed_source_type      = "API"
+        feed_category         = "OFFICE_365"
+        customer_id           = null
+        admin_email           = null
+        service_account_email = null
+        private_key           = null
+        applications          = null
+        content_type          = feed.content_type
+        retrieve_devices      = null
+        retrieve_groups       = null
+        hostname              = null
       }
     }
   ]...)
@@ -73,16 +110,19 @@ locals {
     for tenant_key, tenant in lookup(local.feeds_raw, "microsoft_tenants", {}) : {
       for feed in lookup(tenant, "entra_id_feeds", []) :
       "${tenant_key}_entra_${feed.name}" => {
-        display_name     = feed.display_name
-        log_type         = feed.log_type
-        feed_source_type = "API"
-        feed_category    = feed.feed_type
-        customer_id      = null
-        applications     = null
-        content_type     = null
-        retrieve_devices = lookup(feed, "retrieve_devices", null)
-        retrieve_groups  = lookup(feed, "retrieve_groups", null)
-        hostname         = lookup(feed, "hostname", null)
+        display_name          = feed.display_name
+        log_type              = feed.log_type
+        feed_source_type      = "API"
+        feed_category         = feed.feed_type
+        customer_id           = null
+        admin_email           = null
+        service_account_email = null
+        private_key           = null
+        applications          = null
+        content_type          = null
+        retrieve_devices      = lookup(feed, "retrieve_devices", null)
+        retrieve_groups       = lookup(feed, "retrieve_groups", null)
+        hostname              = lookup(feed, "hostname", null)
       }
     }
   ]...)
@@ -107,6 +147,20 @@ resource "google_chronicle_feed" "feeds" {
       for_each = each.value.log_type == "WORKSPACE_CHROMEOS" ? [1] : []
       content {
         workspace_customer_id = each.value.customer_id
+        dynamic "authentication" {
+          for_each = each.value.private_key != "" ? [1] : []
+          content {
+            token_endpoint = "https://oauth2.googleapis.com/token"
+            claims {
+              issuer   = each.value.service_account_email
+              subject  = each.value.admin_email
+              audience = "https://oauth2.googleapis.com/token"
+            }
+            rs_credentials {
+              private_key = each.value.private_key
+            }
+          }
+        }
       }
     }
 
@@ -114,6 +168,20 @@ resource "google_chronicle_feed" "feeds" {
       for_each = each.value.log_type == "WORKSPACE_ALERTS" ? [1] : []
       content {
         workspace_customer_id = each.value.customer_id
+        dynamic "authentication" {
+          for_each = each.value.private_key != "" ? [1] : []
+          content {
+            token_endpoint = "https://oauth2.googleapis.com/token"
+            claims {
+              issuer   = each.value.service_account_email
+              subject  = each.value.admin_email
+              audience = "https://oauth2.googleapis.com/token"
+            }
+            rs_credentials {
+              private_key = each.value.private_key
+            }
+          }
+        }
       }
     }
 
@@ -121,6 +189,20 @@ resource "google_chronicle_feed" "feeds" {
       for_each = each.value.log_type == "WORKSPACE_MOBILE" ? [1] : []
       content {
         workspace_customer_id = each.value.customer_id
+        dynamic "authentication" {
+          for_each = each.value.private_key != "" ? [1] : []
+          content {
+            token_endpoint = "https://oauth2.googleapis.com/token"
+            claims {
+              issuer   = each.value.service_account_email
+              subject  = each.value.admin_email
+              audience = "https://oauth2.googleapis.com/token"
+            }
+            rs_credentials {
+              private_key = each.value.private_key
+            }
+          }
+        }
       }
     }
 
@@ -128,6 +210,20 @@ resource "google_chronicle_feed" "feeds" {
       for_each = each.value.log_type == "WORKSPACE_PRIVILEGES" ? [1] : []
       content {
         workspace_customer_id = each.value.customer_id
+        dynamic "authentication" {
+          for_each = each.value.private_key != "" ? [1] : []
+          content {
+            token_endpoint = "https://oauth2.googleapis.com/token"
+            claims {
+              issuer   = each.value.service_account_email
+              subject  = each.value.admin_email
+              audience = "https://oauth2.googleapis.com/token"
+            }
+            rs_credentials {
+              private_key = each.value.private_key
+            }
+          }
+        }
       }
     }
 
@@ -135,6 +231,20 @@ resource "google_chronicle_feed" "feeds" {
       for_each = each.value.log_type == "WORKSPACE_USERS" ? [1] : []
       content {
         workspace_customer_id = each.value.customer_id
+        dynamic "authentication" {
+          for_each = each.value.private_key != "" ? [1] : []
+          content {
+            token_endpoint = "https://oauth2.googleapis.com/token"
+            claims {
+              issuer   = each.value.service_account_email
+              subject  = each.value.admin_email
+              audience = "https://oauth2.googleapis.com/token"
+            }
+            rs_credentials {
+              private_key = each.value.private_key
+            }
+          }
+        }
       }
     }
 
@@ -142,6 +252,20 @@ resource "google_chronicle_feed" "feeds" {
       for_each = each.value.log_type == "WORKSPACE_GROUPS" ? [1] : []
       content {
         workspace_customer_id = each.value.customer_id
+        dynamic "authentication" {
+          for_each = each.value.private_key != "" ? [1] : []
+          content {
+            token_endpoint = "https://oauth2.googleapis.com/token"
+            claims {
+              issuer   = each.value.service_account_email
+              subject  = each.value.admin_email
+              audience = "https://oauth2.googleapis.com/token"
+            }
+            rs_credentials {
+              private_key = each.value.private_key
+            }
+          }
+        }
       }
     }
 
@@ -150,6 +274,20 @@ resource "google_chronicle_feed" "feeds" {
       content {
         workspace_customer_id = each.value.customer_id
         applications          = each.value.applications
+        dynamic "authentication" {
+          for_each = each.value.private_key != "" ? [1] : []
+          content {
+            token_endpoint = "https://oauth2.googleapis.com/token"
+            claims {
+              issuer   = each.value.service_account_email
+              subject  = each.value.admin_email
+              audience = "https://oauth2.googleapis.com/token"
+            }
+            rs_credentials {
+              private_key = each.value.private_key
+            }
+          }
+        }
       }
     }
 
