@@ -84,5 +84,5 @@ jobs:
           TERRAFORM_STATE_BUCKET: ${{ vars.TERRAFORM_STATE_BUCKET }}
         run: |
           cd terraform
-          terraform init -backend-config="bucket=${TERRAFORM_STATE_BUCKET}"
+          terraform init -reconfigure -backend-config="bucket=${TERRAFORM_STATE_BUCKET}"
           terraform plan -no-color -parallelism=15
