@@ -1,4 +1,0 @@
-enabled: false
-alerting: false
-run_frequency: HOURLY
-archived: true

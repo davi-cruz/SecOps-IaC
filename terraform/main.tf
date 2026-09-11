@@ -30,7 +30,7 @@ module "chronicle_rules" {
   chronicle_location    = var.chronicle_location
   chronicle_instance_id = var.chronicle_instance_id
   rules_dir             = "${path.root}/../content/secops/rules"
-  deletion_policy       = "DEFAULT"
+  deletion_policy       = "FORCE"
 }
 
 module "chronicle_reference_lists" {
