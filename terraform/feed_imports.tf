@@ -68,31 +68,26 @@ import {
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/a692308f-4515-41b0-a71a-009dce7958b9"
 }
 
-import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["driveforjob_gws_activity"]
-  id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/c503a956-6330-48dc-a84d-38e4f2694256"
-}
-
 # ==============================================================================
 # Microsoft Office 365 Feeds
 # ==============================================================================
 import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["davicruz_office_exchange"]
+  to = module.chronicle_feeds.google_chronicle_feed.microsoft_feeds["davicruz_office_exchange"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/75ad0d71-dd44-41b7-b323-be380598fea4"
 }
 
 import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["davicruz_office_dlp"]
+  to = module.chronicle_feeds.google_chronicle_feed.microsoft_feeds["davicruz_office_dlp"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/af2364df-007c-45fa-af61-02ccd252f01c"
 }
 
 import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["davicruz_office_general"]
+  to = module.chronicle_feeds.google_chronicle_feed.microsoft_feeds["davicruz_office_general"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/e53a84b3-d0ca-4182-936a-804d1ad5ab35"
 }
 
 import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["davicruz_office_sharepoint"]
+  to = module.chronicle_feeds.google_chronicle_feed.microsoft_feeds["davicruz_office_sharepoint"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/eb8a83d0-e410-409f-a567-9dea6d028ae4"
 }
 
@@ -100,21 +95,21 @@ import {
 # Microsoft Entra ID & Graph API Feeds
 # ==============================================================================
 import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["davicruz_entra_sign_ins"]
+  to = module.chronicle_feeds.google_chronicle_feed.microsoft_feeds["davicruz_entra_sign_ins"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/100542ca-132c-4852-8a9f-5affb4e12cca"
 }
 
 import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["davicruz_entra_audit"]
+  to = module.chronicle_feeds.google_chronicle_feed.microsoft_feeds["davicruz_entra_audit"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/ae9254cb-af8b-4819-9091-20325b59b7de"
 }
 
 import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["davicruz_entra_context"]
+  to = module.chronicle_feeds.google_chronicle_feed.microsoft_feeds["davicruz_entra_context"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/099f8239-df50-4963-ae40-04a9dc1e8b4f"
 }
 
 import {
-  to = module.chronicle_feeds.google_chronicle_feed.feeds["davicruz_entra_msgraph_alerts"]
+  to = module.chronicle_feeds.google_chronicle_feed.microsoft_feeds["davicruz_entra_msgraph_alerts"]
   id = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/feeds/08fcc208-cc7d-4d5d-9200-1f2d9b2b7732"
 }

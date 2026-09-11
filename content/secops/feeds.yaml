@@ -60,16 +60,6 @@ workspace_orgs:
         display_name: "DriveForJob GWS Privileges"
         log_type: "WORKSPACE_PRIVILEGES"
         feed_source_type: "API"
-      - name: "activity"
-        display_name: "DriveForJob GWS Activity"
-        log_type: "WORKSPACE_ACTIVITY"
-        feed_source_type: "API"
-        applications:
-          - "admin"
-          - "login"
-          - "drive"
-          - "groups"
-          - "mobile"
 
 microsoft_tenants:
   davicruz:

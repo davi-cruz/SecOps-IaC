@@ -175,11 +175,11 @@ locals {
     }
   ]...)
 
-  all_feeds = merge(local.workspace_feeds, local.m365_feeds, local.entra_feeds)
+  microsoft_feeds = merge(local.m365_feeds, local.entra_feeds)
 }
 
 resource "google_chronicle_feed" "feeds" {
-  for_each = local.all_feeds
+  for_each = local.workspace_feeds
 
   project      = var.project_id
   location     = var.chronicle_location
@@ -316,28 +316,24 @@ resource "google_chronicle_feed" "feeds" {
         }
       }
     }
+  }
 
-    dynamic "workspace_activity_settings" {
-      for_each = each.value.log_type == "WORKSPACE_ACTIVITY" ? [1] : []
-      content {
-        workspace_customer_id = startswith(each.value.customer_id, "C") ? each.value.customer_id : "C${each.value.customer_id}"
-        applications          = each.value.applications
-        dynamic "authentication" {
-          for_each = each.value.private_key != "" ? [1] : []
-          content {
-            token_endpoint = "https://oauth2.googleapis.com/token"
-            claims {
-              issuer   = each.value.service_account_email
-              subject  = each.value.admin_email
-              audience = "https://oauth2.googleapis.com/token"
-            }
-            rs_credentials {
-              private_key = each.value.private_key
-            }
-          }
-        }
-      }
-    }
+  lifecycle {
+    ignore_changes = all
+  }
+}
+
+resource "google_chronicle_feed" "microsoft_feeds" {
+  for_each = local.microsoft_feeds
+
+  project      = var.project_id
+  location     = var.chronicle_location
+  instance     = var.chronicle_instance_id
+  display_name = each.value.display_name
+
+  details {
+    feed_source_type = each.value.feed_source_type
+    log_type         = "projects/${var.project_id}/locations/${var.chronicle_location}/instances/${var.chronicle_instance_id}/logTypes/${each.value.log_type}"
 
     # Microsoft Office 365
     dynamic "office365_settings" {
@@ -407,6 +403,47 @@ resource "google_chronicle_feed" "feeds" {
   }
 
   lifecycle {
-    ignore_changes = all
+    ignore_changes = [failure_details]
   }
 }
+
+moved {
+  from = google_chronicle_feed.feeds["davicruz_office_exchange"]
+  to   = google_chronicle_feed.microsoft_feeds["davicruz_office_exchange"]
+}
+
+moved {
+  from = google_chronicle_feed.feeds["davicruz_office_dlp"]
+  to   = google_chronicle_feed.microsoft_feeds["davicruz_office_dlp"]
+}
+
+moved {
+  from = google_chronicle_feed.feeds["davicruz_office_general"]
+  to   = google_chronicle_feed.microsoft_feeds["davicruz_office_general"]
+}
+
+moved {
+  from = google_chronicle_feed.feeds["davicruz_office_sharepoint"]
+  to   = google_chronicle_feed.microsoft_feeds["davicruz_office_sharepoint"]
+}
+
+moved {
+  from = google_chronicle_feed.feeds["davicruz_entra_sign_ins"]
+  to   = google_chronicle_feed.microsoft_feeds["davicruz_entra_sign_ins"]
+}
+
+moved {
+  from = google_chronicle_feed.feeds["davicruz_entra_audit"]
+  to   = google_chronicle_feed.microsoft_feeds["davicruz_entra_audit"]
+}
+
+moved {
+  from = google_chronicle_feed.feeds["davicruz_entra_context"]
+  to   = google_chronicle_feed.microsoft_feeds["davicruz_entra_context"]
+}
+
+moved {
+  from = google_chronicle_feed.feeds["davicruz_entra_msgraph_alerts"]
+  to   = google_chronicle_feed.microsoft_feeds["davicruz_entra_msgraph_alerts"]
+}
+
