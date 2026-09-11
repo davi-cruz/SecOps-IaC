@@ -26,6 +26,7 @@ jobs:
     environment: production
 
     env:
+      GOOGLE_SECOPS_API_BASE_URL: ${{ vars.GOOGLE_SECOPS_API_BASE_URL || 'https://us-chronicle.googleapis.com/v1alpha' }}
       TF_VAR_project_id: ${{ vars.GOOGLE_CLOUD_PROJECT_ID }}
       TF_VAR_chronicle_location: ${{ vars.GOOGLE_SECOPS_LOCATION || 'us' }}
       TF_VAR_chronicle_instance_id: ${{ vars.GOOGLE_SECOPS_INSTANCE_UUID }}
@@ -60,12 +61,26 @@ jobs:
           cd terraform
           terraform init -backend-config="bucket=${TERRAFORM_STATE_BUCKET}"
 
+      - name: Force Delete Archived Rules via API
+        run: |
+          bash tools/force_delete_rules.sh || true
+
       - name: Reconcile Terraform State
         run: |
           cd terraform
           terraform state rm 'module.chronicle_rules.google_chronicle_rule.rules["archived/github_repository_archived_or_deleted"]' 2>/dev/null || true
           terraform state rm 'module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/github_repository_archived_or_deleted"]' 2>/dev/null || true
           terraform state rm 'module.chronicle_feeds.google_chronicle_feed.feeds["driveforjob_gws_activity"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule.archived_rules["archived/cloud_honeypot_secret_access_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/cloud_honeypot_secret_access_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule.archived_rules["archived/prt_use_case_1_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/prt_use_case_1_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule.archived_rules["archived/rule_1727979376900_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/rule_1727979376900_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule.archived_rules["archived/rule_1750794727496_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/rule_1750794727496_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule.archived_rules["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]' 2>/dev/null || true
+          terraform state rm 'module.chronicle_rules.google_chronicle_rule_deployment.deployments["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]' 2>/dev/null || true
 
       - name: Terraform Apply
         run: |
