@@ -57,31 +57,6 @@ resource "google_chronicle_rule" "archived_rules" {
   }
 }
 
-moved {
-  from = google_chronicle_rule.rules["archived/cloud_honeypot_secret_access_archived_37840bc"]
-  to   = google_chronicle_rule.archived_rules["archived/cloud_honeypot_secret_access_archived_37840bc"]
-}
-
-moved {
-  from = google_chronicle_rule.rules["archived/prt_use_case_1_archived_37840bc"]
-  to   = google_chronicle_rule.archived_rules["archived/prt_use_case_1_archived_37840bc"]
-}
-
-moved {
-  from = google_chronicle_rule.rules["archived/rule_1727979376900_archived_37840bc"]
-  to   = google_chronicle_rule.archived_rules["archived/rule_1727979376900_archived_37840bc"]
-}
-
-moved {
-  from = google_chronicle_rule.rules["archived/rule_1750794727496_archived_37840bc"]
-  to   = google_chronicle_rule.archived_rules["archived/rule_1750794727496_archived_37840bc"]
-}
-
-moved {
-  from = google_chronicle_rule.rules["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]
-  to   = google_chronicle_rule.archived_rules["archived/suspicious_auth_unusual_interval_time_archived_37840bc"]
-}
-
 resource "google_chronicle_rule_deployment" "deployments" {
   for_each = local.all_rules
 

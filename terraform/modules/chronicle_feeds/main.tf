@@ -407,43 +407,4 @@ resource "google_chronicle_feed" "microsoft_feeds" {
   }
 }
 
-moved {
-  from = google_chronicle_feed.feeds["davicruz_office_exchange"]
-  to   = google_chronicle_feed.microsoft_feeds["davicruz_office_exchange"]
-}
-
-moved {
-  from = google_chronicle_feed.feeds["davicruz_office_dlp"]
-  to   = google_chronicle_feed.microsoft_feeds["davicruz_office_dlp"]
-}
-
-moved {
-  from = google_chronicle_feed.feeds["davicruz_office_general"]
-  to   = google_chronicle_feed.microsoft_feeds["davicruz_office_general"]
-}
-
-moved {
-  from = google_chronicle_feed.feeds["davicruz_office_sharepoint"]
-  to   = google_chronicle_feed.microsoft_feeds["davicruz_office_sharepoint"]
-}
-
-moved {
-  from = google_chronicle_feed.feeds["davicruz_entra_sign_ins"]
-  to   = google_chronicle_feed.microsoft_feeds["davicruz_entra_sign_ins"]
-}
-
-moved {
-  from = google_chronicle_feed.feeds["davicruz_entra_audit"]
-  to   = google_chronicle_feed.microsoft_feeds["davicruz_entra_audit"]
-}
-
-moved {
-  from = google_chronicle_feed.feeds["davicruz_entra_context"]
-  to   = google_chronicle_feed.microsoft_feeds["davicruz_entra_context"]
-}
-
-moved {
-  from = google_chronicle_feed.feeds["davicruz_entra_msgraph_alerts"]
-  to   = google_chronicle_feed.microsoft_feeds["davicruz_entra_msgraph_alerts"]
-}
 
