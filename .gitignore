@@ -4,6 +4,10 @@ __pycache__/
 .pytest_cache/
 .env
 
+# GitHub Actions temporary credential files
+gha-creds-*.json
+
+
 # Terraform local state and variable files
 **/.terraform/*
 *.tfstate
