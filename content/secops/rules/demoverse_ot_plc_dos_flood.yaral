@@ -1,0 +1,37 @@
+rule demoverse_ot_plc_dos_flood {
+  meta:
+    author = "Tarah Lewis"
+    description = "Detects anomalous high-volume EtherNet/IP (CIP) packet flood targeting industrial PLCs using native Nozomi Guardian additional fields."
+    severity = "CRITICAL"
+    priority = "HIGH"
+    category = "Industrial Control Systems"
+    mitre_attack_technique = "T0814, T0855"
+
+  events:
+    $ot.metadata.log_type = "NOZOMI_GUARDIAN"
+    $ot.target.port = 44818
+    $ot.network.ip_protocol = "TCP"
+    
+    $ot.target.ip = $target_plc
+    $ot.principal.ip = $source_hmi
+
+  match:
+    $target_plc over 5m
+
+  outcome:
+    $risk_score = 95
+    $target_plc_ip = array_distinct($target_plc)
+    $source_hmi_ip = array_distinct($source_hmi)
+    $total_bytes = sum(cast.as_int($ot.additional.fields["transferred_bytes"]))
+    $total_packets = sum(cast.as_int($ot.additional.fields["transferred_packets"]))
+    $max_bytes_in_flow = max(cast.as_int($ot.additional.fields["transferred_bytes"]))
+    $avg_bytes = $total_bytes / count($ot.additional.fields["transferred_bytes"])
+    $double_average_bytes = (2 * $avg_bytes)
+    $flow_count = count($ot.metadata.id)
+
+  condition:
+    $ot and (
+      $total_bytes > 10000000 or 
+      $max_bytes_in_flow > $double_average_bytes
+    )
+}

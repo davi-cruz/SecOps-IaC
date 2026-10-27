@@ -2,14 +2,14 @@ rule demoverse_Suspicious_Wscript_Dropper_Spreader {
   meta:
     author = "josemarin@google.com"
     description = "Multi-event rule detecting wscript.exe executing and subsequently dropping an executable in the Temp folder or spreading VBScripts to network/removable drives."
-    severity = "Medium"
+    severity = "MEDIUM"
 
   events:
     // Event 1: The Script Engine Execution
     $exec.metadata.event_type = "PROCESS_LAUNCH"
     $exec.target.process.file.full_path = /\\(wscript|cscript)\.exe$/ nocase
     $hostname = $exec.principal.hostname
-
+    
     // Capture the PID so we can link it to the subsequent actions
     $process_pid = $exec.target.process.pid
 

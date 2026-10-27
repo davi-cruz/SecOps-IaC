@@ -6,16 +6,14 @@ rule aws_ec2_user_data_modified {
     mitre_attack_tactic = "Privilege Escalation"
     mitre_attack_technique = "Boot or Logon Initialization Scripts"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1037/"
-    technique = "T1037"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "High"
     priority = "High"
 
   events:
-    $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"

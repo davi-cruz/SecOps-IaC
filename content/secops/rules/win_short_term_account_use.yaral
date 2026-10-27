@@ -1,18 +1,15 @@
 rule win_short_term_account_use {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Detects the creation, login, and deletion of a user account over a predefined timeframe"
-type = "Alert"
-    platform = "Windows"
-    data_source = "Microsoft Windows events"
+    type = "alert"
+    platform = "windows"
+    data_source = "microsoft windows events"
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $create.metadata.base_labels.namespaces = "LogStory"
-    $login.metadata.base_labels.namespaces = "LogStory"
-    $delete.metadata.base_labels.namespaces = "LogStory"
     $create.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.base_labels.namespaces = "LogStory"
     $delete.metadata.base_labels.namespaces = "LogStory"
@@ -32,7 +29,7 @@ type = "Alert"
     $delete.target.user.userid = $targetUser
 
   match:
-    $targetUser over 4h
+    $targetUser over 4h 
 
   outcome:
     $risk_score = max(65)
@@ -55,6 +52,6 @@ type = "Alert"
     $target_url = array_distinct($login.target.url)
 
   condition:
-    $create and $login and $delete
+    $create and $login and $delete 
 
 }

@@ -3,14 +3,13 @@ rule process_launch_vt_enrichment {
   meta:
     author = "Google Cloud Security"
     description = "Identify process creations that are tagged exploit in VT"
-type = "Alert"
+    type = "alert"
     tags = "vt enrichment"
     data_source = "crowdstrike"
     severity = "High"
     priority = "High"
 
   events:
-    $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     ($process.metadata.event_type = "PROCESS_LAUNCH" or $process.metadata.event_type = "FILE_CREATION")
     $process.principal.hostname = $hostname

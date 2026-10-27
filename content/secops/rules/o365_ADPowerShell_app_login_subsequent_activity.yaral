@@ -7,17 +7,14 @@ rule o365_ADPowerShell_app_login_subsequent_activity {
     mitre_attack_tactic = "Persistence"
     mitre_attack_technique = "Account Manipulation: Additional Cloud Credentials"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1098/001/"
-    technique = "T1098.001"
     mitre_attack_version = "v14.1"
-type = "Alert"
+    type = "alert"
     platform = "azure"
     data_source = "o365"
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $login.metadata.base_labels.namespaces = "LogStory"
-    $other.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.base_labels.namespaces = "LogStory"
     $other.metadata.base_labels.namespaces = "LogStory"
     (
@@ -29,35 +26,35 @@ type = "Alert"
         $login.security_result.action = "ALLOW"
     )
     $login.target.user.userid = $userid
-    $login.metadata.event_timestamp.seconds < $other.metadata.event_timestamp.seconds
+    $login.metadata.event_timestamp.seconds < $other.metadata.event_timestamp.seconds 
     (
         (
-            $other.metadata.event_type = "USER_RESOURCE_CREATION" and
-            $other.metadata.product_event_type = "Add application." and
+            $other.metadata.event_type = "USER_RESOURCE_CREATION" and 
+            $other.metadata.product_event_type = "Add application." and 
             $other.metadata.product_name = "Office 365" and
             $other.metadata.vendor_name = "Microsoft"
         )
         or
         (
-            $other.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT" and
-            $other.metadata.product_event_type = "Update application." and
+            $other.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT" and 
+            $other.metadata.product_event_type = "Update application." and 
             $other.metadata.product_name = "Office 365" and
             $other.metadata.vendor_name = "Microsoft"
         )
         or
         (
-            $other.metadata.event_type = "USER_RESOURCE_UPDATE_PERMISSIONS" and
-            $other.metadata.product_event_type = "Add delegated permission grant." and
+            $other.metadata.event_type = "USER_RESOURCE_UPDATE_PERMISSIONS" and 
+            $other.metadata.product_event_type = "Add delegated permission grant." and 
             $other.metadata.product_name = "Office 365" and
             $other.metadata.vendor_name = "Microsoft"
         )
         or
         (
-            $other.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT" and
-            $other.metadata.product_event_type = /Update application.*Certificates and secrets management/ nocase and
+            $other.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT" and 
+            $other.metadata.product_event_type = /Update application.*Certificates and secrets management/ nocase and 
             $other.metadata.product_name = "Office 365" and
             $other.metadata.vendor_name = "Microsoft"
-        )
+        )      
     )
     $other.principal.user.userid = $userid
     $other.metadata.product_event_type = $other_event

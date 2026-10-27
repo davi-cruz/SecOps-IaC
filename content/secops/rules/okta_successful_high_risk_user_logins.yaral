@@ -7,16 +7,14 @@ rule okta_successful_high_risk_user_logins {
     mitre_attack_tactic = "Defense Evasion, Persistence, Privilege Escalation, Initial Access"
     mitre_attack_technique = "Valid Accounts"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1078/"
-    technique = "T1078"
     mitre_attack_version = "v13.1"
-type = "Hunt"
+    type = "Hunt"
     false_positives = "This rule causes False Positives if the user is a net new user."
     data_source = "Okta"
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.product_name = "Okta"
     $login.metadata.vendor_name = "Okta"
@@ -26,7 +24,7 @@ type = "Hunt"
     $login.security_result.action = "ALLOW"
     $login.principal.user.userid = $userid
 
-    // Detect only for existing users and not net new users
+    // Detect only for existing users and not net new users 
     $first_seen.graph.metadata.entity_type = "USER"
     $first_seen.graph.entity.user.first_seen_time.seconds < $login.metadata.event_timestamp.seconds
     $first_seen.graph.entity.user.userid = $userid

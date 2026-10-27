@@ -3,27 +3,26 @@ rule geoip_user_login_from_multiple_states_or_countries {
   meta:
     author = "Google Cloud Security"
     description = "Detect multiple user logins from multiple states or countries using Chronicle GeoIP enrichment."
-type = "Alert"
+    type = "alert"
     data_source = "microsoft ad, azure ad, okta, aws cloudtrail, google scc"
     tags = "geoip enrichment"
     severity = "Low"
     priority = "Low"
-
+ 
   events:
-    $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.event_type = "USER_LOGIN"
     $login.security_result.action = "ALLOW"
     $login.principal.ip_geo_artifact.location.country_or_region != ""
-
+    
     $login.principal.ip_geo_artifact.location.country_or_region = $country
     $login.principal.ip_geo_artifact.location.state  = $state
     $login.metadata.product_name = $product
     $login.target.user.userid = $user
-
+ 
   match:
     $user, $product over 1h
-
+ 
   outcome:
     $risk_score = max(35)
     $event_count = count_distinct($login.metadata.id)
@@ -44,7 +43,7 @@ type = "Alert"
     $principal_resource_name = array_distinct($login.principal.resource.name)
     $target_resource_name = array_distinct($login.target.resource.name)
     $target_url = array_distinct($login.target.url)
-
+ 
   condition:
     #country >= 1 and #state >= 2
- }
+ } 

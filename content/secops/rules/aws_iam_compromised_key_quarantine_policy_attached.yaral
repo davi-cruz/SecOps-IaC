@@ -6,16 +6,14 @@ rule aws_iam_compromised_key_quarantine_policy_attached {
     mitre_attack_tactic = "Credential Access"
     mitre_attack_technique = "Unsecured Credentials"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1552/"
-    technique = "T1552"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "High"
     priority = "High"
 
   events:
-    $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"

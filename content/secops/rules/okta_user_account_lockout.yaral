@@ -7,15 +7,13 @@ rule okta_user_account_lockout {
     mitre_attack_tactic = "Defense Evasion, Persistence, Privilege Escalation, Initial Access"
     mitre_attack_technique = "Valid Accounts"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1078/"
-    technique = "T1078"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "Alert"
     data_source = "Okta"
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.product_name = "Okta"
     $login.metadata.vendor_name = "Okta"

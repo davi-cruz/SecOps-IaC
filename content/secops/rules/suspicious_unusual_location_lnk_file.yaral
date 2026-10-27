@@ -3,14 +3,13 @@ rule suspicious_unusual_location_lnk_file {
   meta:
     author = "Google Cloud Security"
     description = "Detects creation and movement of .lnk files to specific folders"
-type = "Alert"
+    type = "alert"
     data_source = "microsoft sysmon"
     platform = "Windows"
     severity = "Low"
     priority = "Low"
-
+   
   events:
-    $file.metadata.base_labels.namespaces = "LogStory"
     $file.metadata.base_labels.namespaces = "LogStory"
     (
       $file.metadata.event_type = "FILE_CREATION" or
@@ -42,7 +41,7 @@ type = "Alert"
     $target_file_full_path = $file.target.file.full_path
     $src_file_sha256 = $file.src.file.sha256
     $src_file_full_path = $file.src.file.full_path
-
+  
   condition:
     $file
 }

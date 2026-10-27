@@ -3,7 +3,7 @@ rule ioc_hash_prevalence {
   meta:
     author = "Google Cloud Security"
     description = "Detect process/file events that match hashes found in our MISP instance and have low rolling max prevalence"
-type = "Alert"
+    type = "alert"
     tags = "prevalence, threat indicators"
     assumption = "Assumes MISP data has been ingested into entity graph; this rule can be modified to utilize other TI indicators"
     data_source = "microsoft sysmon"
@@ -11,7 +11,6 @@ type = "Alert"
     priority = "High"
 
   events:
-    $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.event_type = "FILE_CREATION" or $process.metadata.event_type = "PROCESS_LAUNCH"
     $process.target.process.file.sha256 = $sha256
@@ -22,7 +21,7 @@ type = "Alert"
     $prevalence.graph.entity.file.prevalence.day_count = 10
     $prevalence.graph.entity.file.prevalence.rolling_max <= 3
     $prevalence.graph.entity.file.prevalence.rolling_max > 0
-    $prevalence.graph.entity.file.sha256 = $sha256
+    $prevalence.graph.entity.file.sha256 = $sha256  
 
     // Correlates with MISP data; can be modified based on your MISP parser or other TI
     $ioc.graph.metadata.entity_type = "FILE"

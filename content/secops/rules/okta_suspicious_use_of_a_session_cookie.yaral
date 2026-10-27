@@ -7,15 +7,13 @@ rule okta_suspicious_use_of_a_session_cookie {
     mitre_attack_tactic = "Credential Access"
     mitre_attack_technique = "Steal Web Session Cookie"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1539/"
-    technique = "T1539"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "Alert"
     data_source = "Okta"
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.product_name = "Okta"
     $login.metadata.vendor_name = "Okta"

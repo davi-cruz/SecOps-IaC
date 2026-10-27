@@ -6,9 +6,8 @@ rule mitre_attack_T1021_002_windows_admin_share_with_user_enrichment {
     mitre_attack_tactic = "Lateral Movement"
     mitre_attack_technique = "Remote Services: SMB/Windows Admin Shares"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1021/002/"
-    technique = "T1021.002"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "alert"
     tags = "user enrichment"
     platform = "Windows"
     data_source = "microsoft sysmon, microsoft windows events"
@@ -17,18 +16,17 @@ type = "Alert"
 
   events:
     $process.metadata.base_labels.namespaces = "LogStory"
-    $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.event_type = "PROCESS_LAUNCH"
     $process.target.process.command_line = /net.*use.*(C|ADMIN|IPC)\$/ nocase
     $process.principal.user.userid = $userid
-
-    /* Enriched UDM fields from assets & users can often be used without needing to
+  
+    /* Enriched UDM fields from assets & users can often be used without needing to 
     join to entity graph for these fields, assuming assets and users are being ingested */
     $process.principal.user.department != "Information Technology" or
     $process.principal.user.title = "Intern"
 
   match:
-    $userid over 5m
+    $userid over 5m  
 
   outcome:
     $risk_score = max(35)

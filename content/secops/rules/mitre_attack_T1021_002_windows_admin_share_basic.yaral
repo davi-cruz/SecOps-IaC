@@ -6,16 +6,14 @@ rule mitre_attack_T1021_002_windows_admin_share_basic {
     mitre_attack_tactic = "Lateral Movement"
     mitre_attack_technique = "Remote Services: SMB/Windows Admin Shares"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1021/002/"
-    technique = "T1021.002"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "alert"
     platform = "Windows"
     data_source = "microsoft sysmon, microsoft windows events"
     severity = "Low"
     priority = "Low"
 
   events:
-    $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.event_type = "PROCESS_LAUNCH"
     $process.target.process.command_line = /net.*use.*(C|ADMIN|IPC)\$/ nocase

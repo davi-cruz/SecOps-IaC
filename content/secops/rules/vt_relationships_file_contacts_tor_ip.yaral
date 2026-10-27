@@ -1,21 +1,19 @@
 rule vt_relationships_file_contacts_tor_ip {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Alert on known Hash contacting Tor IP with VT Relationships."
     mitre_attack_tactic = "Command and Control"
     mitre_attack_technique = "Proxy: Multi-hop Proxy"
-    mitre_attack_url = "https://attack.mitre.org/techniques/T1090/003/"
-    technique = "T1090.003"
+    mitre_attach_url = "https://attack.mitre.org/techniques/T1090/003/"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "alert"
     tags = "vt, tor"
     data_source = "microsoft defender atp"
     severity = "Critical"
     priority = "High"
 
   events:
-    $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.event_type = "NETWORK_CONNECTION"
     $network.principal.process.file.sha256 = $file_hash
@@ -45,7 +43,7 @@ type = "Alert"
   match:
     $hostname over 5m
 
-  outcome:
+  outcome: 
     $risk_score = max(
         if($gcti.graph.metadata.threat.confidence = "HIGH_CONFIDENCE", 70) +
         // Unauthorized target geographies

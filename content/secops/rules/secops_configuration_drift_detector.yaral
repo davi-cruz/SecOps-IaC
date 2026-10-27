@@ -1,0 +1,15 @@
+rule secops_configuration_drift_detector {
+  meta:
+    author = "Google Cloud SecOps SRE"
+    description = "Alerts on configuration drift findings, such as silent log sources or unmonitored log types detected in GCP projects."
+    type = "Alert"
+    severity = "High"
+    priority = "High"
+
+  events:
+    $e.metadata.log_type = "SECOPS_MONITORING_CUSTOM"
+    $e.metadata.product_event_type = "Configuration Drift Warning"
+
+  condition:
+    $e
+}

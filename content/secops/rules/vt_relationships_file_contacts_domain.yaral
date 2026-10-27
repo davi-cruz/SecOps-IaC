@@ -1,16 +1,15 @@
 rule vt_relationships_file_contacts_domain {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Alert on known Hash querying a known hostname with VT Relationships"
-type = "Alert"
+    type = "alert"
     tags = "vt"
     data_source = "microsoft sysmon, crowdstrike"
     severity = "High"
     priority = "High"
 
   events:
-    $dns.metadata.base_labels.namespaces = "LogStory"
     $dns.metadata.base_labels.namespaces = "LogStory"
     $dns.metadata.event_type = "NETWORK_DNS"
     $dns.principal.process.file.sha256 = $file_hash

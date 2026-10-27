@@ -1,17 +1,15 @@
 rule suspicious_download_office {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Office Application downloading an executable(.exe in URL) or a suspiciously large file(>100KB)"
-type = "Alert"
+    type = "alert"
     data_source = "tanium, zscalar, crowdstrike"
     reference = "https://attack.mitre.org/software/S0160/"
     severity = "Critical"
     priority = "Critical"
 
   events:
-    $edr.metadata.base_labels.namespaces = "LogStory"
-    $proxy.metadata.base_labels.namespaces = "LogStory"
     $edr.metadata.base_labels.namespaces = "LogStory"
     $proxy.metadata.base_labels.namespaces = "LogStory"
     $edr.metadata.event_type = "PROCESS_LAUNCH"
