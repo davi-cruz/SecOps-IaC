@@ -1,16 +1,15 @@
 rule domain_prevalence {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects DNS events querying domains that have a low rolling max prevalence."
-type = "Alert"
+    type = "alert"
     tags = "prevalence"
     data_source = "extrahop, tanium, microsoft sysmon, gcp dns, crowdstrike"
     severity = "Low"
     priority = "Low"
-
+   
   events:
-    $dns.metadata.base_labels.namespaces = "LogStory"
     $dns.metadata.base_labels.namespaces = "LogStory"
     $dns.metadata.event_type = "NETWORK_DNS"
     $dns.network.dns.questions.name = $domain
@@ -41,6 +40,7 @@ type = "Alert"
     $principal_process_file_sha256 = array_distinct($dns.principal.process.file.sha256)
     $principal_process_parent_process_product_specfic_process_id = array_distinct($dns.principal.process.parent_process.product_specific_process_id)
     $principal_user_userid = array_distinct($dns.principal.user.userid)
+
 
   condition:
     $dns and $prevalence

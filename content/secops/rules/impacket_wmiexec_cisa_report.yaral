@@ -1,21 +1,19 @@
 rule impacket_wmiexec_cisa_report {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects the artifacts generally associated with the use of wmiexec.py"
-type = "Alert"
+    type = "alert"
     data_source = "microsoft sysmon, microsft windows events"
     mitre_attack_tactic = "Execution"
     mitre_attack_technique = "Windows Management Instrumentation"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1047/"
-    technique = "T1047"
     mitre_attack_version = "v13.1"
     reference = "https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF"
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     (
         $process.metadata.event_type = "PROCESS_LAUNCH" and

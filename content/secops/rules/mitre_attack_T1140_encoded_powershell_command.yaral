@@ -1,14 +1,13 @@
 rule mitre_attack_T1140_encoded_powershell_command {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects encoded powershell commands"
     mitre_attack_tactic = "Defense Evasion"
     mitre_attack_technique = "Deobfuscate/Decode Files or Information"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1140/"
-    technique = "T1140"
     mitre_attack_version = "v13.1"
-type = "Hunt"
+    type = "hunt"
     platform = "Windows"
     data_source = "microsoft sysmon, microsoft windows events"
     severity = "Info"
@@ -16,13 +15,12 @@ type = "Hunt"
 
   events:
     $process.metadata.base_labels.namespaces = "LogStory"
-    $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.event_type = "PROCESS_LAUNCH"
     $process.principal.hostname = $hostname
     re.regex($process.target.process.file.full_path, `(system32|syswow64)\\WindowsPowerShell\\v1\.0\\powershell(|\_ise)\.exe`) nocase
     re.regex($process.target.process.command_line, `(?i)(?:-enc|-ec|-en)\s*\S*`)
     $encoded_value = re.capture($process.target.process.command_line, `(?i)(?:-enc|-ec|-en)\s*(\S*)`)
-    $decoded_value = re.replace(strings.base64_decode(re.capture($process.target.process.command_line, `(?i)(?:-enc|-ec|-en)\s*(\S*)`)),`\0`, "")
+    $decoded_value = re.replace(strings.base64_decode(re.capture($process.target.process.command_line, `(?i)(?:-enc|-ec|-en)\s*(\S*)`)),`\0`, "") 
 
   match:
     $hostname over 5m

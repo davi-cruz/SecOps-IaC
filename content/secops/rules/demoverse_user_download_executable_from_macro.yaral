@@ -1,9 +1,9 @@
 rule demoverse_user_download_executable_from_macro {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Executable downloaded by Microsoft Excel by user with GCP entity relationship"
-type = "Alert"
+    type = "alert"
     data_source = "zscaler nss, crowdstrike"
     tags = "user entity, resource entity"
     severity = "High"
@@ -13,7 +13,6 @@ type = "Alert"
     mitre_attack_tactic = "Execution"
     mitre_attack_technique = "User Execution: Malicious File"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1204/002/"
-    technique = "T1204.002"
     mitre_attack_version = "v13.1"
 
   events:
@@ -23,15 +22,18 @@ type = "Alert"
     $proxy_event.network.received_bytes > 102400
     $proxy_event.principal.user.userid = $user
     $proxy_event.principal.user.userid != /test/
+    
 
     // correlate with EDR event indicating Excel activity
     $edr_event.principal.user.userid  = $user
     $edr_event.principal.process.file.names = /excel/ nocase
-    $edr_event.metadata.event_type = "PROCESS_LAUNCH"
+    $edr_event.metadata.event_type = "PROCESS_LAUNCH"    
+
 
   match:
     $user over 5m
-
+  
+  
   outcome:
     $mitre_attack_tactic = "Execution"
     $mitre_attack_technique = "User Execution: Malicious File"
@@ -57,6 +59,6 @@ type = "Alert"
     $target_url = array_distinct($proxy_event.target.url)
 
   condition:
-
+    
     $proxy_event and $edr_event //and $user_entity
 }

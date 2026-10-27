@@ -3,14 +3,13 @@ rule suspicious_asn {
   meta:
     author = "Google Cloud Security"
     description = "Identify network traffic based on a specific ASN"
-type = "Alert"
+    type = "alert"
     tags = "geoip enrichment"
     data_source = "microsoft windows events"
     severity = "Low"
     priority = "Low"
 
   events:
-    $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.event_type = "NETWORK_CONNECTION"
     //Specify an autonomoous system number to monitor or add additional ASNs using an or statement
@@ -19,7 +18,7 @@ type = "Alert"
 
   match:
     $ip over 30m
-
+ 
   outcome:
     $risk_score = max(35)
     $event_count = count_distinct($network.metadata.id)

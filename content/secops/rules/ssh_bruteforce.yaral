@@ -9,8 +9,6 @@ rule ssh_bruteforce {
   events:
     $fail.metadata.base_labels.namespaces = "LogStory"
     $success.metadata.base_labels.namespaces = "LogStory"
-    $fail.metadata.base_labels.namespaces = "LogStory"
-    $success.metadata.base_labels.namespaces = "LogStory"
     $fail.metadata.event_type = "USER_LOGIN"
     $fail.metadata.product_name = "Unix System"
     $fail.security_result.action = "BLOCK"

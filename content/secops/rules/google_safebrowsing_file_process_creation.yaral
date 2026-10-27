@@ -1,9 +1,9 @@
 rule google_safebrowsing_file_process_creation {
-
+    
   meta:
     author = "Google Cloud Security"
     description = "Detection of process/file events that match Safe Browsing hashes, which are files deemed to be malicious"
-type = "Alert"
+    type = "alert"
     tags = "safe browsing"
     data_source = "microsoft sysmon"
     severity = "Critical"
@@ -11,20 +11,19 @@ type = "Alert"
 
   events:
     $execution.metadata.base_labels.namespaces = "LogStory"
-    $execution.metadata.base_labels.namespaces = "LogStory"
     ($execution.metadata.event_type = "PROCESS_LAUNCH" or $execution.metadata.event_type = "FILE_CREATION")
     $execution.principal.hostname = $hostname
     $execution.target.process.file.sha256 != ""
-    $execution.target.process.file.sha256 = $sha256
-
+    $execution.target.process.file.sha256 = $sha256	
+   
     // join execution event with Safe Browsing graph
     $safebrowse.graph.entity.file.sha256 = $sha256
-
+   
     // Safe Browsing file hashes provided by GCTI Feed
     $safebrowse.graph.metadata.product_name = "Google Safe Browsing"
     $safebrowse.graph.metadata.entity_type = "FILE"
     $safebrowse.graph.metadata.source_type = "GLOBAL_CONTEXT"
-
+        
     // Can comment the following two lines to adjust the safe browsing hashes available for correlation
     $safebrowse.graph.metadata.threat.category = "SOFTWARE_MALICIOUS"
     $safebrowse.graph.metadata.threat.severity = "CRITICAL"

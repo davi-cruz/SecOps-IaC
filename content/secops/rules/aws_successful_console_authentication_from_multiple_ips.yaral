@@ -6,16 +6,14 @@ rule aws_successful_console_authentication_from_multiple_ips {
     mitre_attack_tactic = "Resource Development"
     mitre_attack_technique = "Compromise Accounts"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1586/"
-    technique = "T1586"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.vendor_name = "AMAZON"
     $login.metadata.product_name = "AWS CloudTrail"

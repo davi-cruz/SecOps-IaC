@@ -1,23 +1,21 @@
 rule google_safebrowsing_file_contacts_tor_exit_node {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "A malicious file contacting a known Tor Exit Node."
     mitre_attack_tactic = "Command and Control"
     mitre_attack_technique = "Proxy: Multi-hop Proxy"
-    mitre_attack_url = "https://attack.mitre.org/techniques/T1090/003/"
-    technique = "T1090.003"
+    mitre_attach_url = "https://attack.mitre.org/techniques/T1090/003/"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "alert"
     data_source = "microsoft defender atp, crowdstrike, microsoft sysmon"
     severity = "Critical"
     priority = "High"
 
   events:
     $network.metadata.base_labels.namespaces = "LogStory"
-    $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.event_type = "NETWORK_CONNECTION"
-    $network.principal.process.file.sha256 != ""
+    $network.principal.process.file.sha256 != "" 
     $network.principal.process.file.sha256 = $file_hash
     $network.principal.hostname = $hostname
     $network.target.ip = $ip
@@ -39,7 +37,7 @@ type = "Alert"
 
   match:
     $hostname over 1h
-
+ 
   outcome:
     $risk_score = max(95)
     $mitre_attack_tactic = "Command and Control"
@@ -63,7 +61,7 @@ type = "Alert"
     $target_process_parent_process_product_specfic_process_id = array_distinct($network.target.process.parent_process.product_specific_process_id)
     $principal_user_userid = array_distinct($network.principal.user.userid)
     $target_user_userid = array_distinct($network.target.user.userid)
-
+ 
   condition:
     $network and $gcti and $safebrowse
 }

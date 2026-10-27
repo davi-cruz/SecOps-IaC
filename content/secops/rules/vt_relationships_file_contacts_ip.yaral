@@ -1,16 +1,15 @@
 rule vt_relationships_file_contacts_ip {
-
+  
   meta:
     author = "Google Cloud Security"
     description = "Alert on known Hash contacting known IP with VT Relationships"
-type = "Alert"
+    type = "alert"
     tags = "vt"
     data_source = "microsoft defender atp"
     severity = "High"
     priority = "High"
 
   events:
-    $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.event_type = "NETWORK_CONNECTION"
     $network.principal.process.file.sha256 = $file_hash

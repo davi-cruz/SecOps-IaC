@@ -6,16 +6,14 @@ rule o365_persistent_login_activity_to_azure_ADPowerShell_app {
     mitre_attack_tactic = "Lateral Movement"
     mitre_attack_technique = "Remote Services: Cloud Services"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1021/007/"
-    technique = "T1021.007"
     mitre_attack_version = "v14.1"
-type = "Alert"
+    type = "alert"
     platform = "azure"
     data_source = "o365"
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.base_labels.namespaces = "LogStory"
     $login.metadata.event_type = "USER_LOGIN"
     $login.metadata.product_event_type = "UserLoggedIn"
@@ -25,7 +23,7 @@ type = "Alert"
     $login.security_result.action = "ALLOW"
     $login.target.user.userid = $userid
     $login.metadata.event_timestamp.seconds = $time
-
+  
   match:
     $userid over 24h
 
@@ -45,6 +43,6 @@ type = "Alert"
     //$target_user_userid = array_distinct($login.target.user.userid)
 
   condition:
-    // Can set based on your own threshold
+    // Can set based on your own threshold  
     #time > 1
 }

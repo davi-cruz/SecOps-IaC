@@ -6,16 +6,14 @@ rule aws_iam_access_denied_discovery_events {
     mitre_attack_tactic = "Discovery"
     mitre_attack_technique = "Cloud Infrastructure Discovery"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1580/"
-    technique = "T1580"
     mitre_attack_version = "v13.1"
-type = "Alert"
+    type = "Alert"
     data_source = "AWS CloudTrail"
     platform = "AWS"
     severity = "Low"
     priority = "Low"
 
   events:
-    $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.base_labels.namespaces = "LogStory"
     $cloudtrail.metadata.vendor_name = "AMAZON"
     $cloudtrail.metadata.product_name = "AWS CloudTrail"

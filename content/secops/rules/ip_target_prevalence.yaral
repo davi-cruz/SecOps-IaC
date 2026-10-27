@@ -3,14 +3,13 @@ rule ip_target_prevalence {
   meta:
     author = "Google Cloud Security"
     description = "Detect events that are communicating to IP addresses that have a low rolling max prevalence."
-type = "Alert"
+    type = "alert"
     tags = "prevalence"
     data_source = "crowdstrike, gcp firewall, microsoft sysmon, gcp scc, microsoft defender atp, corelight zeek, microsoft windows events"
     severity = "Low"
     priority = "Low"
 
   events:
-    $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.base_labels.namespaces = "LogStory"
     $network.metadata.event_type = "NETWORK_CONNECTION"
     $network.target.ip = $ip
@@ -47,7 +46,7 @@ type = "Alert"
     $target_process_parent_process_product_specfic_process_id = array_distinct($network.target.process.parent_process.product_specific_process_id)
     $principal_user_userid = array_distinct($network.principal.user.userid)
     $target_user_userid = array_distinct($network.target.user.userid)
-
+ 
   condition:
     $network and $prevalence
 }

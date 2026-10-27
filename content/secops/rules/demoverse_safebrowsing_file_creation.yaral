@@ -1,14 +1,11 @@
 rule demoverse_safebrowsing_file_creation {
  meta:
-    author = "Google Cloud Security"
-    description = "Automatically imported rule"
-    severity = "Low"
 
  events:
    ($execution.metadata.event_type = "PROCESS_LAUNCH" or $execution.metadata.event_type = "FILE_CREATION")
    $execution.principal.hostname = $hostname
    $execution.target.process.file.sha256 != ""
-   $execution.target.process.file.sha256 = $sha256
+   $execution.target.process.file.sha256 = $sha256  
    $safebrowse.graph.entity.file.sha256 = $sha256
    $safebrowse.graph.metadata.entity_type = "FILE"
    $safebrowse.graph.metadata.product_name = "Google Safe Browsing"
@@ -16,7 +13,7 @@ rule demoverse_safebrowsing_file_creation {
 
  match:
    $hostname over 1h
-
+   
  condition:
    $execution and $safebrowse
 }

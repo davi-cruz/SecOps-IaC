@@ -3,14 +3,13 @@ rule network_http_low_prevalence_domain_access {
   meta:
     author = "Google Cloud Security"
     description = "Detects network web access to a low prevalence domain"
-type = "Alert"
+    type = "alert"
     tags = "prevalence"
     data_source = "zscalar"
     severity = "Critical"
     priority = "Critical"
 
   events:
-    $http.metadata.base_labels.namespaces = "LogStory"
     $http.metadata.base_labels.namespaces = "LogStory"
     $http.metadata.event_type = "NETWORK_HTTP"
     $http.principal.ip = $ip
@@ -47,6 +46,7 @@ type = "Alert"
     $target_hostname = array_distinct($http.target.hostname)
     $principal_user_userid = array_distinct($http.principal.user.userid)
     $target_url = array_distinct($http.target.url)
+
 
   condition:
     $http and $prevalence

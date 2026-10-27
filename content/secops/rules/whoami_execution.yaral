@@ -1,21 +1,19 @@
 rule whoami_execution {
-
+ 
   meta:
     author = "Google Cloud Security"
     description = "Detects the execution of whoami, which is often used by attackers after exploitation to establish what credentials they are logged in under"
-type = "Hunt"
+    type = "hunt"
     data_source = "microsoft sysmon, microsft windows events"
     mitre_attack_tactic = "Discovery"
     mitre_attack_technique = "System Owner/User Discovery"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1033/"
-    technique = "T1033"
     mitre_attack_version = "v13.1"
     platform = "Windows"
     severity = "Info"
     priority = "Info"
 
   events:
-    $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.base_labels.namespaces = "LogStory"
     $process.metadata.event_type = "PROCESS_LAUNCH"
     $process.target.process.command_line = "whoami"

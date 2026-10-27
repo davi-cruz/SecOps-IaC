@@ -6,16 +6,14 @@ rule o365_onedrive_anonymous_filedownload {
     mitre_attack_tactic = "Exfiltration"
     mitre_attack_technique = "Exfiltration Over Alternative Protocol: Exfiltration Over Asymmetric Encrypted Non-C2 Protocol"
     mitre_attack_url = "https://attack.mitre.org/techniques/T1048/002/"
-    technique = "T1048.002"
     mitre_attack_version = "v14.1"
-type = "Hunt"
+    type = "hunt"
     platform = "azure"
-    data_source = "o365"
+    data_source = "o365"   
     severity = "Medium"
     priority = "Medium"
 
   events:
-    $file.metadata.base_labels.namespaces = "LogStory"
     $file.metadata.base_labels.namespaces = "LogStory"
     $file.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT"
     $file.metadata.product_event_type = "FileDownloaded"
@@ -24,7 +22,7 @@ type = "Hunt"
     $file.target.application = "OneDrive"
     (
         $file.principal.user.userid = /^urn:spo:anon#/ or
-        $file.principal.user.userid = "anonymous"
+        $file.principal.user.userid = "anonymous" 
     )
     $file.principal.ip = $ip
 
